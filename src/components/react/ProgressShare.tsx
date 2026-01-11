@@ -5,6 +5,7 @@ import {
   importProgressData,
   type ExportData,
 } from "@/lib/progress";
+import { parts } from "@/lib/course-data";
 
 interface ProgressShareProps {
   variant: "export" | "import-check";
@@ -18,6 +19,7 @@ export default function ProgressShare({ variant }: ProgressShareProps) {
   const [importStatus, setImportStatus] = useState<
     "pending" | "success" | "error" | null
   >(null);
+  const [viewMode, setViewMode] = useState(false);
 
   useEffect(() => {
     if (variant === "import-check") {
@@ -82,6 +84,198 @@ export default function ProgressShare({ variant }: ProgressShareProps) {
     const quizzesCount = Object.keys(
       importData.progress.quizScores || {}
     ).length;
+    const completedModules = importData.progress.completedModules || [];
+    const quizScores = importData.progress.quizScores || {};
+
+    // Calculate completion percentage
+    const totalModules = parts.reduce((acc, p) => acc + p.modules.length, 0);
+    const completionPercentage = Math.round(
+      (modulesCount / totalModules) * 100
+    );
+
+    // Get average quiz score
+    const quizScoreValues = Object.values(quizScores);
+    const avgQuizScore =
+      quizScoreValues.length > 0
+        ? Math.round(
+            quizScoreValues.reduce((a, b) => a + b, 0) / quizScoreValues.length
+          )
+        : 0;
+
+    // View mode - detailed progress breakdown
+    if (viewMode) {
+      return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="max-h-[90vh] w-full max-w-2xl overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-xl dark:border-dark-border dark:bg-dark-surface">
+            {/* Header */}
+            <div className="flex items-center justify-between border-b border-neutral-200 p-4 dark:border-dark-border">
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => setViewMode(false)}
+                  className="rounded-lg p-1 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-600 dark:hover:bg-dark-elevated dark:hover:text-neutral-300"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-5 w-5"
+                  >
+                    <path d="m15 18-6-6 6-6" />
+                  </svg>
+                </button>
+                <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">
+                  Shared Progress Details
+                </h3>
+              </div>
+              <button
+                onClick={handleCancelImport}
+                className="rounded-lg p-1 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-600 dark:hover:bg-dark-elevated dark:hover:text-neutral-300"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-5 w-5"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Summary stats */}
+            <div className="grid grid-cols-3 gap-4 border-b border-neutral-200 p-4 dark:border-dark-border">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
+                  {completionPercentage}%
+                </div>
+                <div className="text-xs text-neutral-500">Complete</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
+                  {modulesCount}/{totalModules}
+                </div>
+                <div className="text-xs text-neutral-500">Modules</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
+                  {avgQuizScore}%
+                </div>
+                <div className="text-xs text-neutral-500">Avg Quiz Score</div>
+              </div>
+            </div>
+
+            {/* Scrollable content */}
+            <div className="max-h-[50vh] overflow-y-auto p-4">
+              {parts.map((part) => {
+                const partModules = part.modules;
+                const completedInPart = partModules.filter((m) =>
+                  completedModules.includes(m.slug)
+                );
+
+                return (
+                  <div key={part.number} className="mb-6 last:mb-0">
+                    <div className="mb-2 flex items-center justify-between">
+                      <h4 className="font-medium text-neutral-900 dark:text-neutral-100">
+                        Part {part.number}: {part.title}
+                      </h4>
+                      <span className="text-sm text-neutral-500">
+                        {completedInPart.length}/{partModules.length}
+                      </span>
+                    </div>
+                    <div className="space-y-1">
+                      {partModules.map((module) => {
+                        const isCompleted = completedModules.includes(
+                          module.slug
+                        );
+                        const quizScore = quizScores[module.slug];
+
+                        return (
+                          <div
+                            key={module.slug}
+                            className={`flex items-center justify-between rounded-lg px-3 py-2 text-sm ${
+                              isCompleted
+                                ? "bg-success-50 dark:bg-success-900/20"
+                                : "bg-neutral-50 dark:bg-dark-elevated"
+                            }`}
+                          >
+                            <div className="flex items-center gap-2">
+                              {isCompleted ? (
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  className="h-4 w-4 text-success-600 dark:text-success-400"
+                                >
+                                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                  <path d="m9 11 3 3L22 4" />
+                                </svg>
+                              ) : (
+                                <div className="h-4 w-4 rounded-full border-2 border-neutral-300 dark:border-neutral-600" />
+                              )}
+                              <span
+                                className={
+                                  isCompleted
+                                    ? "text-success-700 dark:text-success-300"
+                                    : "text-neutral-600 dark:text-neutral-400"
+                                }
+                              >
+                                {module.title}
+                              </span>
+                            </div>
+                            {quizScore !== undefined && (
+                              <span
+                                className={`text-xs font-medium ${
+                                  quizScore >= 70
+                                    ? "text-success-600 dark:text-success-400"
+                                    : "text-amber-600 dark:text-amber-400"
+                                }`}
+                              >
+                                Quiz: {quizScore}%
+                              </span>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Footer with import option */}
+            <div className="border-t border-neutral-200 p-4 dark:border-dark-border">
+              <div className="flex gap-3">
+                <button
+                  onClick={handleCancelImport}
+                  className="flex-1 rounded-lg border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 dark:border-dark-border dark:bg-dark-surface dark:text-neutral-300 dark:hover:bg-dark-elevated"
+                >
+                  Close
+                </button>
+                <button
+                  onClick={handleImport}
+                  className="flex-1 rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600"
+                >
+                  Import This Progress
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
 
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
@@ -161,16 +355,13 @@ export default function ProgressShare({ variant }: ProgressShareProps) {
                   </svg>
                 </div>
                 <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">
-                  Import Progress
+                  Shared Progress
                 </h3>
               </div>
 
               <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
-                Would you like to import this saved progress? This will{" "}
-                <strong className="text-neutral-900 dark:text-neutral-100">
-                  overwrite
-                </strong>{" "}
-                any progress currently saved in this browser.
+                Someone shared their course progress with you. You can view it
+                or import it to your browser.
               </p>
 
               <div className="mb-6 rounded-lg bg-neutral-50 p-4 dark:bg-dark-elevated">
@@ -180,7 +371,7 @@ export default function ProgressShare({ variant }: ProgressShareProps) {
                       Modules completed
                     </span>
                     <span className="font-medium text-neutral-900 dark:text-neutral-100">
-                      {modulesCount}
+                      {modulesCount} of {totalModules}
                     </span>
                   </div>
                   <div className="flex justify-between">
@@ -202,19 +393,30 @@ export default function ProgressShare({ variant }: ProgressShareProps) {
                 </div>
               </div>
 
-              <div className="flex gap-3">
+              <div className="space-y-2">
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => setViewMode(true)}
+                    className="flex-1 rounded-lg border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 dark:border-dark-border dark:bg-dark-surface dark:text-neutral-300 dark:hover:bg-dark-elevated"
+                  >
+                    View Progress
+                  </button>
+                  <button
+                    onClick={handleImport}
+                    className="flex-1 rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600"
+                  >
+                    Import Progress
+                  </button>
+                </div>
                 <button
                   onClick={handleCancelImport}
-                  className="flex-1 rounded-lg border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 dark:border-dark-border dark:bg-dark-surface dark:text-neutral-300 dark:hover:bg-dark-elevated"
+                  className="w-full rounded-lg px-4 py-2 text-sm text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200"
                 >
                   Cancel
                 </button>
-                <button
-                  onClick={handleImport}
-                  className="flex-1 rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600"
-                >
-                  Import Progress
-                </button>
+                <p className="text-center text-xs text-neutral-500 dark:text-neutral-500">
+                  Importing will overwrite your current progress
+                </p>
               </div>
             </>
           )}

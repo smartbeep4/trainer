@@ -31,6 +31,10 @@ const localStorageMock = {
   clear: vi.fn(() => {
     mockStore = {};
   }),
+  key: vi.fn((index: number) => Object.keys(mockStore)[index] || null),
+  get length() {
+    return Object.keys(mockStore).length;
+  },
 };
 
 Object.defineProperty(global, "localStorage", {
@@ -208,15 +212,6 @@ describe("Progress Module", () => {
           score: 85,
         });
 
-        // Mock localStorage.length and key for iteration
-        Object.defineProperty(localStorageMock, "length", {
-          get: () => Object.keys(mockStore).length,
-          configurable: true,
-        });
-        localStorageMock.key = vi.fn(
-          (index: number) => Object.keys(mockStore)[index]
-        );
-
         const data = collectExportData();
 
         expect(data.version).toBe(1);
@@ -268,14 +263,6 @@ describe("Progress Module", () => {
         // Setup existing data that should be overwritten
         mockStore["dot-progress"] = JSON.stringify({ completedModules: [] });
         mockStore["dot-quiz-old-quiz"] = JSON.stringify({ score: 50 });
-
-        Object.defineProperty(localStorageMock, "length", {
-          get: () => Object.keys(mockStore).length,
-          configurable: true,
-        });
-        localStorageMock.key = vi.fn(
-          (index: number) => Object.keys(mockStore)[index]
-        );
 
         const importData: ExportData = {
           version: 1,
