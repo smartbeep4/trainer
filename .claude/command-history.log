@@ -28,3 +28,46 @@
 [2026-01-10 19:56:55] ls -1 /mnt/c/Users/simon/Code/trainer/modules/*.md | sort
 [2026-01-10 19:57:02] find /mnt/c/Users/simon/Code/trainer -name "*.md" -type f | wc -l
 [2026-01-10 19:57:02] wc -w /mnt/c/Users/simon/Code/trainer/modules/*.md | tail -1
+[2026-01-10 20:49:59] git status
+[2026-01-10 20:49:59] ls -la /mnt/c/Users/simon/Code/trainer
+[2026-01-10 20:49:59] git log --oneline -10
+[2026-01-10 20:50:00] find /mnt/c/Users/simon/Code/trainer -type f -name "*.json" -o -name "*.ts" -o -name "*.js" -o -name "*.md" | head -20
+[2026-01-10 20:50:29] git status
+[2026-01-10 20:50:29] git log --oneline -5
+[2026-01-10 20:50:29] ls -la /mnt/c/Users/simon/Code/trainer
+[2026-01-10 20:50:30] find /mnt/c/Users/simon/Code/trainer -type f -name "*.json" -o -name "*.ts" -o -name "*.js" -o -name "*.md" | head -30
+[2026-01-10 20:50:30] git -C /mnt/c/Users/simon/Code/trainer log --oneline -20
+[2026-01-10 21:06:12] ls -la /mnt/c/Users/simon/Code/trainer/
+[2026-01-10 21:06:32] node --version && npm --version
+[2026-01-10 21:09:19] mkdir -p /mnt/c/Users/simon/Code/trainer/src/{components/{react,astro,mdx},content/modules,layouts,pages/module,lib,styles,data} /mnt/c/Users/simon/Code/trainer/public/{fonts,images}
+[2026-01-10 21:10:39] npm install 2>&1
+[2026-01-10 21:29:51] mkdir -p /mnt/c/Users/simon/Code/trainer/src/__tests__ /mnt/c/Users/simon/Code/trainer/tests/e2e
+[2026-01-10 21:32:25] npm run build 2>&1 | head -100
+[2026-01-10 21:38:16] npm run build 2>&1 | tail -50
+[2026-01-10 21:39:40] ls -la /mnt/c/Users/simon/Code/trainer/src/content/modules/
+[2026-01-10 21:39:45] mv /mnt/c/Users/simon/Code/trainer/src/content/modules/01-developer-mental-model.mdx /mnt/c/Users/simon/Code/trainer/src/content/modules/developer-mental-model.mdx
+[2026-01-10 21:39:49] npm run build 2>&1 | tail -30
+[2026-01-10 21:41:10] npm run build 2>&1 | tail -20
+[2026-01-10 21:42:28] npm run test 2>&1
+[2026-01-10 21:44:46] npm run test 2>&1
+[2026-01-10 21:45:07] npm audit 2>&1
+[2026-01-10 21:47:26] npm audit fix 2>&1
+[2026-01-10 21:47:34] npm show astro version 2>&1
+[2026-01-10 21:47:45] npm install astro@latest @astrojs/mdx@latest @astrojs/react@latest @astrojs/tailwind@latest 2>&1
+[2026-01-10 21:48:28] npm run build 2>&1
+[2026-01-10 21:50:26] npm audit 2>&1 | head -30
+[2026-01-10 21:50:26] npm run test 2>&1
+[2026-01-10 21:51:13] npm run lint 2>&1
+[2026-01-10 21:57:03] npm run lint 2>&1
+[2026-01-10 21:57:25] npm run build 2>&1
+[2026-01-10 21:58:48] npm run test 2>&1
+[2026-01-10 21:58:58] npm run preview &
+sleep 5
+curl -s -o /dev/null -w "%{http_code}" http://localhost:4321/ 2>&1
+[2026-01-10 22:00:49] sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:4321/ 2>&1
+[2026-01-10 22:02:42] curl -s -o /dev/null -w "%{http_code}" http://localhost:4321/module/developer-mental-model/ 2>&1
+[2026-01-10 22:02:42] curl -s -o /dev/null -w "%{http_code}" http://localhost:4321/progress/ 2>&1
+[2026-01-10 22:02:42] curl -s -o /dev/null -w "%{http_code}" http://localhost:4321/404 2>&1
+[2026-01-10 22:02:46] cat /mnt/c/Users/simon/Code/trainer/package.json | grep -A 2 '"test:e2e"' 2>&1
+[2026-01-10 22:02:49] npx playwright install chromium 2>&1 | tail -10
+[2026-01-10 22:03:09] npm run test:e2e -- --project=chromium 2>&1

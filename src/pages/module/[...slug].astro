@@ -1,0 +1,32 @@
+---
+import { getCollection } from "astro:content";
+import LessonLayout from "@layouts/LessonLayout.astro";
+import { getModuleBySlug } from "@/lib/course-data";
+
+export async function getStaticPaths() {
+  const modules = await getCollection("modules");
+  return modules.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await entry.render();
+
+// Get module data from course-data for navigation
+const moduleData = getModuleBySlug(entry.slug);
+
+if (!moduleData) {
+  return Astro.redirect("/404");
+}
+---
+
+<LessonLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  module={moduleData}
+  headings={headings}
+>
+  <Content />
+</LessonLayout>

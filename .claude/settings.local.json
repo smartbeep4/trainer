@@ -3,7 +3,18 @@
     "allow": [
       "Bash(git -C /mnt/c/Users/simon/Code/trainer log --oneline -20)",
       "Bash(ls:*)",
-      "Bash(wc:*)"
+      "Bash(wc:*)",
+      "Bash(node:*)",
+      "Bash(npm --version:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run test:*)",
+      "Bash(npm audit:*)",
+      "Bash(npm show:*)",
+      "Bash(npm run lint:*)",
+      "Bash(curl:*)",
+      "Bash(npx playwright install:*)",
+      "Bash(npm run test:e2e:*)"
     ]
   }
 }
