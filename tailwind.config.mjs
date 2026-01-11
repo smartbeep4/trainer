@@ -61,12 +61,13 @@ export default {
           900: "#78350f",
           950: "#451a03",
         },
-        // Dark mode surfaces
+        // Dark mode surfaces - improved contrast scheme
         dark: {
-          bg: "#0f0f10",
-          surface: "#18181b",
-          elevated: "#27272a",
-          border: "#3f3f46",
+          bg: "#111111",
+          surface: "#1e1e21",
+          elevated: "#2d2d31",
+          border: "#4b4b52",
+          muted: "#a1a1aa",
         },
       },
       fontFamily: {
@@ -133,32 +134,38 @@ export default {
         },
         dark: {
           css: {
-            color: theme("colors.neutral.300"),
+            color: theme("colors.neutral.200"),
             a: {
               color: theme("colors.primary.400"),
             },
             strong: {
-              color: theme("colors.neutral.100"),
+              color: theme("colors.neutral.50"),
             },
             h1: {
-              color: theme("colors.neutral.100"),
+              color: theme("colors.neutral.50"),
             },
             h2: {
-              color: theme("colors.neutral.100"),
+              color: theme("colors.neutral.50"),
             },
             h3: {
-              color: theme("colors.neutral.100"),
+              color: theme("colors.neutral.50"),
             },
             h4: {
-              color: theme("colors.neutral.100"),
+              color: theme("colors.neutral.50"),
             },
             code: {
               backgroundColor: theme("colors.dark.elevated"),
-              color: theme("colors.neutral.200"),
+              color: theme("colors.neutral.100"),
             },
             blockquote: {
-              color: theme("colors.neutral.400"),
+              color: theme("colors.neutral.300"),
               borderLeftColor: theme("colors.dark.border"),
+            },
+            li: {
+              color: theme("colors.neutral.200"),
+            },
+            p: {
+              color: theme("colors.neutral.200"),
             },
           },
         },

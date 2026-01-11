@@ -149,3 +149,14 @@ curl -s http://localhost:4321/module/developer-mental-model | head -50
 [2026-01-11 14:25:39] npm run build 2>&1 | tail -20
 [2026-01-11 14:27:56] npm run build 2>&1 | grep -E "(error|Error|domain is not defined)" | head -20
 [2026-01-11 14:29:27] npm run build 2>&1 | tail -5
+[2026-01-11 14:47:54] find /mnt/c/Users/simon/Code/trainer -type f -name "*.tsx" -o -name "*.ts" -o -name "*.jsx" -o -name "*.js" | head -30
+[2026-01-11 14:47:56] ls -la /mnt/c/Users/simon/Code/trainer/src/ 2>/dev/null | head -40
+[2026-01-11 14:47:59] ls -la /mnt/c/Users/simon/Code/trainer/src/components/
+[2026-01-11 14:48:06] find /mnt/c/Users/simon/Code/trainer/src/components -type f \( -name "*.astro" -o -name "*.tsx" -o -name "*.ts" \)
+[2026-01-11 14:48:15] find /mnt/c/Users/simon/Code/trainer/src/lib -type f
+[2026-01-11 14:48:19] find /mnt/c/Users/simon/Code/trainer/src/layouts -type f
+[2026-01-11 14:48:26] find /mnt/c/Users/simon/Code/trainer -name "tailwind.config.*" -o -name "astro.config.*" | head -5
+[2026-01-11 14:48:34] find /mnt/c/Users/simon/Code/trainer -maxdepth 2 -name "tailwind.config.*" 2>/dev/null
+[2026-01-11 14:48:44] find /mnt/c/Users/simon/Code/trainer/src/pages -type f -name "*.astro" | head -10
+[2026-01-11 14:54:59] npm run build 2>&1 | head -100
+[2026-01-11 14:56:22] npm run build 2>&1 | tail -50

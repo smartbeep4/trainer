@@ -6,6 +6,7 @@ import TableOfContents from "@components/astro/TableOfContents.astro";
 import LessonNavigation from "@components/astro/LessonNavigation.astro";
 import ProgressTracker from "@components/react/ProgressTracker";
 import MobileTableOfContents from "@components/react/MobileTableOfContents";
+import FocusModeToggle from "@components/react/FocusModeToggle";
 import type { Module } from "@/lib/course-data";
 
 interface Props {
@@ -30,30 +31,35 @@ const breadcrumbItems = [
   <div class="mx-auto max-w-screen-2xl">
     <div class="flex min-h-[calc(100vh-4rem)]">
       <!-- Sidebar (hidden on mobile) -->
-      <aside class="hidden w-72 flex-shrink-0 border-r border-neutral-200 lg:block dark:border-dark-border">
+      <aside data-sidebar="left" class="hidden w-72 flex-shrink-0 border-r border-neutral-200 lg:block dark:border-dark-border">
         <div class="sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto p-4">
           <Sidebar currentModuleSlug={module.slug} />
         </div>
       </aside>
 
       <!-- Main content area -->
-      <div class="flex flex-1 flex-col lg:flex-row">
+      <div class="flex flex-1 flex-col lg:flex-row" data-main-content>
         <!-- Content -->
         <article class="flex-1 px-4 py-8 lg:px-8">
           <div class="mx-auto max-w-3xl">
+            <!-- Focus mode toggle -->
+            <div class="mb-4 flex justify-end">
+              <FocusModeToggle client:load />
+            </div>
+
             <!-- Breadcrumbs -->
             <Breadcrumbs items={breadcrumbItems} />
 
             <!-- Lesson header -->
             <header class="mb-8 mt-4">
-              <div class="flex flex-wrap items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400">
+              <div class="flex flex-wrap items-center gap-2 text-sm text-neutral-600 dark:text-neutral-300">
                 <span class="badge-primary">Module {module.id}</span>
                 <span>{module.duration}</span>
-                <span class="text-neutral-300 dark:text-neutral-600">|</span>
+                <span class="text-neutral-300 dark:text-neutral-500">|</span>
                 <span>{module.difficulty}</span>
                 {readingTime && (
                   <>
-                    <span class="text-neutral-300 dark:text-neutral-600">|</span>
+                    <span class="text-neutral-300 dark:text-neutral-500">|</span>
                     <span class="flex items-center gap-1">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -74,7 +80,7 @@ const breadcrumbItems = [
                 )}
                 {exerciseTime && (
                   <>
-                    <span class="text-neutral-300 dark:text-neutral-600">|</span>
+                    <span class="text-neutral-300 dark:text-neutral-500">|</span>
                     <span class="flex items-center gap-1">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -99,7 +105,7 @@ const breadcrumbItems = [
                 {title}
               </h1>
               {description && (
-                <p class="mt-3 text-lg text-neutral-600 dark:text-neutral-400">
+                <p class="mt-3 text-lg text-neutral-600 dark:text-neutral-300">
                   {description}
                 </p>
               )}
@@ -131,7 +137,7 @@ const breadcrumbItems = [
 
         <!-- Table of Contents (hidden on mobile/tablet) -->
         {headings.length > 0 && (
-          <aside class="hidden w-64 flex-shrink-0 xl:block">
+          <aside data-sidebar="right" class="hidden w-64 flex-shrink-0 xl:block">
             <div class="sticky top-16 p-4">
               <TableOfContents headings={headings} />
             </div>

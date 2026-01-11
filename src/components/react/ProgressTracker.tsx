@@ -61,7 +61,7 @@ export default function ProgressTracker({
             style={{ width: `${percentage}%` }}
           />
         </div>
-        <span className="text-xs font-medium text-neutral-600 dark:text-neutral-400">
+        <span className="text-xs font-medium text-neutral-600 dark:text-neutral-300">
           {percentage}%
         </span>
       </div>
@@ -97,7 +97,7 @@ export default function ProgressTracker({
             <span className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
               Course Progress
             </span>
-            <span className="text-sm text-neutral-600 dark:text-neutral-400">
+            <span className="text-sm text-neutral-600 dark:text-neutral-300">
               {progress?.completedModules.length || 0} of{" "}
               {courseStats.totalModules} modules
             </span>
@@ -160,7 +160,7 @@ export default function ProgressTracker({
 
           <div className="flex-1 space-y-2">
             <div className="flex justify-between text-sm">
-              <span className="text-neutral-600 dark:text-neutral-400">
+              <span className="text-neutral-600 dark:text-neutral-300">
                 Modules completed
               </span>
               <span className="font-medium text-neutral-900 dark:text-neutral-100">
@@ -169,7 +169,7 @@ export default function ProgressTracker({
               </span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-neutral-600 dark:text-neutral-400">
+              <span className="text-neutral-600 dark:text-neutral-300">
                 Estimated time
               </span>
               <span className="font-medium text-neutral-900 dark:text-neutral-100">
@@ -178,7 +178,7 @@ export default function ProgressTracker({
             </div>
             {progress?.lastVisited && (
               <div className="flex justify-between text-sm">
-                <span className="text-neutral-600 dark:text-neutral-400">
+                <span className="text-neutral-600 dark:text-neutral-300">
                   Continue from
                 </span>
                 <a
@@ -198,7 +198,7 @@ export default function ProgressTracker({
             <div className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
               {Object.keys(progress?.quizScores || {}).length}
             </div>
-            <div className="text-xs text-neutral-600 dark:text-neutral-400">
+            <div className="text-xs text-neutral-600 dark:text-neutral-300">
               Quizzes completed
             </div>
           </div>
@@ -214,7 +214,7 @@ export default function ProgressTracker({
                 : 0}
               %
             </div>
-            <div className="text-xs text-neutral-600 dark:text-neutral-400">
+            <div className="text-xs text-neutral-600 dark:text-neutral-300">
               Average quiz score
             </div>
           </div>
@@ -230,7 +230,7 @@ export default function ProgressTracker({
         <span className="font-medium text-neutral-900 dark:text-neutral-100">
           Progress
         </span>
-        <span className="text-neutral-600 dark:text-neutral-400">
+        <span className="text-neutral-600 dark:text-neutral-300">
           {percentage}%
         </span>
       </div>
@@ -240,7 +240,7 @@ export default function ProgressTracker({
           style={{ width: `${percentage}%` }}
         />
       </div>
-      <div className="text-xs text-neutral-500 dark:text-neutral-500">
+      <div className="text-xs text-neutral-500 dark:text-neutral-400">
         {progress?.completedModules.length || 0} of {courseStats.totalModules}{" "}
         modules
       </div>

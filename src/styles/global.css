@@ -22,12 +22,12 @@
   }
 
   .dark {
-    /* Dark mode custom properties */
-    --color-bg: 15 15 16;
-    --color-text: 245 245 245;
-    --color-text-muted: 163 163 163;
-    --color-border: 63 63 70;
-    --color-surface: 24 24 27;
+    /* Dark mode custom properties - improved contrast */
+    --color-bg: 17 17 17;
+    --color-text: 250 250 250;
+    --color-text-muted: 200 200 200;
+    --color-border: 75 75 82;
+    --color-surface: 30 30 33;
   }
 
   html {
@@ -177,7 +177,7 @@
   .sidebar-link {
     @apply flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors;
     @apply text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900;
-    @apply dark:text-neutral-400 dark:hover:bg-dark-elevated dark:hover:text-neutral-100;
+    @apply dark:text-neutral-300 dark:hover:bg-dark-elevated dark:hover:text-neutral-100;
   }
 
   .sidebar-link-active {
@@ -275,6 +275,24 @@ pre code {
 
 .dark .shiki.github-dark {
   display: block;
+}
+
+/* Focus mode - hide sidebars */
+.focus-mode [data-sidebar="left"],
+.focus-mode [data-sidebar="right"] {
+  @apply hidden;
+}
+
+.focus-mode [data-main-content] {
+  @apply mx-auto max-w-4xl;
+}
+
+/* Smooth transition for focus mode toggle */
+[data-sidebar="left"],
+[data-sidebar="right"] {
+  transition:
+    opacity 200ms ease-out,
+    transform 200ms ease-out;
 }
 
 /* Print styles */
