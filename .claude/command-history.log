@@ -102,3 +102,10 @@ curl -s http://localhost:4321/module/developer-mental-model | head -50
 [2026-01-11 08:58:33] npm run build 2>&1 | tail -50
 [2026-01-11 08:59:54] head -50 /mnt/c/Users/simon/Code/trainer/dist/module/data-structures-ai-era/index.html | grep -i "title\|description"
 [2026-01-11 08:59:54] wc -w /mnt/c/Users/simon/Code/trainer/src/content/modules/data-structures-ai-era.mdx
+[2026-01-11 09:38:08] mkdir -p /mnt/c/Users/simon/Code/trainer/docs/prompts/part-1-foundations /mnt/c/Users/simon/Code/trainer/docs/prompts/part-2-deep-dive /mnt/c/Users/simon/Code/trainer/docs/prompts/part-3-agentic /mnt/c/Users/simon/Code/trainer/docs/prompts/part-4-capstone
+[2026-01-11 09:55:41] ls -la /mnt/c/Users/simon/Code/trainer/docs/prompts/part-3-agentic/ 2>/dev/null || echo "Directory does not exist"
+[2026-01-11 09:57:07] ls -la /mnt/c/Users/simon/Code/trainer/docs/prompts/part-3-agentic/ 2>/dev/null || echo "Directory does not exist"
+[2026-01-11 10:07:00] ls -la /mnt/c/Users/simon/Code/trainer/docs/prompts/
+[2026-01-11 10:14:52] find /mnt/c/Users/simon/Code/trainer/docs/prompts -type f -name "*.md" | sort
+[2026-01-11 10:14:57] wc -l /mnt/c/Users/simon/Code/trainer/docs/prompts/part-*/*.md | tail -20
+[2026-01-11 10:15:15] echo "Total prompt files:" && find /mnt/c/Users/simon/Code/trainer/docs/prompts -name "module-*.md" | wc -l && echo -e "\nTotal words across all prompts:" && wc -w /mnt/c/Users/simon/Code/trainer/docs/prompts/part-*/*.md | tail -1 && echo -e "\nAverage prompt length:" && wc -w /mnt/c/Users/simon/Code/trainer/docs/prompts/part-*/*.md | tail -1 | awk '{printf "%.0f words per prompt\n", $1/23}'
