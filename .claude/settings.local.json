@@ -14,7 +14,14 @@
       "Bash(npm run lint:*)",
       "Bash(curl:*)",
       "Bash(npx playwright install:*)",
-      "Bash(npm run test:e2e:*)"
+      "Bash(npm run test:e2e:*)",
+      "Bash(grep:*)",
+      "Bash(done)",
+      "Bash(for file in src/content/modules/*.mdx)",
+      "Bash(do if grep -q \"<HandsOnExercise\" \"$file\")",
+      "Bash(then if ! grep -q \"moduleSlug=\" \"$file\")",
+      "Bash(then echo \"$file\")",
+      "Bash(fi)"
     ]
   }
 }

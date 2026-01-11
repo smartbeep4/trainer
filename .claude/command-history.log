@@ -119,3 +119,33 @@ curl -s http://localhost:4321/module/developer-mental-model | head -50
 [2026-01-11 10:24:00] ls -la modules/
 [2026-01-11 10:24:15] ls -la src/content/ 2>/dev/null || echo "No src/content directory"
 [2026-01-11 10:40:18] ls -lh src/content/modules/*.mdx
+[2026-01-11 11:06:56] find docs/prompts -type d | head -20
+[2026-01-11 11:07:06] find src/content -name "*.md" -type f | sort
+[2026-01-11 11:07:11] ls -la src/content/ 2>&1 || echo "Directory does not exist"
+[2026-01-11 11:07:11] find src -type d -name "*content*" -o -name "*module*" 2>/dev/null | head -20
+[2026-01-11 11:07:15] ls -la src/content/modules/
+[2026-01-11 11:07:33] ls -la modules/ 2>&1 | head -30
+[2026-01-11 12:07:37] ls -lh src/content/modules/ | tail -20
+[2026-01-11 12:07:44] ls src/content/modules/*.mdx | wc -l && ls src/content/modules/*.mdx
+[2026-01-11 12:08:00] grep -c "```mermaid" src/content/modules/journey-to-modern-ai.mdx src/content/modules/ai-agents-architecture.mdx src/content/modules/capstone-project.mdx
+[2026-01-11 13:59:50] grep -c '```mermaid' src/content/modules/journey-to-modern-ai.mdx src/content/modules/ai-agents-architecture.mdx src/content/modules/capstone-project.mdx
+[2026-01-11 14:01:11] npm run build 2>&1 | head -100
+[2026-01-11 14:03:02] npm run build 2>&1 | head -100
+[2026-01-11 14:04:28] npm run build 2>&1 | tail -30
+[2026-01-11 14:05:52] grep -A 100 "<Quiz" src/content/modules/advanced-evaluating-ai.mdx | head -120
+[2026-01-11 14:06:05] grep -A 50 "<Quiz" src/content/modules/developer-mental-model.mdx | head -70
+[2026-01-11 14:06:11] grep -l "index={0}" src/content/modules/*.mdx
+[2026-01-11 14:06:15] grep -l 'quizId="' src/content/modules/*.mdx | wc -l
+[2026-01-11 14:10:08] npm run build 2>&1 | tail -50
+[2026-01-11 14:11:38] grep -A 30 "<HandsOnExercise" src/content/modules/developer-mental-model.mdx | head -40
+[2026-01-11 14:11:43] grep -l "tasks={" src/content/modules/*.mdx
+[2026-01-11 14:11:47] grep -l 'parts={' src/content/modules/*.mdx | wc -l
+[2026-01-11 14:16:02] npm run build
+[2026-01-11 14:17:27] npm run build 2>&1 | grep -A 5 "Cannot read properties"
+[2026-01-11 14:18:52] grep -A 5 "<HandsOnExercise" src/content/modules/ai-agents-architecture.mdx | head -10
+[2026-01-11 14:18:57] for file in src/content/modules/*.mdx; do echo "=== $file ==="; grep -A 2 "<HandsOnExercise" "$file" | head -5; done | grep -B 1 -A 3 "HandsOnExercise"
+[2026-01-11 14:19:55] grep -l "moduleSlug=" src/content/modules/*.mdx | wc -l && grep -l "<HandsOnExercise" src/content/modules/*.mdx | wc -l
+[2026-01-11 14:20:00] for file in src/content/modules/*.mdx; do if grep -q "<HandsOnExercise" "$file"; then if ! grep -q "moduleSlug=" "$file"; then echo "$file"; fi; fi; done
+[2026-01-11 14:25:39] npm run build 2>&1 | tail -20
+[2026-01-11 14:27:56] npm run build 2>&1 | grep -E "(error|Error|domain is not defined)" | head -20
+[2026-01-11 14:29:27] npm run build 2>&1 | tail -5
