@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import LessonLayout from "@layouts/LessonLayout.astro";
 import { getModuleBySlug } from "@/lib/course-data";
+import { calculateReadingTime } from "@/lib/reading-time";
 
 export async function getStaticPaths() {
   const modules = await getCollection("modules");
@@ -20,6 +21,13 @@ const moduleData = getModuleBySlug(entry.slug);
 if (!moduleData) {
   return Astro.redirect("/404");
 }
+
+// Calculate reading time from content word count
+// The raw body content is available from the entry
+const rawBody = entry.body || "";
+const wordCount = rawBody.split(/\s+/).filter(Boolean).length;
+const readingTime = entry.data.readingTime || calculateReadingTime(wordCount);
+const exerciseTime = entry.data.exerciseTime || "30-45 min exercise";
 ---
 
 <LessonLayout
@@ -27,6 +35,8 @@ if (!moduleData) {
   description={entry.data.description}
   module={moduleData}
   headings={headings}
+  readingTime={readingTime}
+  exerciseTime={exerciseTime}
 >
   <Content />
 </LessonLayout>

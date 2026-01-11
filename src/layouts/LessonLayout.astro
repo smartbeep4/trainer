@@ -5,6 +5,7 @@ import Breadcrumbs from "@components/astro/Breadcrumbs.astro";
 import TableOfContents from "@components/astro/TableOfContents.astro";
 import LessonNavigation from "@components/astro/LessonNavigation.astro";
 import ProgressTracker from "@components/react/ProgressTracker";
+import MobileTableOfContents from "@components/react/MobileTableOfContents";
 import type { Module } from "@/lib/course-data";
 
 interface Props {
@@ -12,9 +13,11 @@ interface Props {
   description?: string;
   module: Module;
   headings?: { depth: number; slug: string; text: string }[];
+  readingTime?: string;
+  exerciseTime?: string;
 }
 
-const { title, description, module, headings = [] } = Astro.props;
+const { title, description, module, headings = [], readingTime, exerciseTime } = Astro.props;
 
 const breadcrumbItems = [
   { label: "Home", href: "/" },
@@ -48,6 +51,49 @@ const breadcrumbItems = [
                 <span>{module.duration}</span>
                 <span class="text-neutral-300 dark:text-neutral-600">|</span>
                 <span>{module.difficulty}</span>
+                {readingTime && (
+                  <>
+                    <span class="text-neutral-300 dark:text-neutral-600">|</span>
+                    <span class="flex items-center gap-1">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="h-4 w-4"
+                      >
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                      </svg>
+                      {readingTime}
+                    </span>
+                  </>
+                )}
+                {exerciseTime && (
+                  <>
+                    <span class="text-neutral-300 dark:text-neutral-600">|</span>
+                    <span class="flex items-center gap-1">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="h-4 w-4"
+                      >
+                        <path d="m18 16 4-4-4-4" />
+                        <path d="m6 8-4 4 4 4" />
+                        <path d="m14.5 4-5 16" />
+                      </svg>
+                      {exerciseTime}
+                    </span>
+                  </>
+                )}
               </div>
               <h1 class="mt-3 text-3xl font-bold tracking-tight text-neutral-900 lg:text-4xl dark:text-neutral-100">
                 {title}
@@ -67,6 +113,11 @@ const breadcrumbItems = [
                 variant="lesson"
               />
             </div>
+
+            <!-- Mobile Table of Contents (shown only on mobile/tablet) -->
+            {headings.length > 0 && (
+              <MobileTableOfContents client:load headings={headings} />
+            )}
 
             <!-- Lesson content -->
             <div class="prose-custom">

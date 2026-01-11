@@ -21,6 +21,7 @@ import Info from "@components/mdx/Info.astro";
 import Exercise from "@components/mdx/Exercise.astro";
 import Definition from "@components/mdx/Definition.astro";
 import Quiz from "@components/react/Quiz";
+import HandsOnExercise from "@components/react/HandsOnExercise";
 
 ## Section 1: Welcome and Course Overview
 
@@ -326,63 +327,204 @@ The journey is worth taking. Let's begin.
 
 ---
 
+## Diagrams
+
+### Course Journey Map
+
+```mermaid
+graph LR
+    subgraph Part1[Part 1: Foundations]
+        M1[Mental Model] --> M2[Data Structures]
+        M2 --> M3[Algorithms]
+        M3 --> M4[APIs]
+        M4 --> M5[Databases]
+        M5 --> M6[Security]
+    end
+
+    subgraph Part2[Part 2: Deep Dive]
+        M7[AI History] --> M8[Transformers]
+        M8 --> M9[Training]
+        M9 --> M10[Tokens]
+        M10 --> M11[Multimodal]
+        M11 --> M12[Frontiers]
+    end
+
+    subgraph Part3[Part 3: Agentic]
+        M13[Safety] --> M14[Prompting]
+        M14 --> M15[Agents]
+        M15 --> M16[Tools]
+        M16 --> M17[Multi-Agent]
+        M17 --> M18[Frameworks]
+        M18 --> M19[Workflows]
+    end
+
+    subgraph Part4[Part 4: Capstone]
+        M20[Project] --> M21[Evaluation]
+        M21 --> M22[Local Models]
+        M22 --> M23[Future]
+    end
+
+    Part1 --> Part2
+    Part2 --> Part3
+    Part3 --> Part4
+```
+
+### AI Capability Spectrum
+
+```mermaid
+graph TB
+    subgraph Strong[AI Excels At]
+        S1[Pattern Recognition]
+        S2[Text Generation]
+        S3[Code Completion]
+        S4[Translation]
+        S5[Summarization]
+    end
+
+    subgraph Medium[AI is Okay At]
+        M1a[Simple Reasoning]
+        M2a[Following Instructions]
+        M3a[Creative Writing]
+        M4a[Basic Math]
+    end
+
+    subgraph Weak[AI Struggles With]
+        W1[Complex Reasoning]
+        W2[Factual Accuracy]
+        W3[Novel Problems]
+        W4[Self-Assessment]
+        W5[Consistency]
+    end
+
+    style Strong fill:#22c55e,color:#fff
+    style Medium fill:#f59e0b,color:#fff
+    style Weak fill:#ef4444,color:#fff
+```
+
+### Human-AI Collaboration Model
+
+```mermaid
+graph TB
+    subgraph Human[Human Strengths]
+        H1[Understanding Context]
+        H2[Critical Judgment]
+        H3[Creative Vision]
+        H4[Ethical Reasoning]
+        H5[Learning from Experience]
+    end
+
+    subgraph AI[AI Strengths]
+        A1[Processing Speed]
+        A2[Pattern Matching]
+        A3[Tireless Iteration]
+        A4[Format Conversion]
+        A5[Information Retrieval]
+    end
+
+    subgraph Collab[Optimal Collaboration]
+        C1[Human Directs]
+        C2[AI Generates]
+        C3[Human Evaluates]
+        C4[AI Iterates]
+        C5[Human Decides]
+    end
+
+    Human --> Collab
+    AI --> Collab
+```
+
+### The Capability-Reliability Gap
+
+```mermaid
+graph LR
+    subgraph Capability[What AI CAN Do]
+        A[Impressive demos]
+        B[Best-case outputs]
+        C[Carefully crafted prompts]
+    end
+
+    subgraph Reliability[What AI DOES Consistently]
+        D[Production systems]
+        E[Varied inputs]
+        F[Edge cases]
+    end
+
+    A -.->|Large gap| D
+    B -.->|The disappointment zone| E
+    C -.->|Requires skill to bridge| F
+```
+
+---
+
 ## Hands-On Exercise: AI Interaction Experiment
 
-<Exercise title="AI Interaction Experiment">
-
-### Objective
-
-Develop intuition about AI behavior by conducting structured interactions and observing patterns.
-
-### Time Required
-
-30-45 minutes
-
-### Setup
-
-You'll need access to an AI assistant (Claude, ChatGPT, or similar).
-
-### Part 1: Testing on Familiar Ground (10 minutes)
-
-Choose a topic you know well (your programming language of expertise, a hobby, your field).
-
-Ask the AI:
-
-1. A basic question you know the answer to
-2. A nuanced question where details matter
-3. A question with a common misconception
-
-**Observe**: Where is it accurate? Where does it get details wrong? How confident does it sound in both cases?
-
-### Part 2: Probing Uncertainty (10 minutes)
-
-Ask the AI questions about:
-
-1. Something obscure that probably wasn't in training data
-2. Recent events (after the model's training cutoff)
-3. Something genuinely unknowable (e.g., "What will the stock market do tomorrow?")
-
-**Observe**: Does it acknowledge uncertainty? Does it hedge appropriately? Does it confabulate?
-
-### Part 3: Testing with Misleading Premises (10 minutes)
-
-Ask questions with false premises built in:
-
-- "Why did [historical figure] say [thing they never said]?"
-- "How does [technology] work?" (for technology that doesn't exist)
-- "What's the best approach for [impossible task]?"
-
-**Observe**: Does the AI recognize and challenge the false premise? Or does it play along?
-
-### Part 4: Reflection (10 minutes)
-
-Write a brief reflection addressing:
-
-1. What surprised you most about AI behavior?
-2. What patterns did you notice across different question types?
-3. How does this change how you'll use AI going forward?
-
-</Exercise>
+<HandsOnExercise
+  client:visible
+  moduleSlug="developer-mental-model"
+  exerciseId="ai-interaction-experiment"
+  title="AI Interaction Experiment"
+  objective="Develop intuition about AI behavior by conducting structured interactions and observing patterns."
+  totalTime="30-45 minutes"
+  setupInstructions={[
+    "Access an AI assistant (Claude at claude.ai, ChatGPT at chatgpt.com, or similar)",
+    "Have a notepad or text editor ready to record observations",
+    "Choose a topic you're genuinely knowledgeable about for Part 1"
+  ]}
+  parts={[
+    {
+      id: "familiar-ground",
+      title: "Testing on Familiar Ground",
+      duration: "10 min",
+      instructions: [
+        "Choose a topic you know well (your programming language of expertise, a hobby, your professional field)",
+        "Ask the AI a basic question you know the answer to",
+        "Ask a nuanced question where details matter",
+        "Ask a question with a common misconception in your field"
+      ],
+      observePrompt: "Where is it accurate? Where does it get details wrong? How confident does it sound in both cases?"
+    },
+    {
+      id: "probing-uncertainty",
+      title: "Probing Uncertainty",
+      duration: "10 min",
+      instructions: [
+        "Ask about something obscure that probably wasn't in training data",
+        "Ask about recent events (after the model's training cutoff)",
+        "Ask something genuinely unknowable (e.g., 'What will the stock market do tomorrow?')"
+      ],
+      observePrompt: "Does it acknowledge uncertainty? Does it hedge appropriately? Does it confabulate?"
+    },
+    {
+      id: "misleading-premises",
+      title: "Testing with Misleading Premises",
+      duration: "10 min",
+      instructions: [
+        "Ask 'Why did [historical figure] say [thing they never said]?'",
+        "Ask 'How does [technology] work?' for technology that doesn't exist",
+        "Ask 'What's the best approach for [impossible task]?'"
+      ],
+      observePrompt: "Does the AI recognize and challenge the false premise? Or does it play along?"
+    },
+    {
+      id: "reflection",
+      title: "Reflection",
+      duration: "10 min",
+      instructions: [
+        "Write a brief reflection on what surprised you most about AI behavior",
+        "Document the patterns you noticed across different question types",
+        "Consider how this changes how you'll use AI going forward",
+        "Note any questions you want answered by the end of this course"
+      ]
+    }
+  ]}
+  successCriteria={[
+    { id: "conducted-tests", text: "Conducted all three types of tests (familiar, uncertainty, misleading)" },
+    { id: "documented-observations", text: "Documented specific observations for each part" },
+    { id: "found-error", text: "Found at least one instance of AI being confidently wrong" },
+    { id: "identified-pattern", text: "Identified at least one pattern in AI behavior" },
+    { id: "written-reflection", text: "Written a reflection with actionable insights" }
+  ]}
+/>
 
 ---
 
@@ -493,3 +635,51 @@ We'll cover:
 - Hands-on exploration of embeddings
 
 This foundation will make the deep dive into AI/ML architecture much more comprehensible.
+
+---
+
+## References
+
+### Foundational Reading
+
+1. **"On the Dangers of Stochastic Parrots"** - Bender, Gebru, et al. (2021)
+
+   A critical examination of large language models, their limitations, and risks. Essential context for understanding the "stochastic parrot" critique.
+
+   [View on ACM Digital Library](https://dl.acm.org/doi/10.1145/3442188.3445922)
+
+2. **"Computing Machinery and Intelligence"** - Alan Turing (1950)
+
+   The foundational paper on machine intelligence, introducing the Turing Test. Historical context for how long we've been thinking about these questions.
+
+   [View on Oxford Academic](https://academic.oup.com/mind/article/LIX/236/433/986238)
+
+3. **State of AI Report** (Annual)
+
+   Comprehensive annual overview of AI progress, investments, and trends. Good for understanding the broader landscape.
+
+   [View State of AI Report](https://www.stateof.ai/)
+
+### Practical Resources
+
+4. **Anthropic Claude Documentation**
+
+   Official documentation on Claude's capabilities and limitations. Primary source for understanding one major AI system.
+
+   [docs.anthropic.com](https://docs.anthropic.com)
+
+5. **OpenAI Platform Documentation**
+
+   Official guidance on effective use of GPT models.
+
+   [platform.openai.com/docs](https://platform.openai.com/docs)
+
+### For Deeper Exploration
+
+6. **"The Alignment Problem"** - Brian Christian (2020)
+
+   Book-length treatment of AI safety and alignment challenges. Accessible introduction to these important topics.
+
+7. **"Artificial Intelligence: A Modern Approach"** - Russell & Norvig
+
+   The standard AI textbook. Dense but comprehensive if you want academic depth.

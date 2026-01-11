@@ -71,3 +71,29 @@ curl -s -o /dev/null -w "%{http_code}" http://localhost:4321/ 2>&1
 [2026-01-10 22:02:46] cat /mnt/c/Users/simon/Code/trainer/package.json | grep -A 2 '"test:e2e"' 2>&1
 [2026-01-10 22:02:49] npx playwright install chromium 2>&1 | tail -10
 [2026-01-10 22:03:09] npm run test:e2e -- --project=chromium 2>&1
+[2026-01-11 08:18:34] git log --oneline -5
+[2026-01-11 08:18:34] git status
+[2026-01-11 08:18:34] find /mnt/c/Users/simon/Code/trainer -type f -name "*.json" | head -20
+[2026-01-11 08:18:34] ls -la /mnt/c/Users/simon/Code/trainer
+[2026-01-11 08:18:35] git -C /mnt/c/Users/simon/Code/trainer log --oneline -10
+[2026-01-11 08:19:39] pwd
+[2026-01-11 08:19:39] git status
+[2026-01-11 08:19:39] ls -la /mnt/c/Users/simon/Code/trainer
+[2026-01-11 08:19:39] ls -la /mnt/c/Users/simon/Code/trainer
+[2026-01-11 08:19:39] pwd
+[2026-01-11 08:27:57] ls -la /mnt/c/Users/simon/Code/trainer/src/__tests__/
+[2026-01-11 08:29:03] npm run test -- --run 2>&1 | head -100
+[2026-01-11 08:30:26] npm run test -- --run 2>&1 | head -80
+[2026-01-11 08:30:44] npm run build 2>&1 | tail -50
+[2026-01-11 08:32:15] cat /mnt/c/Users/simon/Code/trainer/src/components/react/HandsOnExercise.tsx | head -5
+[2026-01-11 08:33:23] npm run build 2>&1 | tail -30
+[2026-01-11 08:34:43] npm run lint 2>&1 | head -50
+[2026-01-11 08:35:19] npm run lint 2>&1
+[2026-01-11 08:35:35] npm run test -- --run 2>&1
+[2026-01-11 08:35:54] wc -l /mnt/c/Users/simon/Code/trainer/src/content/modules/developer-mental-model.mdx && grep -n "^## " /mnt/c/Users/simon/Code/trainer/src/content/modules/developer-mental-model.mdx
+[2026-01-11 08:35:58] grep -c "mermaid" /mnt/c/Users/simon/Code/trainer/src/content/modules/developer-mental-model.mdx
+[2026-01-11 08:36:03] npm run dev 2>&1 &
+sleep 5
+curl -s http://localhost:4321/module/developer-mental-model | head -50
+[2026-01-11 08:39:30] sleep 8 && curl -s http://localhost:4321/module/developer-mental-model 2>/dev/null | grep -E "<title>|<h1|Module 1" | head -10
+[2026-01-11 08:39:43] pkill -f "npm run dev" 2>/dev/null || pkill -f "astro dev" 2>/dev/null || true

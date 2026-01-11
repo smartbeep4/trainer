@@ -18,9 +18,17 @@ const modulesCollection = defineCollection({
     ]),
     objectives: z.array(z.string()),
     published: z.boolean().default(true),
+    // Optional reading time override (auto-calculated if not provided)
+    readingTime: z.string().optional(),
+    // Optional exercise time for hands-on activities
+    exerciseTime: z.string().optional(),
   }),
 });
 
 export const collections = {
   modules: modulesCollection,
 };
+
+// Re-export reading time utility for convenience
+// Note: calculateReadingTime is now in @/lib/reading-time.ts
+export { calculateReadingTime } from "@/lib/reading-time";
