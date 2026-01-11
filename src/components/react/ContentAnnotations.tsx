@@ -90,9 +90,31 @@ export default function ContentAnnotations({
       }
     };
 
+    const handleClick = (e: Event) => {
+      const target = e.currentTarget as HTMLElement;
+      const index = parseInt(target.dataset.annotationIndex || "-1", 10);
+      if (index >= 0) {
+        const rect = target.getBoundingClientRect();
+        const text = target.textContent || "";
+        const existingAnnotation = annotations.get(index);
+
+        setTooltip({
+          visible: true,
+          elementIndex: index,
+          elementText: text,
+          x: rect.left,
+          y: rect.top + window.scrollY,
+          mode: "actions",
+          existingAnnotation,
+        });
+        setNoteText(existingAnnotation?.noteText || "");
+      }
+    };
+
     elements.forEach((el) => {
       el.addEventListener("mouseenter", handleMouseEnter);
       el.addEventListener("mouseleave", handleMouseLeave);
+      el.addEventListener("click", handleClick);
     });
 
     // Cleanup
@@ -100,6 +122,7 @@ export default function ContentAnnotations({
       elements.forEach((el) => {
         el.removeEventListener("mouseenter", handleMouseEnter);
         el.removeEventListener("mouseleave", handleMouseLeave);
+        el.removeEventListener("click", handleClick);
         el.removeAttribute("data-annotation-index");
         el.classList.remove("annotatable-element");
       });
@@ -191,6 +214,8 @@ export default function ContentAnnotations({
     const proseContainer = document.querySelector(".prose-custom");
     if (!proseContainer) return indicators;
 
+    // Get prose container's position to calculate relative offsets
+    const proseRect = proseContainer.getBoundingClientRect();
     const elements = proseContainer.querySelectorAll("[data-annotation-index]");
 
     elements.forEach((el) => {
@@ -207,7 +232,9 @@ export default function ContentAnnotations({
 
       if (showIndicator) {
         const rect = el.getBoundingClientRect();
-        const scrollY = window.scrollY;
+
+        // Calculate position relative to the prose container
+        const relativeTop = rect.top - proseRect.top + rect.height / 2 - 12;
 
         // Determine color based on state
         let colorClass = "text-amber-400/50"; // Default translucent yellow
@@ -230,7 +257,7 @@ export default function ContentAnnotations({
             onClick={(e) => handleArrowClick(index, e)}
             className={`absolute -left-8 flex h-6 w-6 items-center justify-center rounded transition-all hover:scale-110 ${colorClass}`}
             style={{
-              top: rect.top + scrollY + rect.height / 2 - 12,
+              top: relativeTop,
             }}
             aria-label={annotation ? "Edit annotation" : "Add bookmark or note"}
           >
