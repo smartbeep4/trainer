@@ -1,0 +1,30 @@
+[2026-01-10 13:25:55] find /mnt/c/Users/simon/Code/trainer -type f -name "*.json" -o -name "*.py" -o -name "*.js" -o -name "*.ts" | head -20
+[2026-01-10 13:25:55] ls -la /mnt/c/Users/simon/Code/trainer
+[2026-01-10 13:34:32] ls -la /mnt/c/Users/simon/Code/trainer
+[2026-01-10 13:34:32] git -C /mnt/c/Users/simon/Code/trainer log --oneline -20 2>/dev/null || echo "No commits yet"
+[2026-01-10 13:43:54] mkdir -p /mnt/c/Users/simon/Code/trainer/docs /mnt/c/Users/simon/Code/trainer/modules
+[2026-01-10 19:31:51] tail -20 /tmp/claude/-mnt-c-Users-simon-Code-trainer/tasks/aa95c0b.output
+[2026-01-10 19:31:51] tail -20 /tmp/claude/-mnt-c-Users-simon-Code-trainer/tasks/a37f63f.output
+[2026-01-10 19:31:51] tail -20 /tmp/claude/-mnt-c-Users-simon-Code-trainer/tasks/acf0181.output
+[2026-01-10 19:31:51] tail -20 /tmp/claude/-mnt-c-Users-simon-Code-trainer/tasks/ac73c39.output
+[2026-01-10 19:32:19] ls -la /mnt/c/Users/simon/Code/trainer/modules/ | sort
+[2026-01-10 19:32:53] grep -A 5 "Write.*22-advanced-local" /tmp/claude/-mnt-c-Users-simon-Code-trainer/tasks/aa95c0b.output | tail -20
+[2026-01-10 19:32:53] grep -A 5 "Write.*06-security" /tmp/claude/-mnt-c-Users-simon-Code-trainer/tasks/acf0181.output | tail -20
+[2026-01-10 19:32:53] grep -A 5 "Write.*20-capstone" /tmp/claude/-mnt-c-Users-simon-Code-trainer/tasks/a37f63f.output | tail -20
+[2026-01-10 19:32:53] grep -A 5 "Write.*23-future" /tmp/claude/-mnt-c-Users-simon-Code-trainer/tasks/ac73c39.output | tail -20
+[2026-01-10 19:33:02] find /mnt/c/Users/simon/Code/trainer/modules -name "*06*" -o -name "*20*" -o -name "*22*" -o -name "*23*" 2>/dev/null
+[2026-01-10 19:33:02] ls -1 /mnt/c/Users/simon/Code/trainer/modules/*.md | wc -l
+[2026-01-10 19:38:02] tail -100 /tmp/claude/-mnt-c-Users-simon-Code-trainer/tasks/acf0181.output | grep -E "(successfully|completed|error|failed|Write)" | tail -10
+[2026-01-10 19:38:02] tail -100 /tmp/claude/-mnt-c-Users-simon-Code-trainer/tasks/a37f63f.output | grep -E "(successfully|completed|error|failed|Write)" | tail -10
+[2026-01-10 19:38:02] tail -100 /tmp/claude/-mnt-c-Users-simon-Code-trainer/tasks/aa95c0b.output | grep -E "(successfully|completed|error|failed|Write)" | tail -10
+[2026-01-10 19:38:02] tail -100 /tmp/claude/-mnt-c-Users-simon-Code-trainer/tasks/ac73c39.output | grep -E "(successfully|completed|error|failed|Write)" | tail -10
+[2026-01-10 19:38:41] tail -1 /tmp/claude/-mnt-c-Users-simon-Code-trainer/tasks/acf0181.output
+[2026-01-10 19:38:41] tail -1 /tmp/claude/-mnt-c-Users-simon-Code-trainer/tasks/aa95c0b.output
+[2026-01-10 19:38:41] tail -1 /tmp/claude/-mnt-c-Users-simon-Code-trainer/tasks/a37f63f.output
+[2026-01-10 19:38:41] tail -1 /tmp/claude/-mnt-c-Users-simon-Code-trainer/tasks/ac73c39.output
+[2026-01-10 19:52:32] ls /mnt/c/Users/simon/Code/trainer/modules/
+[2026-01-10 19:56:25] ls -lh /mnt/c/Users/simon/Code/trainer/modules/23-future-ai-career.md
+[2026-01-10 19:56:31] head -30 /mnt/c/Users/simon/Code/trainer/modules/23-future-ai-career.md && echo -e "\n...\n" && tail -20 /mnt/c/Users/simon/Code/trainer/modules/23-future-ai-career.md
+[2026-01-10 19:56:55] ls -1 /mnt/c/Users/simon/Code/trainer/modules/*.md | sort
+[2026-01-10 19:57:02] find /mnt/c/Users/simon/Code/trainer -name "*.md" -type f | wc -l
+[2026-01-10 19:57:02] wc -w /mnt/c/Users/simon/Code/trainer/modules/*.md | tail -1

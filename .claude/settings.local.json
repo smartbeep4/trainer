@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C /mnt/c/Users/simon/Code/trainer log --oneline -20)",
+      "Bash(ls:*)",
+      "Bash(wc:*)"
+    ]
+  }
+}
