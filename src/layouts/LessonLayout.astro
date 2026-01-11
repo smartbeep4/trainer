@@ -8,6 +8,7 @@ import ProgressTracker from "@components/react/ProgressTracker";
 import MobileTableOfContents from "@components/react/MobileTableOfContents";
 import FocusModeToggle from "@components/react/FocusModeToggle";
 import ContentAnnotations from "@components/react/ContentAnnotations";
+import ReadingProgress from "@components/react/ReadingProgress";
 import type { Module } from "@/lib/course-data";
 
 interface Props {
@@ -29,6 +30,9 @@ const breadcrumbItems = [
 ---
 
 <BaseLayout title={title} description={description}>
+  <!-- Reading progress bar (visible in focus mode) -->
+  <ReadingProgress client:load moduleSlug={module.slug} />
+
   <div class="mx-auto max-w-screen-2xl">
     <div class="flex min-h-[calc(100vh-4rem)]">
       <!-- Sidebar (hidden on mobile) -->
