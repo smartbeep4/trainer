@@ -170,3 +170,143 @@ export function resetProgress(): void {
     console.error("Failed to reset progress:", error);
   }
 }
+
+/**
+ * Export data structure for URL sharing
+ */
+export interface ExportData {
+  version: 1;
+  exportedAt: string;
+  progress: ProgressState;
+  quizStates: Record<string, unknown>;
+}
+
+/**
+ * Collect all progress data for export
+ */
+export function collectExportData(): ExportData {
+  const progress = getProgress();
+  const quizStates: Record<string, unknown> = {};
+
+  if (isStorageAvailable()) {
+    // Collect all quiz states (keys starting with dot-quiz-)
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key?.startsWith("dot-quiz-")) {
+        try {
+          const value = localStorage.getItem(key);
+          if (value) {
+            quizStates[key] = JSON.parse(value);
+          }
+        } catch {
+          // Skip malformed entries
+        }
+      }
+    }
+  }
+
+  return {
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    progress,
+    quizStates,
+  };
+}
+
+/**
+ * Encode export data to a URL-safe string
+ */
+export function encodeProgressData(data: ExportData): string {
+  const json = JSON.stringify(data);
+  // Use base64url encoding (URL-safe base64)
+  const base64 = btoa(unescape(encodeURIComponent(json)));
+  // Make URL-safe: replace + with -, / with _, remove =
+  return base64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+
+/**
+ * Decode URL-safe string back to export data
+ */
+export function decodeProgressData(encoded: string): ExportData | null {
+  try {
+    // Restore standard base64: replace - with +, _ with /
+    let base64 = encoded.replace(/-/g, "+").replace(/_/g, "/");
+    // Add back padding if needed
+    while (base64.length % 4) {
+      base64 += "=";
+    }
+    const json = decodeURIComponent(escape(atob(base64)));
+    const data = JSON.parse(json);
+
+    // Validate structure
+    if (data.version !== 1 || !data.progress) {
+      return null;
+    }
+
+    return data as ExportData;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Generate a shareable URL with progress data
+ */
+export function generateShareUrl(): string {
+  const data = collectExportData();
+  const encoded = encodeProgressData(data);
+  const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
+  return `${baseUrl}/progress?import=${encoded}`;
+}
+
+/**
+ * Import progress data, overwriting existing data
+ */
+export function importProgressData(data: ExportData): boolean {
+  if (!isStorageAvailable()) {
+    return false;
+  }
+
+  try {
+    // Clear existing quiz states
+    const keysToRemove: string[] = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key?.startsWith("dot-quiz-")) {
+        keysToRemove.push(key);
+      }
+    }
+    keysToRemove.forEach((key) => localStorage.removeItem(key));
+
+    // Import main progress
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data.progress));
+
+    // Import quiz states
+    for (const [key, value] of Object.entries(data.quizStates)) {
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    return true;
+  } catch (error) {
+    console.error("Failed to import progress:", error);
+    return false;
+  }
+}
+
+/**
+ * Check if URL has import data and extract it
+ */
+export function getImportDataFromUrl(): ExportData | null {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const encoded = params.get("import");
+
+  if (!encoded) {
+    return null;
+  }
+
+  return decodeProgressData(encoded);
+}

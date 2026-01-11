@@ -10,6 +10,11 @@ import {
   getQuizScore,
   getCompletionPercentage,
   resetProgress,
+  collectExportData,
+  encodeProgressData,
+  decodeProgressData,
+  importProgressData,
+  type ExportData,
 } from "../lib/progress";
 
 // Mock localStorage
@@ -182,6 +187,120 @@ describe("Progress Module", () => {
     it("removes progress from localStorage", () => {
       resetProgress();
       expect(localStorageMock.removeItem).toHaveBeenCalledWith("dot-progress");
+    });
+  });
+
+  describe("Export/Import", () => {
+    describe("collectExportData", () => {
+      it("collects progress and quiz states", () => {
+        const progress = {
+          completedLessons: ["lesson-1"],
+          completedModules: ["module-1"],
+          quizScores: { "quiz-1": 85 },
+          lastVisited: "lesson-1",
+          startedAt: "2024-01-01",
+          totalTimeSpent: 60,
+        };
+        mockStore["dot-progress"] = JSON.stringify(progress);
+        mockStore["dot-quiz-module-1-quiz-1"] = JSON.stringify({
+          answers: { q1: "a" },
+          submitted: true,
+          score: 85,
+        });
+
+        // Mock localStorage.length and key for iteration
+        Object.defineProperty(localStorageMock, "length", {
+          get: () => Object.keys(mockStore).length,
+          configurable: true,
+        });
+        localStorageMock.key = vi.fn(
+          (index: number) => Object.keys(mockStore)[index]
+        );
+
+        const data = collectExportData();
+
+        expect(data.version).toBe(1);
+        expect(data.progress.completedModules).toEqual(["module-1"]);
+        expect(data.quizStates["dot-quiz-module-1-quiz-1"]).toBeDefined();
+      });
+    });
+
+    describe("encodeProgressData / decodeProgressData", () => {
+      it("round-trips data correctly", () => {
+        const testData: ExportData = {
+          version: 1,
+          exportedAt: "2024-01-01T00:00:00.000Z",
+          progress: {
+            completedLessons: ["lesson-1", "lesson-2"],
+            completedModules: ["module-1"],
+            quizScores: { "quiz-1": 90 },
+            lastVisited: "lesson-2",
+            startedAt: "2024-01-01",
+            totalTimeSpent: 120,
+          },
+          quizStates: {
+            "dot-quiz-module-1-quiz-1": { score: 90, submitted: true },
+          },
+        };
+
+        const encoded = encodeProgressData(testData);
+        const decoded = decodeProgressData(encoded);
+
+        expect(decoded).not.toBeNull();
+        expect(decoded?.version).toBe(1);
+        expect(decoded?.progress.completedModules).toEqual(["module-1"]);
+        expect(decoded?.progress.quizScores["quiz-1"]).toBe(90);
+      });
+
+      it("returns null for invalid encoded data", () => {
+        expect(decodeProgressData("invalid-base64!@#$")).toBeNull();
+      });
+
+      it("returns null for missing version", () => {
+        const invalidData = { progress: {} };
+        const encoded = encodeProgressData(invalidData as ExportData);
+        expect(decodeProgressData(encoded)).toBeNull();
+      });
+    });
+
+    describe("importProgressData", () => {
+      it("imports progress and quiz states", () => {
+        // Setup existing data that should be overwritten
+        mockStore["dot-progress"] = JSON.stringify({ completedModules: [] });
+        mockStore["dot-quiz-old-quiz"] = JSON.stringify({ score: 50 });
+
+        Object.defineProperty(localStorageMock, "length", {
+          get: () => Object.keys(mockStore).length,
+          configurable: true,
+        });
+        localStorageMock.key = vi.fn(
+          (index: number) => Object.keys(mockStore)[index]
+        );
+
+        const importData: ExportData = {
+          version: 1,
+          exportedAt: "2024-01-01T00:00:00.000Z",
+          progress: {
+            completedLessons: ["lesson-1"],
+            completedModules: ["module-1", "module-2"],
+            quizScores: { "quiz-1": 95 },
+            lastVisited: "lesson-1",
+            startedAt: "2024-01-01",
+            totalTimeSpent: 180,
+          },
+          quizStates: {
+            "dot-quiz-module-1-quiz-1": { score: 95, submitted: true },
+          },
+        };
+
+        const result = importProgressData(importData);
+
+        expect(result).toBe(true);
+        expect(localStorageMock.setItem).toHaveBeenCalledWith(
+          "dot-progress",
+          expect.any(String)
+        );
+      });
     });
   });
 });

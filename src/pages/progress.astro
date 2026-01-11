@@ -1,10 +1,14 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
 import ProgressTracker from "@components/react/ProgressTracker";
+import ProgressShare from "@components/react/ProgressShare";
 import { parts } from "@/lib/course-data";
 ---
 
 <BaseLayout title="My Progress">
+  <!-- Import confirmation modal (shows if URL has import param) -->
+  <ProgressShare client:load variant="import-check" />
+
   <section class="px-4 py-12">
     <div class="mx-auto max-w-screen-xl">
       <div class="mb-8">
@@ -101,6 +105,7 @@ import { parts } from "@/lib/course-data";
                 </svg>
                 Back to Course Home
               </a>
+              <ProgressShare client:idle variant="export" />
               <button
                 type="button"
                 id="reset-progress-btn"
