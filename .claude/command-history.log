@@ -97,3 +97,8 @@ sleep 5
 curl -s http://localhost:4321/module/developer-mental-model | head -50
 [2026-01-11 08:39:30] sleep 8 && curl -s http://localhost:4321/module/developer-mental-model 2>/dev/null | grep -E "<title>|<h1|Module 1" | head -10
 [2026-01-11 08:39:43] pkill -f "npm run dev" 2>/dev/null || pkill -f "astro dev" 2>/dev/null || true
+[2026-01-11 08:52:16] ls -la /mnt/c/Users/simon/Code/trainer/src/pages/
+[2026-01-11 08:57:15] npm run build 2>&1 | head -100
+[2026-01-11 08:58:33] npm run build 2>&1 | tail -50
+[2026-01-11 08:59:54] head -50 /mnt/c/Users/simon/Code/trainer/dist/module/data-structures-ai-era/index.html | grep -i "title\|description"
+[2026-01-11 08:59:54] wc -w /mnt/c/Users/simon/Code/trainer/src/content/modules/data-structures-ai-era.mdx
