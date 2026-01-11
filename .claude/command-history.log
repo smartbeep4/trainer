@@ -109,3 +109,13 @@ curl -s http://localhost:4321/module/developer-mental-model | head -50
 [2026-01-11 10:14:52] find /mnt/c/Users/simon/Code/trainer/docs/prompts -type f -name "*.md" | sort
 [2026-01-11 10:14:57] wc -l /mnt/c/Users/simon/Code/trainer/docs/prompts/part-*/*.md | tail -20
 [2026-01-11 10:15:15] echo "Total prompt files:" && find /mnt/c/Users/simon/Code/trainer/docs/prompts -name "module-*.md" | wc -l && echo -e "\nTotal words across all prompts:" && wc -w /mnt/c/Users/simon/Code/trainer/docs/prompts/part-*/*.md | tail -1 && echo -e "\nAverage prompt length:" && wc -w /mnt/c/Users/simon/Code/trainer/docs/prompts/part-*/*.md | tail -1 | awk '{printf "%.0f words per prompt\n", $1/23}'
+[2026-01-11 10:23:16] ls -la
+[2026-01-11 10:23:16] find . -type d -name "prompts" 2>/dev/null | head -20
+[2026-01-11 10:23:25] ls -la docs/prompts/
+[2026-01-11 10:23:34] ls -la src/modules/
+[2026-01-11 10:23:40] find . -path ./node_modules -prune -o -name "*.tsx" -o -name "*.ts" | grep -E "module|lesson" | head -30
+[2026-01-11 10:23:51] find src -type f -name "*.tsx" -o -name "*.astro" | head -20
+[2026-01-11 10:23:56] find src/pages -type f | head -20
+[2026-01-11 10:24:00] ls -la modules/
+[2026-01-11 10:24:15] ls -la src/content/ 2>/dev/null || echo "No src/content directory"
+[2026-01-11 10:40:18] ls -lh src/content/modules/*.mdx
