@@ -61,7 +61,7 @@ export default function ProgressTracker({
             style={{ width: `${percentage}%` }}
           />
         </div>
-        <span className="text-xs font-medium text-neutral-600 dark:text-neutral-300">
+        <span className="text-xs font-medium text-neutral-600 dark:text-[#c9d1d9]">
           {percentage}%
         </span>
       </div>
@@ -94,10 +94,10 @@ export default function ProgressTracker({
       <div className="flex items-center gap-3 rounded-lg border border-neutral-200 bg-neutral-50 px-4 py-3 dark:border-dark-border dark:bg-dark-surface">
         <div className="flex-1">
           <div className="mb-1 flex items-center justify-between">
-            <span className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
+            <span className="text-sm font-medium text-neutral-900 dark:text-[#e6edf3]">
               Course Progress
             </span>
-            <span className="text-sm text-neutral-600 dark:text-neutral-300">
+            <span className="text-sm text-neutral-600 dark:text-[#c9d1d9]">
               {progress?.completedModules.length || 0} of{" "}
               {courseStats.totalModules} modules
             </span>
@@ -120,7 +120,7 @@ export default function ProgressTracker({
 
     return (
       <div className="rounded-xl border border-neutral-200 bg-white p-6 dark:border-dark-border dark:bg-dark-surface">
-        <h2 className="mb-4 text-lg font-semibold text-neutral-900 dark:text-neutral-100">
+        <h2 className="mb-4 text-lg font-semibold text-neutral-900 dark:text-[#e6edf3]">
           Your Progress
         </h2>
 
@@ -152,7 +152,7 @@ export default function ProgressTracker({
               />
             </svg>
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
+              <span className="text-2xl font-bold text-neutral-900 dark:text-[#e6edf3]">
                 {percentage}%
               </span>
             </div>
@@ -160,25 +160,25 @@ export default function ProgressTracker({
 
           <div className="flex-1 space-y-2">
             <div className="flex justify-between text-sm">
-              <span className="text-neutral-600 dark:text-neutral-300">
+              <span className="text-neutral-600 dark:text-[#c9d1d9]">
                 Modules completed
               </span>
-              <span className="font-medium text-neutral-900 dark:text-neutral-100">
+              <span className="font-medium text-neutral-900 dark:text-[#e6edf3]">
                 {progress?.completedModules.length || 0} /{" "}
                 {courseStats.totalModules}
               </span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-neutral-600 dark:text-neutral-300">
+              <span className="text-neutral-600 dark:text-[#c9d1d9]">
                 Estimated time
               </span>
-              <span className="font-medium text-neutral-900 dark:text-neutral-100">
+              <span className="font-medium text-neutral-900 dark:text-[#e6edf3]">
                 ~{hoursCompleted} hours done
               </span>
             </div>
             {progress?.lastVisited && (
               <div className="flex justify-between text-sm">
-                <span className="text-neutral-600 dark:text-neutral-300">
+                <span className="text-neutral-600 dark:text-[#c9d1d9]">
                   Continue from
                 </span>
                 <a
@@ -195,15 +195,15 @@ export default function ProgressTracker({
         {/* Quick stats */}
         <div className="grid grid-cols-2 gap-4">
           <div className="rounded-lg bg-neutral-50 p-3 dark:bg-dark-elevated">
-            <div className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
+            <div className="text-2xl font-bold text-neutral-900 dark:text-[#e6edf3]">
               {Object.keys(progress?.quizScores || {}).length}
             </div>
-            <div className="text-xs text-neutral-600 dark:text-neutral-300">
+            <div className="text-xs text-neutral-600 dark:text-[#c9d1d9]">
               Quizzes completed
             </div>
           </div>
           <div className="rounded-lg bg-neutral-50 p-3 dark:bg-dark-elevated">
-            <div className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
+            <div className="text-2xl font-bold text-neutral-900 dark:text-[#e6edf3]">
               {Object.values(progress?.quizScores || {}).length > 0
                 ? Math.round(
                     Object.values(progress?.quizScores || {}).reduce(
@@ -214,7 +214,7 @@ export default function ProgressTracker({
                 : 0}
               %
             </div>
-            <div className="text-xs text-neutral-600 dark:text-neutral-300">
+            <div className="text-xs text-neutral-600 dark:text-[#c9d1d9]">
               Average quiz score
             </div>
           </div>
@@ -227,10 +227,10 @@ export default function ProgressTracker({
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between text-sm">
-        <span className="font-medium text-neutral-900 dark:text-neutral-100">
+        <span className="font-medium text-neutral-900 dark:text-[#e6edf3]">
           Progress
         </span>
-        <span className="text-neutral-600 dark:text-neutral-300">
+        <span className="text-neutral-600 dark:text-[#c9d1d9]">
           {percentage}%
         </span>
       </div>
@@ -240,7 +240,7 @@ export default function ProgressTracker({
           style={{ width: `${percentage}%` }}
         />
       </div>
-      <div className="text-xs text-neutral-500 dark:text-neutral-400">
+      <div className="text-xs text-neutral-500 dark:text-[#8b949e]">
         {progress?.completedModules.length || 0} of {courseStats.totalModules}{" "}
         modules
       </div>

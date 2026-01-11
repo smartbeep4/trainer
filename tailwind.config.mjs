@@ -61,13 +61,14 @@ export default {
           900: "#78350f",
           950: "#451a03",
         },
-        // Dark mode surfaces - improved contrast scheme
+        // Dark mode surfaces - high contrast scheme inspired by VS Code/GitHub
         dark: {
-          bg: "#111111",
-          surface: "#1e1e21",
-          elevated: "#2d2d31",
-          border: "#4b4b52",
-          muted: "#a1a1aa",
+          bg: "#0d1117",        // GitHub dark background
+          surface: "#161b22",   // GitHub dark surface
+          elevated: "#21262d",  // GitHub dark elevated
+          border: "#30363d",    // GitHub dark border
+          muted: "#8b949e",     // GitHub dark muted text
+          text: "#e6edf3",      // GitHub dark text
         },
       },
       fontFamily: {
@@ -134,38 +135,50 @@ export default {
         },
         dark: {
           css: {
-            color: theme("colors.neutral.200"),
+            color: "#c9d1d9", // GitHub dark prose text
             a: {
-              color: theme("colors.primary.400"),
+              color: "#58a6ff", // GitHub dark link blue
+              "&:hover": {
+                color: "#79c0ff",
+              },
             },
             strong: {
-              color: theme("colors.neutral.50"),
+              color: "#e6edf3",
             },
             h1: {
-              color: theme("colors.neutral.50"),
+              color: "#e6edf3",
             },
             h2: {
-              color: theme("colors.neutral.50"),
+              color: "#e6edf3",
             },
             h3: {
-              color: theme("colors.neutral.50"),
+              color: "#e6edf3",
             },
             h4: {
-              color: theme("colors.neutral.50"),
+              color: "#e6edf3",
             },
             code: {
-              backgroundColor: theme("colors.dark.elevated"),
-              color: theme("colors.neutral.100"),
+              backgroundColor: "rgba(110,118,129,0.4)",
+              color: "#e6edf3",
             },
             blockquote: {
-              color: theme("colors.neutral.300"),
-              borderLeftColor: theme("colors.dark.border"),
+              color: "#8b949e",
+              borderLeftColor: "#3b434b",
             },
             li: {
-              color: theme("colors.neutral.200"),
+              color: "#c9d1d9",
             },
             p: {
-              color: theme("colors.neutral.200"),
+              color: "#c9d1d9",
+            },
+            hr: {
+              borderColor: "#21262d",
+            },
+            "ol > li::marker": {
+              color: "#8b949e",
+            },
+            "ul > li::marker": {
+              color: "#8b949e",
             },
           },
         },
