@@ -43,4 +43,4 @@ test-results/
 *.cache
 .turbo/
 claude.md
-command-history.log
+.claude/
