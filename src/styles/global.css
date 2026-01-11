@@ -193,10 +193,29 @@
 }
 
 @layer utilities {
-  /* Prose adjustments for dark mode */
+  /* Prose adjustments for dark mode - GitHub-inspired high contrast */
   .prose-custom {
     @apply prose prose-neutral max-w-none;
-    @apply dark:prose-invert;
+  }
+
+  /* Explicit dark mode prose overrides for maximum readability */
+  .dark .prose-custom {
+    --tw-prose-body: #c9d1d9;
+    --tw-prose-headings: #e6edf3;
+    --tw-prose-lead: #c9d1d9;
+    --tw-prose-links: #58a6ff;
+    --tw-prose-bold: #e6edf3;
+    --tw-prose-counters: #8b949e;
+    --tw-prose-bullets: #8b949e;
+    --tw-prose-hr: #30363d;
+    --tw-prose-quotes: #8b949e;
+    --tw-prose-quote-borders: #3b434b;
+    --tw-prose-captions: #8b949e;
+    --tw-prose-code: #e6edf3;
+    --tw-prose-pre-code: #c9d1d9;
+    --tw-prose-pre-bg: #161b22;
+    --tw-prose-th-borders: #30363d;
+    --tw-prose-td-borders: #21262d;
   }
 
   /* Reduced motion preference */
