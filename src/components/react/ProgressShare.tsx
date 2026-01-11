@@ -3,7 +3,11 @@ import {
   generateShareUrl,
   getImportDataFromUrl,
   importProgressData,
+  getExportSizeInfo,
   type ExportData,
+  type ExportType,
+  type ExportSizeInfo,
+  type ImportOptions,
 } from "@/lib/progress";
 import { parts } from "@/lib/course-data";
 
@@ -20,20 +24,52 @@ export default function ProgressShare({ variant }: ProgressShareProps) {
     "pending" | "success" | "error" | null
   >(null);
   const [viewMode, setViewMode] = useState(false);
+  const [sizeInfo, setSizeInfo] = useState<ExportSizeInfo | null>(null);
+  const [exportType, setExportType] = useState<ExportType>("all");
+  const [importOptions, setImportOptions] = useState<ImportOptions>({
+    progress: true,
+    annotations: true,
+  });
 
   useEffect(() => {
     if (variant === "import-check") {
       const data = getImportDataFromUrl();
       if (data) {
         setImportData(data);
+        // Set default import options based on what's available
+        setImportOptions({
+          progress: data.includes.progress,
+          annotations: data.includes.annotations,
+        });
       }
     }
   }, [variant]);
 
   const handleGenerateUrl = () => {
-    const url = generateShareUrl();
+    const info = getExportSizeInfo();
+    setSizeInfo(info);
+
+    // Determine best export type
+    let type: ExportType = "all";
+    if (!info.fitsInUrl) {
+      if (info.progressFits) {
+        type = "progress";
+      } else if (info.annotationsFits) {
+        type = "annotations";
+      }
+    }
+    setExportType(type);
+
+    const url = generateShareUrl(type);
     setShareUrl(url);
     setShowExportModal(true);
+    setCopied(false);
+  };
+
+  const handleExportTypeChange = (type: ExportType) => {
+    setExportType(type);
+    const url = generateShareUrl(type);
+    setShareUrl(url);
     setCopied(false);
   };
 
@@ -58,7 +94,7 @@ export default function ProgressShare({ variant }: ProgressShareProps) {
   const handleImport = () => {
     if (!importData) return;
 
-    const success = importProgressData(importData);
+    const success = importProgressData(importData, importOptions);
     if (success) {
       setImportStatus("success");
       // Clear the URL parameter and reload after a short delay
@@ -80,12 +116,13 @@ export default function ProgressShare({ variant }: ProgressShareProps) {
   // Import confirmation dialog
   if (variant === "import-check" && importData) {
     const exportDate = new Date(importData.exportedAt);
-    const modulesCount = importData.progress.completedModules?.length || 0;
+    const modulesCount = importData.progress?.completedModules?.length || 0;
     const quizzesCount = Object.keys(
-      importData.progress.quizScores || {}
+      importData.progress?.quizScores || {}
     ).length;
-    const completedModules = importData.progress.completedModules || [];
-    const quizScores = importData.progress.quizScores || {};
+    const completedModules = importData.progress?.completedModules || [];
+    const quizScores = importData.progress?.quizScores || {};
+    const annotationsCount = importData.annotations?.length || 0;
 
     // Calculate completion percentage
     const totalModules = parts.reduce((acc, p) => acc + p.modules.length, 0);
@@ -101,6 +138,10 @@ export default function ProgressShare({ variant }: ProgressShareProps) {
             quizScoreValues.reduce((a, b) => a + b, 0) / quizScoreValues.length
           )
         : 0;
+
+    // What's included in this import
+    const hasProgress = importData.includes.progress;
+    const hasAnnotations = importData.includes.annotations;
 
     // View mode - detailed progress breakdown
     if (viewMode) {
@@ -360,28 +401,42 @@ export default function ProgressShare({ variant }: ProgressShareProps) {
               </div>
 
               <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
-                Someone shared their course progress with you. You can view it
-                or import it to your browser.
+                Someone shared their course data with you. You can view it or
+                import it to your browser.
               </p>
 
-              <div className="mb-6 rounded-lg bg-neutral-50 p-4 dark:bg-dark-elevated">
+              <div className="mb-4 rounded-lg bg-neutral-50 p-4 dark:bg-dark-elevated">
                 <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-neutral-600 dark:text-neutral-400">
-                      Modules completed
-                    </span>
-                    <span className="font-medium text-neutral-900 dark:text-neutral-100">
-                      {modulesCount} of {totalModules}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-neutral-600 dark:text-neutral-400">
-                      Quizzes taken
-                    </span>
-                    <span className="font-medium text-neutral-900 dark:text-neutral-100">
-                      {quizzesCount}
-                    </span>
-                  </div>
+                  {hasProgress && (
+                    <>
+                      <div className="flex justify-between">
+                        <span className="text-neutral-600 dark:text-neutral-400">
+                          Modules completed
+                        </span>
+                        <span className="font-medium text-neutral-900 dark:text-neutral-100">
+                          {modulesCount} of {totalModules}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-neutral-600 dark:text-neutral-400">
+                          Quizzes taken
+                        </span>
+                        <span className="font-medium text-neutral-900 dark:text-neutral-100">
+                          {quizzesCount}
+                        </span>
+                      </div>
+                    </>
+                  )}
+                  {hasAnnotations && (
+                    <div className="flex justify-between">
+                      <span className="text-neutral-600 dark:text-neutral-400">
+                        Notes & bookmarks
+                      </span>
+                      <span className="font-medium text-neutral-900 dark:text-neutral-100">
+                        {annotationsCount}
+                      </span>
+                    </div>
+                  )}
                   <div className="flex justify-between">
                     <span className="text-neutral-600 dark:text-neutral-400">
                       Exported on
@@ -393,19 +448,65 @@ export default function ProgressShare({ variant }: ProgressShareProps) {
                 </div>
               </div>
 
+              {/* Import options when both are available */}
+              {hasProgress && hasAnnotations && (
+                <div className="mb-4 space-y-2">
+                  <p className="text-xs font-medium text-neutral-700 dark:text-neutral-300">
+                    Select what to import:
+                  </p>
+                  <label className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      checked={importOptions.progress}
+                      onChange={(e) =>
+                        setImportOptions({
+                          ...importOptions,
+                          progress: e.target.checked,
+                        })
+                      }
+                      className="rounded border-neutral-300 text-primary-600 focus:ring-primary-500"
+                    />
+                    <span className="text-sm text-neutral-700 dark:text-neutral-300">
+                      Progress & quiz scores
+                    </span>
+                  </label>
+                  <label className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      checked={importOptions.annotations}
+                      onChange={(e) =>
+                        setImportOptions({
+                          ...importOptions,
+                          annotations: e.target.checked,
+                        })
+                      }
+                      className="rounded border-neutral-300 text-primary-600 focus:ring-primary-500"
+                    />
+                    <span className="text-sm text-neutral-700 dark:text-neutral-300">
+                      Notes & bookmarks
+                    </span>
+                  </label>
+                </div>
+              )}
+
               <div className="space-y-2">
                 <div className="flex gap-3">
-                  <button
-                    onClick={() => setViewMode(true)}
-                    className="flex-1 rounded-lg border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 dark:border-dark-border dark:bg-dark-surface dark:text-neutral-300 dark:hover:bg-dark-elevated"
-                  >
-                    View Progress
-                  </button>
+                  {hasProgress && (
+                    <button
+                      onClick={() => setViewMode(true)}
+                      className="flex-1 rounded-lg border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 dark:border-dark-border dark:bg-dark-surface dark:text-neutral-300 dark:hover:bg-dark-elevated"
+                    >
+                      View Progress
+                    </button>
+                  )}
                   <button
                     onClick={handleImport}
-                    className="flex-1 rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600"
+                    disabled={
+                      !importOptions.progress && !importOptions.annotations
+                    }
+                    className="flex-1 rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700 disabled:opacity-50 dark:bg-primary-500 dark:hover:bg-primary-600"
                   >
-                    Import Progress
+                    Import
                   </button>
                 </div>
                 <button
@@ -415,7 +516,7 @@ export default function ProgressShare({ variant }: ProgressShareProps) {
                   Cancel
                 </button>
                 <p className="text-center text-xs text-neutral-500 dark:text-neutral-500">
-                  Importing will overwrite your current progress
+                  Importing will overwrite your current data
                 </p>
               </div>
             </>
@@ -496,9 +597,51 @@ export default function ProgressShare({ variant }: ProgressShareProps) {
                 </button>
               </div>
 
+              {/* Size warning when data is too large */}
+              {sizeInfo && !sizeInfo.fitsInUrl && (
+                <div className="mb-4 rounded-lg border border-amber-200 bg-amber-50 p-3 dark:border-amber-800 dark:bg-amber-900/20">
+                  <p className="text-sm text-amber-800 dark:text-amber-200">
+                    Your complete data is too large for a single URL. Please
+                    choose what to include:
+                  </p>
+                  <div className="mt-2 flex gap-2">
+                    {sizeInfo.progressFits && (
+                      <button
+                        onClick={() => handleExportTypeChange("progress")}
+                        className={`rounded-md px-3 py-1 text-sm ${
+                          exportType === "progress"
+                            ? "bg-amber-200 text-amber-900 dark:bg-amber-800 dark:text-amber-100"
+                            : "bg-amber-100 text-amber-700 hover:bg-amber-200 dark:bg-amber-900/50 dark:text-amber-300"
+                        }`}
+                      >
+                        Progress only
+                      </button>
+                    )}
+                    {sizeInfo.annotationsFits && (
+                      <button
+                        onClick={() => handleExportTypeChange("annotations")}
+                        className={`rounded-md px-3 py-1 text-sm ${
+                          exportType === "annotations"
+                            ? "bg-amber-200 text-amber-900 dark:bg-amber-800 dark:text-amber-100"
+                            : "bg-amber-100 text-amber-700 hover:bg-amber-200 dark:bg-amber-900/50 dark:text-amber-300"
+                        }`}
+                      >
+                        Notes only
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
+
               <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
                 Copy this URL and open it in another browser or device to
-                restore your progress there.
+                restore your{" "}
+                {exportType === "all"
+                  ? "progress"
+                  : exportType === "progress"
+                    ? "progress"
+                    : "notes and bookmarks"}
+                .
               </p>
 
               <div className="mb-4">
@@ -564,9 +707,14 @@ export default function ProgressShare({ variant }: ProgressShareProps) {
               </div>
 
               <p className="text-xs text-neutral-500 dark:text-neutral-500">
-                This URL contains your complete progress including completed
-                modules and quiz scores. Keep it private if you don&apos;t want
-                others to see your progress.
+                This URL contains your{" "}
+                {exportType === "all"
+                  ? "complete progress including modules, quiz scores, and notes"
+                  : exportType === "progress"
+                    ? "progress including completed modules and quiz scores"
+                    : "notes and bookmarks"}
+                . Keep it private if you don&apos;t want others to see your
+                progress.
               </p>
             </div>
           </div>

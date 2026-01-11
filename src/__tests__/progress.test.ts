@@ -214,16 +214,17 @@ describe("Progress Module", () => {
 
         const data = collectExportData();
 
-        expect(data.version).toBe(1);
-        expect(data.progress.completedModules).toEqual(["module-1"]);
-        expect(data.quizStates["dot-quiz-module-1-quiz-1"]).toBeDefined();
+        expect(data.version).toBe(2);
+        expect(data.includes.progress).toBe(true);
+        expect(data.progress?.completedModules).toEqual(["module-1"]);
+        expect(data.quizStates?.["dot-quiz-module-1-quiz-1"]).toBeDefined();
       });
     });
 
     describe("encodeProgressData / decodeProgressData", () => {
       it("round-trips data correctly", () => {
         const testData: ExportData = {
-          version: 1,
+          version: 2,
           exportedAt: "2024-01-01T00:00:00.000Z",
           progress: {
             completedLessons: ["lesson-1", "lesson-2"],
@@ -236,15 +237,20 @@ describe("Progress Module", () => {
           quizStates: {
             "dot-quiz-module-1-quiz-1": { score: 90, submitted: true },
           },
+          includes: {
+            progress: true,
+            quizzes: true,
+            annotations: false,
+          },
         };
 
         const encoded = encodeProgressData(testData);
         const decoded = decodeProgressData(encoded);
 
         expect(decoded).not.toBeNull();
-        expect(decoded?.version).toBe(1);
-        expect(decoded?.progress.completedModules).toEqual(["module-1"]);
-        expect(decoded?.progress.quizScores["quiz-1"]).toBe(90);
+        expect(decoded?.version).toBe(2);
+        expect(decoded?.progress?.completedModules).toEqual(["module-1"]);
+        expect(decoded?.progress?.quizScores["quiz-1"]).toBe(90);
       });
 
       it("returns null for invalid encoded data", () => {
@@ -265,7 +271,7 @@ describe("Progress Module", () => {
         mockStore["dot-quiz-old-quiz"] = JSON.stringify({ score: 50 });
 
         const importData: ExportData = {
-          version: 1,
+          version: 2,
           exportedAt: "2024-01-01T00:00:00.000Z",
           progress: {
             completedLessons: ["lesson-1"],
@@ -277,6 +283,11 @@ describe("Progress Module", () => {
           },
           quizStates: {
             "dot-quiz-module-1-quiz-1": { score: 95, submitted: true },
+          },
+          includes: {
+            progress: true,
+            quizzes: true,
+            annotations: false,
           },
         };
 

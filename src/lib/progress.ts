@@ -175,41 +175,121 @@ export function resetProgress(): void {
  * Export data structure for URL sharing
  */
 export interface ExportData {
-  version: 1;
+  version: 1 | 2; // v2 adds annotations
   exportedAt: string;
-  progress: ProgressState;
-  quizStates: Record<string, unknown>;
+  progress?: ProgressState;
+  quizStates?: Record<string, unknown>;
+  annotations?: unknown[]; // Annotation objects from notes.ts
+  includes: {
+    progress: boolean;
+    quizzes: boolean;
+    annotations: boolean;
+  };
 }
+
+export type ExportType = "all" | "progress" | "annotations";
+
+// Maximum URL length to stay safe across browsers
+const MAX_URL_LENGTH = 8000;
 
 /**
  * Collect all progress data for export
  */
-export function collectExportData(): ExportData {
+export function collectExportData(type: ExportType = "all"): ExportData {
   const progress = getProgress();
   const quizStates: Record<string, unknown> = {};
+  let annotations: unknown[] = [];
 
   if (isStorageAvailable()) {
-    // Collect all quiz states (keys starting with dot-quiz-)
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (key?.startsWith("dot-quiz-")) {
-        try {
-          const value = localStorage.getItem(key);
-          if (value) {
-            quizStates[key] = JSON.parse(value);
+    // Collect quiz states
+    if (type === "all" || type === "progress") {
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key?.startsWith("dot-quiz-")) {
+          try {
+            const value = localStorage.getItem(key);
+            if (value) {
+              quizStates[key] = JSON.parse(value);
+            }
+          } catch {
+            // Skip malformed entries
           }
-        } catch {
-          // Skip malformed entries
         }
+      }
+    }
+
+    // Collect annotations
+    if (type === "all" || type === "annotations") {
+      try {
+        const annotationsJson = localStorage.getItem("dot-annotations");
+        if (annotationsJson) {
+          annotations = JSON.parse(annotationsJson);
+        }
+      } catch {
+        // Skip if malformed
       }
     }
   }
 
-  return {
-    version: 1,
+  const data: ExportData = {
+    version: 2,
     exportedAt: new Date().toISOString(),
-    progress,
-    quizStates,
+    includes: {
+      progress: type === "all" || type === "progress",
+      quizzes: type === "all" || type === "progress",
+      annotations: type === "all" || type === "annotations",
+    },
+  };
+
+  if (type === "all" || type === "progress") {
+    data.progress = progress;
+    data.quizStates = quizStates;
+  }
+
+  if (type === "all" || type === "annotations") {
+    data.annotations = annotations;
+  }
+
+  return data;
+}
+
+/**
+ * Calculate the URL length for a given export
+ */
+export function calculateExportUrlLength(data: ExportData): number {
+  const encoded = encodeProgressData(data);
+  const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
+  return `${baseUrl}/progress?import=${encoded}`.length;
+}
+
+/**
+ * Check if data fits in URL and get size info
+ */
+export interface ExportSizeInfo {
+  totalSize: number;
+  fitsInUrl: boolean;
+  progressOnlySize: number;
+  annotationsOnlySize: number;
+  progressFits: boolean;
+  annotationsFits: boolean;
+}
+
+export function getExportSizeInfo(): ExportSizeInfo {
+  const allData = collectExportData("all");
+  const progressData = collectExportData("progress");
+  const annotationsData = collectExportData("annotations");
+
+  const totalSize = calculateExportUrlLength(allData);
+  const progressOnlySize = calculateExportUrlLength(progressData);
+  const annotationsOnlySize = calculateExportUrlLength(annotationsData);
+
+  return {
+    totalSize,
+    fitsInUrl: totalSize <= MAX_URL_LENGTH,
+    progressOnlySize,
+    annotationsOnlySize,
+    progressFits: progressOnlySize <= MAX_URL_LENGTH,
+    annotationsFits: annotationsOnlySize <= MAX_URL_LENGTH,
   };
 }
 
@@ -238,12 +318,27 @@ export function decodeProgressData(encoded: string): ExportData | null {
     const json = decodeURIComponent(escape(atob(base64)));
     const data = JSON.parse(json);
 
-    // Validate structure
-    if (data.version !== 1 || !data.progress) {
-      return null;
+    // Handle v1 format (upgrade to v2 structure)
+    if (data.version === 1) {
+      return {
+        version: 2,
+        exportedAt: data.exportedAt,
+        progress: data.progress,
+        quizStates: data.quizStates,
+        includes: {
+          progress: true,
+          quizzes: true,
+          annotations: false,
+        },
+      } as ExportData;
     }
 
-    return data as ExportData;
+    // Validate v2 structure
+    if (data.version === 2 && data.includes) {
+      return data as ExportData;
+    }
+
+    return null;
   } catch {
     return null;
   }
@@ -252,38 +347,68 @@ export function decodeProgressData(encoded: string): ExportData | null {
 /**
  * Generate a shareable URL with progress data
  */
-export function generateShareUrl(): string {
-  const data = collectExportData();
+export function generateShareUrl(type: ExportType = "all"): string {
+  const data = collectExportData(type);
   const encoded = encodeProgressData(data);
   const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
   return `${baseUrl}/progress?import=${encoded}`;
 }
 
 /**
- * Import progress data, overwriting existing data
+ * Import options for selective import
  */
-export function importProgressData(data: ExportData): boolean {
+export interface ImportOptions {
+  progress?: boolean;
+  annotations?: boolean;
+}
+
+/**
+ * Import progress data with selective import support
+ */
+export function importProgressData(
+  data: ExportData,
+  options?: ImportOptions
+): boolean {
   if (!isStorageAvailable()) {
     return false;
   }
 
+  // Determine what to import based on options and what's available
+  const importProgress =
+    (options?.progress ?? true) && data.includes.progress && data.progress;
+  const importAnnotations =
+    (options?.annotations ?? true) &&
+    data.includes.annotations &&
+    data.annotations;
+
   try {
-    // Clear existing quiz states
-    const keysToRemove: string[] = [];
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (key?.startsWith("dot-quiz-")) {
-        keysToRemove.push(key);
+    // Import progress and quiz states
+    if (importProgress) {
+      // Clear existing quiz states
+      const keysToRemove: string[] = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key?.startsWith("dot-quiz-")) {
+          keysToRemove.push(key);
+        }
+      }
+      keysToRemove.forEach((key) => localStorage.removeItem(key));
+
+      // Import main progress
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data.progress));
+
+      // Import quiz states
+      if (data.quizStates) {
+        for (const [key, value] of Object.entries(data.quizStates)) {
+          localStorage.setItem(key, JSON.stringify(value));
+        }
       }
     }
-    keysToRemove.forEach((key) => localStorage.removeItem(key));
 
-    // Import main progress
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data.progress));
-
-    // Import quiz states
-    for (const [key, value] of Object.entries(data.quizStates)) {
-      localStorage.setItem(key, JSON.stringify(value));
+    // Import annotations
+    if (importAnnotations && data.annotations) {
+      localStorage.setItem("dot-annotations", JSON.stringify(data.annotations));
+      window.dispatchEvent(new CustomEvent("annotations-updated"));
     }
 
     return true;

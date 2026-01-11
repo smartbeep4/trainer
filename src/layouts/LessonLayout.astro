@@ -7,6 +7,7 @@ import LessonNavigation from "@components/astro/LessonNavigation.astro";
 import ProgressTracker from "@components/react/ProgressTracker";
 import MobileTableOfContents from "@components/react/MobileTableOfContents";
 import FocusModeToggle from "@components/react/FocusModeToggle";
+import ContentAnnotations from "@components/react/ContentAnnotations";
 import type { Module } from "@/lib/course-data";
 
 interface Props {
@@ -125,8 +126,9 @@ const breadcrumbItems = [
               <MobileTableOfContents client:load headings={headings} />
             )}
 
-            <!-- Lesson content -->
-            <div class="prose-custom">
+            <!-- Lesson content with annotations -->
+            <div class="prose-custom relative">
+              <ContentAnnotations client:load moduleSlug={module.slug} />
               <slot />
             </div>
 
@@ -237,5 +239,18 @@ const breadcrumbItems = [
 
   .prose-custom :global(.mermaid) {
     @apply my-8;
+  }
+
+  /* Annotation system styles */
+  .prose-custom {
+    @apply pl-8;
+  }
+
+  .prose-custom :global(.annotatable-element) {
+    @apply relative transition-colors duration-150;
+  }
+
+  .prose-custom :global(.annotatable-element:hover) {
+    @apply bg-amber-50/50 dark:bg-amber-900/10;
   }
 </style>
