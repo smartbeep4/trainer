@@ -22,6 +22,9 @@ interface TooltipState {
   existingAnnotation?: Annotation;
 }
 
+// Auto-dismiss timeout in milliseconds (only for actions mode)
+const AUTO_DISMISS_MS = 5000;
+
 export default function ContentAnnotations({
   moduleSlug,
 }: ContentAnnotationsProps) {
@@ -34,10 +37,22 @@ export default function ContentAnnotations({
   const [noteText, setNoteText] = useState("");
   const containerRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
+  const dismissTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Track client-side mounting
   useEffect(() => {
     setIsMounted(true);
+  }, []);
+
+  // Helper to dismiss tooltip
+  const dismissTooltip = useCallback(() => {
+    setTooltip(null);
+    setHoveredIndex(null);
+    setNoteText("");
+    if (dismissTimerRef.current) {
+      clearTimeout(dismissTimerRef.current);
+      dismissTimerRef.current = null;
+    }
   }, []);
 
   // Load annotations on mount and when they change
@@ -66,7 +81,21 @@ export default function ContentAnnotations({
 
     // Get all annotatable elements (paragraphs, list items, headings, blockquotes)
     const selector = "p, li, h2, h3, h4, h5, h6, blockquote, .callout, pre";
-    const elements = proseContainer.querySelectorAll(selector);
+    const allElements = proseContainer.querySelectorAll(selector);
+
+    // Filter out nested elements - only keep the outermost matching element
+    // This prevents issues like a <p> inside an <li> both being annotatable
+    const elements = Array.from(allElements).filter((el) => {
+      // Check if any ancestor (up to proseContainer) also matches the selector
+      let parent = el.parentElement;
+      while (parent && parent !== proseContainer) {
+        if (parent.matches(selector)) {
+          return false; // This element is nested inside another annotatable element
+        }
+        parent = parent.parentElement;
+      }
+      return true;
+    });
 
     // Add data attributes for identification
     elements.forEach((el, index) => {
@@ -98,12 +127,13 @@ export default function ContentAnnotations({
         const text = target.textContent || "";
         const existingAnnotation = annotations.get(index);
 
+        // Use viewport-relative coordinates for fixed positioning
         setTooltip({
           visible: true,
           elementIndex: index,
           elementText: text,
           x: rect.left,
-          y: rect.top + window.scrollY,
+          y: rect.top, // Viewport-relative for fixed positioning
           mode: "actions",
           existingAnnotation,
         });
@@ -129,24 +159,81 @@ export default function ContentAnnotations({
     };
   }, [annotations, tooltip?.visible]);
 
-  // Close tooltip when clicking outside
+  // Auto-dismiss timer (only in actions mode, not when editing notes)
   useEffect(() => {
+    if (tooltip?.visible && tooltip.mode === "actions") {
+      // Clear any existing timer
+      if (dismissTimerRef.current) {
+        clearTimeout(dismissTimerRef.current);
+      }
+      // Set new timer
+      dismissTimerRef.current = setTimeout(() => {
+        dismissTooltip();
+      }, AUTO_DISMISS_MS);
+
+      return () => {
+        if (dismissTimerRef.current) {
+          clearTimeout(dismissTimerRef.current);
+          dismissTimerRef.current = null;
+        }
+      };
+    }
+  }, [tooltip?.visible, tooltip?.mode, dismissTooltip]);
+
+  // Close tooltip when clicking outside (with delay to avoid race condition)
+  useEffect(() => {
+    if (!tooltip?.visible) return;
+
     const handleClickOutside = (e: MouseEvent) => {
-      if (
-        tooltipRef.current &&
-        !tooltipRef.current.contains(e.target as Node)
-      ) {
-        setTooltip(null);
-        setHoveredIndex(null);
+      // Don't dismiss if clicking inside the tooltip
+      if (tooltipRef.current?.contains(e.target as Node)) {
+        return;
+      }
+      // Don't dismiss if clicking on an annotatable element (it will open a new tooltip)
+      const target = e.target as HTMLElement;
+      if (target.closest("[data-annotation-index]")) {
+        return;
+      }
+      dismissTooltip();
+    };
+
+    // Use setTimeout to avoid the opening click triggering immediate close
+    const timeoutId = setTimeout(() => {
+      document.addEventListener("click", handleClickOutside);
+    }, 100);
+
+    return () => {
+      clearTimeout(timeoutId);
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [tooltip?.visible, dismissTooltip]);
+
+  // Close tooltip on Escape key
+  useEffect(() => {
+    if (!tooltip?.visible) return;
+
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        dismissTooltip();
       }
     };
 
-    if (tooltip?.visible) {
-      document.addEventListener("mousedown", handleClickOutside);
-      return () =>
-        document.removeEventListener("mousedown", handleClickOutside);
-    }
-  }, [tooltip?.visible]);
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [tooltip?.visible, dismissTooltip]);
+
+  // Close tooltip on scroll (since fixed positioning doesn't track element movement)
+  useEffect(() => {
+    if (!tooltip?.visible) return;
+
+    const handleScroll = () => {
+      dismissTooltip();
+    };
+
+    // Use passive listener for better scroll performance
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [tooltip?.visible, dismissTooltip]);
 
   const handleBookmark = () => {
     if (!tooltip) return;
@@ -194,12 +281,13 @@ export default function ContentAnnotations({
     const text = element.textContent || "";
     const existingAnnotation = annotations.get(index);
 
+    // Use viewport-relative coordinates for fixed positioning
     setTooltip({
       visible: true,
       elementIndex: index,
       elementText: text,
-      x: rect.left - 10,
-      y: rect.top + window.scrollY,
+      x: rect.left,
+      y: rect.top, // Viewport-relative for fixed positioning
       mode: "actions",
       existingAnnotation,
     });
@@ -316,8 +404,13 @@ export default function ContentAnnotations({
           ref={tooltipRef}
           className="fixed z-50 w-64 rounded-lg border border-neutral-200 bg-white p-3 shadow-lg dark:border-dark-border dark:bg-dark-surface"
           style={{
-            left: Math.max(16, tooltip.x - 260),
-            top: tooltip.y,
+            // Position to the left of the element, clamped to screen bounds
+            left: Math.max(
+              16,
+              Math.min(tooltip.x - 270, window.innerWidth - 280)
+            ),
+            // Clamp vertical position to stay within viewport
+            top: Math.max(16, Math.min(tooltip.y, window.innerHeight - 200)),
           }}
         >
           {tooltip.mode === "actions" ? (
