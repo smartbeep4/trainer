@@ -8,6 +8,7 @@ import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypeMermaid from "rehype-mermaid";
 
 export default defineConfig({
   site: "https://developer-of-tomorrow.onrender.com",
@@ -17,7 +18,10 @@ export default defineConfig({
     react(),
     tailwind({ applyBaseStyles: false }),
     mdx({
-      syntaxHighlight: "shiki",
+      syntaxHighlight: {
+        type: "shiki",
+        excludeLangs: ["mermaid"],
+      },
       shikiConfig: {
         themes: {
           light: "github-light",
@@ -26,6 +30,12 @@ export default defineConfig({
       },
       remarkPlugins: [remarkMath],
       rehypePlugins: [
+        [
+          rehypeMermaid,
+          {
+            strategy: "pre-mermaid",
+          },
+        ],
         rehypeKatex,
         rehypeSlug,
         [rehypeAutolinkHeadings, { behavior: "wrap" }],

@@ -155,49 +155,88 @@ const breadcrumbItems = [
 </BaseLayout>
 
 <script>
-  // Initialize Mermaid diagrams
+  // Initialize Mermaid diagrams with beautiful themes
   import mermaid from "mermaid";
+
+  // Beautiful theme configuration
+  const lightThemeVariables = {
+    // Modern gradient-friendly palette
+    primaryColor: "#6366f1", // Indigo
+    primaryTextColor: "#ffffff",
+    primaryBorderColor: "#4f46e5",
+    secondaryColor: "#f0abfc", // Pink/fuchsia
+    secondaryTextColor: "#1e1b4b",
+    secondaryBorderColor: "#d946ef",
+    tertiaryColor: "#a5f3fc", // Cyan
+    tertiaryTextColor: "#164e63",
+    tertiaryBorderColor: "#06b6d4",
+    // Lines and text
+    lineColor: "#6b7280",
+    textColor: "#374151",
+    // Background
+    background: "#ffffff",
+    mainBkg: "#f8fafc",
+    // Nodes
+    nodeBorder: "#e5e7eb",
+    nodeTextColor: "#1f2937",
+    // Flowchart specific
+    clusterBkg: "#f1f5f9",
+    clusterBorder: "#cbd5e1",
+    // State diagram
+    labelColor: "#374151",
+    edgeLabelBackground: "#ffffff",
+  };
+
+  const darkThemeVariables = {
+    // Modern dark palette
+    primaryColor: "#818cf8", // Lighter indigo for dark mode
+    primaryTextColor: "#ffffff",
+    primaryBorderColor: "#6366f1",
+    secondaryColor: "#f0abfc",
+    secondaryTextColor: "#faf5ff",
+    secondaryBorderColor: "#e879f9",
+    tertiaryColor: "#22d3ee",
+    tertiaryTextColor: "#083344",
+    tertiaryBorderColor: "#06b6d4",
+    // Lines and text
+    lineColor: "#9ca3af",
+    textColor: "#e5e7eb",
+    // Background
+    background: "#0f0f10",
+    mainBkg: "#18181b",
+    // Nodes
+    nodeBorder: "#3f3f46",
+    nodeTextColor: "#f4f4f5",
+    // Flowchart specific
+    clusterBkg: "#27272a",
+    clusterBorder: "#52525b",
+    // State diagram
+    labelColor: "#e5e7eb",
+    edgeLabelBackground: "#27272a",
+  };
 
   function initMermaid() {
     const isDark = document.documentElement.classList.contains("dark");
 
     mermaid.initialize({
       startOnLoad: false,
-      theme: isDark ? "dark" : "default",
+      theme: "base",
       securityLevel: "loose",
-      fontFamily: "Inter Variable, Inter, system-ui, sans-serif",
+      fontFamily: "Inter, system-ui, sans-serif",
       flowchart: {
         curve: "basis",
         padding: 20,
+        htmlLabels: true,
+        useMaxWidth: true,
       },
-      themeVariables: isDark
-        ? {
-            primaryColor: "#3b82f6",
-            primaryTextColor: "#fff",
-            primaryBorderColor: "#1d4ed8",
-            lineColor: "#6b7280",
-            secondaryColor: "#27272a",
-            tertiaryColor: "#18181b",
-            background: "#0f0f10",
-            mainBkg: "#18181b",
-            nodeBorder: "#3f3f46",
-            clusterBkg: "#27272a",
-            clusterBorder: "#3f3f46",
-            titleColor: "#f5f5f5",
-            edgeLabelBackground: "#27272a",
-          }
-        : {
-            primaryColor: "#3b82f6",
-            primaryTextColor: "#fff",
-            primaryBorderColor: "#2563eb",
-            lineColor: "#6b7280",
-          },
+      themeVariables: isDark ? darkThemeVariables : lightThemeVariables,
     });
 
-    // Find and render mermaid code blocks
-    mermaid.run({
-      querySelector: ".mermaid, pre > code.language-mermaid",
-    });
+    // Find and render mermaid elements (pre-mermaid strategy creates <pre class="mermaid">)
+    const elements = document.querySelectorAll<HTMLPreElement>("pre.mermaid");
+    if (elements.length > 0) {
+      mermaid.run({ nodes: Array.from(elements) });
+    }
   }
 
   // Initialize on load
@@ -213,8 +252,14 @@ const breadcrumbItems = [
   const observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
       if (mutation.attributeName === "class") {
-        document.querySelectorAll(".mermaid, pre > code.language-mermaid").forEach((el) => {
+        // Reset mermaid elements for re-rendering
+        document.querySelectorAll<HTMLPreElement>("pre.mermaid[data-processed]").forEach((el) => {
           el.removeAttribute("data-processed");
+          // Get original content from the SVG and restore it
+          const svg = el.querySelector("svg");
+          if (svg && el.dataset.originalContent) {
+            el.innerHTML = el.dataset.originalContent;
+          }
         });
         initMermaid();
       }
@@ -224,6 +269,13 @@ const breadcrumbItems = [
   observer.observe(document.documentElement, {
     attributes: true,
     attributeFilter: ["class"],
+  });
+
+  // Store original content before mermaid processes it
+  document.querySelectorAll<HTMLPreElement>("pre.mermaid").forEach((el) => {
+    if (!el.dataset.originalContent) {
+      el.dataset.originalContent = el.textContent || "";
+    }
   });
 </script>
 
@@ -241,7 +293,9 @@ const breadcrumbItems = [
     @apply my-6;
   }
 
-  .prose-custom :global(.mermaid) {
+  .prose-custom :global(.mermaid),
+  .prose-custom :global(picture[data-mermaid-diagram]),
+  .prose-custom :global(p:has(> picture:only-child)) {
     @apply my-8;
   }
 

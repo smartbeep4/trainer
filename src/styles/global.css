@@ -361,12 +361,74 @@
 }
 
 /* Mermaid diagram styling */
-.mermaid {
-  @apply my-6 flex justify-center;
+pre.mermaid {
+  @apply my-8 flex justify-center overflow-x-auto rounded-xl p-6;
+  @apply border border-neutral-200 bg-white shadow-sm;
+  @apply dark:border-neutral-700 dark:bg-neutral-900;
 }
 
-.mermaid svg {
+pre.mermaid svg {
   @apply max-w-full;
+  max-height: 600px;
+  height: auto;
+}
+
+/* Mermaid diagram node styling enhancements */
+pre.mermaid .node rect,
+pre.mermaid .node circle,
+pre.mermaid .node ellipse,
+pre.mermaid .node polygon,
+pre.mermaid .node path {
+  @apply transition-all duration-200;
+}
+
+pre.mermaid .node:hover rect,
+pre.mermaid .node:hover circle,
+pre.mermaid .node:hover ellipse,
+pre.mermaid .node:hover polygon {
+  filter: brightness(1.05);
+}
+
+/* Edge styling */
+pre.mermaid .edge path {
+  stroke-width: 2px;
+}
+
+/* Cluster/subgraph styling */
+pre.mermaid .cluster rect {
+  @apply rounded-lg;
+}
+
+/* Label styling */
+pre.mermaid .edgeLabel {
+  @apply rounded px-2 py-1;
+}
+
+/* Server-rendered mermaid diagrams (rehype-mermaid) */
+picture[data-mermaid-diagram],
+.rehype-mermaid-figure,
+p:has(> picture:only-child) {
+  @apply my-8 flex justify-center;
+}
+
+picture[data-mermaid-diagram] img,
+.rehype-mermaid-figure img {
+  @apply max-w-full rounded-lg shadow-sm;
+  @apply border border-neutral-200 dark:border-neutral-700;
+  @apply bg-white dark:bg-neutral-900;
+}
+
+/* Make mermaid diagrams responsive */
+picture[data-mermaid-diagram],
+.rehype-mermaid-figure {
+  @apply w-full overflow-x-auto;
+}
+
+picture[data-mermaid-diagram] img,
+.rehype-mermaid-figure img {
+  @apply mx-auto block;
+  max-height: 600px;
+  height: auto;
 }
 
 /* Code block styling enhancements */
