@@ -519,64 +519,78 @@ graph LR
 ## Knowledge Check
 
 <Quiz
-  client:load
+  client:visible
+  quizId="module-14-knowledge-check"
+  moduleSlug="prompt-engineering-mastery"
   questions={[
     {
+      id: "q1",
+      type: "multiple-choice",
       question: "What is the primary reason Chain-of-Thought prompting improves accuracy on complex reasoning tasks?",
       options: [
-        "It makes the model work harder by using more compute",
-        "It uses more tokens, giving the model more context",
-        "Training data contains more correct answers that show reasoning steps",
-        "It forces the model to check its work against external sources"
+        { id: "a", text: "It makes the model work harder by using more compute" },
+        { id: "b", text: "It uses more tokens, giving the model more context" },
+        { id: "c", text: "Training data contains more correct answers that show reasoning steps" },
+        { id: "d", text: "It forces the model to check its work against external sources" }
       ],
-      correctAnswer: 2,
+      correctAnswer: "c",
       explanation: "CoT works because training data (especially educational and technical content) frequently includes correct answers with reasoning steps shown. When you prompt for step-by-step thinking, you're priming the model to match those patterns, which are statistically more likely to lead to correct conclusions."
     },
     {
+      id: "q2",
+      type: "multiple-choice",
       question: "When is Chain-of-Verification (CoV) LEAST useful?",
       options: [
-        "When generating factual technical documentation",
-        "When solving multi-step math problems",
-        "When lives or large sums of money depend on accuracy",
-        "When writing code that will be reviewed by humans"
+        { id: "a", text: "When generating factual technical documentation" },
+        { id: "b", text: "When solving multi-step math problems" },
+        { id: "c", text: "When lives or large sums of money depend on accuracy" },
+        { id: "d", text: "When writing code that will be reviewed by humans" }
       ],
-      correctAnswer: 2,
+      correctAnswer: "c",
       explanation: "CoV has inherent limitations because it's the same model verifying itself. For critical applications where accuracy is life-or-death or involves significant financial risk, you must verify outputs against authoritative external sources, not rely on model self-verification."
     },
     {
+      id: "q3",
+      type: "multiple-choice",
       question: "Which component is most important for consistent, structured outputs?",
       options: [
-        "Polite language like 'please' and 'thank you'",
-        "Explicit output format specification",
-        "Multiple examples of unrelated tasks",
-        "Warnings about consequences for bad outputs"
+        { id: "a", text: "Polite language like 'please' and 'thank you'" },
+        { id: "b", text: "Explicit output format specification" },
+        { id: "c", text: "Multiple examples of unrelated tasks" },
+        { id: "d", text: "Warnings about consequences for bad outputs" }
       ],
-      correctAnswer: 1,
+      correctAnswer: "b",
       explanation: "Specifying the output format (JSON structure, markdown sections, specific fields) is crucial for consistent, parseable outputs. Models respond well to explicit structure. Politeness doesn't affect output quality, unrelated examples add noise, and warnings are meaningless to models."
     },
     {
+      id: "q4",
+      type: "multiple-choice",
       question: "Tree-of-Thoughts (ToT) is most valuable for which type of task?",
       options: [
-        "Simple fact retrieval",
-        "Complex problems with multiple viable solution approaches",
-        "Generating short, concise summaries",
-        "Tasks requiring maximum speed and minimum latency"
+        { id: "a", text: "Simple fact retrieval" },
+        { id: "b", text: "Complex problems with multiple viable solution approaches" },
+        { id: "c", text: "Generating short, concise summaries" },
+        { id: "d", text: "Tasks requiring maximum speed and minimum latency" }
       ],
-      correctAnswer: 1,
+      correctAnswer: "b",
       explanation: "ToT shines when problems have multiple potential approaches that need exploration and evaluation. It's overkill for simple tasks, counterproductive for tasks requiring conciseness, and too slow for latency-critical applications."
     },
     {
+      id: "q5",
+      type: "multiple-choice",
       question: "What is the most effective way to improve an underperforming prompt?",
       options: [
-        "Make it longer and more detailed",
-        "Add more polite language",
-        "Test against diverse inputs, identify failure patterns, and make targeted improvements",
-        "Repeat the same instruction multiple times"
+        { id: "a", text: "Make it longer and more detailed" },
+        { id: "b", text: "Add more polite language" },
+        { id: "c", text: "Test against diverse inputs, identify failure patterns, and make targeted improvements" },
+        { id: "d", text: "Repeat the same instruction multiple times" }
       ],
-      correctAnswer: 2,
+      correctAnswer: "c",
       explanation: "Prompt optimization is empirical. The systematic approach is: test against diverse inputs, identify where and why it fails, hypothesize improvements, implement changes, and test again. Simply making prompts longer or repeating instructions doesn't address underlying issues."
     }
   ]}
+  passingScore={70}
+  allowRetry={true}
 />
 
 ## Summary

@@ -507,64 +507,78 @@ graph TD
 ## Knowledge Check
 
 <Quiz
-  client:load
+  client:visible
+  quizId="module-16-knowledge-check"
+  moduleSlug="tool-use-function-calling"
   questions={[
     {
+      id: "q1",
+      type: "multiple-choice",
       question: "What is the primary purpose of the tool description field in a tool definition?",
       options: [
-        "To document the tool for developers",
-        "To help the model decide when to use the tool and how to call it correctly",
-        "To validate the tool's response format",
-        "To set rate limits on tool usage"
+        { id: "a", text: "To document the tool for developers" },
+        { id: "b", text: "To help the model decide when to use the tool and how to call it correctly" },
+        { id: "c", text: "To validate the tool's response format" },
+        { id: "d", text: "To set rate limits on tool usage" }
       ],
-      correctAnswer: 1,
+      correctAnswer: "b",
       explanation: "The description is critical for the model's decision-making. It reads the description to understand when the tool should be used, what it does, and how to format requests. A poor description leads to the model using wrong tools or failing to use tools when appropriate."
     },
     {
+      id: "q2",
+      type: "multiple-choice",
       question: "When a model requests multiple tool calls simultaneously, what is the recommended approach?",
       options: [
-        "Execute them one at a time in order received",
-        "Reject multiple tool calls and ask for one at a time",
-        "Execute independent tools in parallel, dependent tools sequentially",
-        "Always execute all tools in parallel regardless of dependencies"
+        { id: "a", text: "Execute them one at a time in order received" },
+        { id: "b", text: "Reject multiple tool calls and ask for one at a time" },
+        { id: "c", text: "Execute independent tools in parallel, dependent tools sequentially" },
+        { id: "d", text: "Always execute all tools in parallel regardless of dependencies" }
       ],
-      correctAnswer: 2,
+      correctAnswer: "c",
       explanation: "Independent tool calls should be parallelized for efficiency. However, if tools have dependencies, they must be executed sequentially. Understanding the dependency graph is key to optimal execution."
     },
     {
+      id: "q3",
+      type: "multiple-choice",
       question: "Which security practice is MOST important for tools that can modify data?",
       options: [
-        "Rate limiting",
-        "Logging all calls",
-        "Input validation and scope restriction",
-        "Caching responses"
+        { id: "a", text: "Rate limiting" },
+        { id: "b", text: "Logging all calls" },
+        { id: "c", text: "Input validation and scope restriction" },
+        { id: "d", text: "Caching responses" }
       ],
-      correctAnswer: 2,
+      correctAnswer: "c",
       explanation: "While all options are valuable, input validation and scope restriction are most critical for write operations. A model might generate malicious or malformed input. Validating inputs and restricting tools to operate only within appropriate scope prevents data corruption, unauthorized access, and security breaches."
     },
     {
+      id: "q4",
+      type: "multiple-choice",
       question: "What should a tool return when it encounters an error?",
       options: [
-        "An empty response",
-        "A structured error object with type, message, and suggested action",
-        "The exception stack trace",
-        "A boolean false"
+        { id: "a", text: "An empty response" },
+        { id: "b", text: "A structured error object with type, message, and suggested action" },
+        { id: "c", text: "The exception stack trace" },
+        { id: "d", text: "A boolean false" }
       ],
-      correctAnswer: 1,
+      correctAnswer: "b",
       explanation: "The model needs actionable information to respond appropriately to users. A structured error with type, message, and suggestion enables the model to communicate effectively. Empty responses confuse the model; stack traces may leak sensitive info; booleans provide no context for recovery."
     },
     {
+      id: "q5",
+      type: "multiple-choice",
       question: "Why should tools be designed as atomic actions rather than combining multiple operations?",
       options: [
-        "Atomic tools are faster to execute",
-        "Atomic tools are easier for the model to understand, safer, and more composable",
-        "Atomic tools use less memory",
-        "Atomic tools require fewer API calls"
+        { id: "a", text: "Atomic tools are faster to execute" },
+        { id: "b", text: "Atomic tools are easier for the model to understand, safer, and more composable" },
+        { id: "c", text: "Atomic tools use less memory" },
+        { id: "d", text: "Atomic tools require fewer API calls" }
       ],
-      correctAnswer: 1,
+      correctAnswer: "b",
       explanation: "Atomic tools are easier for the model to understand since each does one clear thing. They are safer because errors have limited blast radius. They are easier to test since each function is isolated. They are more composable since the model can combine them for complex workflows."
     }
   ]}
+  passingScore={70}
+  allowRetry={true}
 />
 
 ## Summary

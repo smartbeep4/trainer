@@ -633,64 +633,78 @@ graph TB
 ## Knowledge Check
 
 <Quiz
-  client:load
+  client:visible
+  quizId="module-11-knowledge-check"
+  moduleSlug="diffusion-multimodal-ai"
   questions={[
     {
+      id: "q1",
+      type: "multiple-choice",
       question: "What is the core principle behind diffusion models for image generation?",
       options: [
-        "They learn to directly sample from the data distribution",
-        "They learn to reverse a gradual noise addition process",
-        "They use adversarial training between generator and discriminator",
-        "They compress images into discrete tokens for generation"
+        { id: "a", text: "They learn to directly sample from the data distribution" },
+        { id: "b", text: "They learn to reverse a gradual noise addition process" },
+        { id: "c", text: "They use adversarial training between generator and discriminator" },
+        { id: "d", text: "They compress images into discrete tokens for generation" }
       ],
-      correctAnswer: 1,
+      correctAnswer: "b",
       explanation: "Diffusion models work by first defining a forward process that gradually adds noise to images until they become pure noise, then learning the reverse process to denoise. During generation, the model starts from pure noise and iteratively removes it to produce a clean image."
     },
     {
+      id: "q2",
+      type: "multiple-choice",
       question: "How does CLIP enable text-to-image generation?",
       options: [
-        "CLIP directly generates images from text",
-        "CLIP learns a shared embedding space where text and images with similar meanings are close together",
-        "CLIP translates text into pixel values",
-        "CLIP provides a loss function that measures image quality"
+        { id: "a", text: "CLIP directly generates images from text" },
+        { id: "b", text: "CLIP learns a shared embedding space where text and images with similar meanings are close together" },
+        { id: "c", text: "CLIP translates text into pixel values" },
+        { id: "d", text: "CLIP provides a loss function that measures image quality" }
       ],
-      correctAnswer: 1,
+      correctAnswer: "b",
       explanation: "CLIP uses contrastive learning to train encoders that produce embeddings in the same vector space for both text and images. Matching text-image pairs have similar embeddings, allowing diffusion models to use CLIP text embeddings as conditioning to guide image generation toward content that matches the text description."
     },
     {
+      id: "q3",
+      type: "multiple-choice",
       question: "What is the primary advantage of latent diffusion models over pixel-space diffusion?",
       options: [
-        "Higher image quality",
-        "Better text conditioning",
-        "Computational efficiency through operating on compressed representations",
-        "Simpler training objectives"
+        { id: "a", text: "Higher image quality" },
+        { id: "b", text: "Better text conditioning" },
+        { id: "c", text: "Computational efficiency through operating on compressed representations" },
+        { id: "d", text: "Simpler training objectives" }
       ],
-      correctAnswer: 2,
+      correctAnswer: "c",
       explanation: "Latent diffusion models compress images using a VAE before running diffusion, reducing the data size dramatically (for example, from 512x512 to 64x64). This makes training and inference 10-100x faster while maintaining comparable quality."
     },
     {
+      id: "q4",
+      type: "multiple-choice",
       question: "What challenge do vision-language models still struggle with most?",
       options: [
-        "Basic object recognition",
-        "Generating natural language responses",
-        "Precise spatial reasoning and counting",
-        "Processing images of different sizes"
+        { id: "a", text: "Basic object recognition" },
+        { id: "b", text: "Generating natural language responses" },
+        { id: "c", text: "Precise spatial reasoning and counting" },
+        { id: "d", text: "Processing images of different sizes" }
       ],
-      correctAnswer: 2,
+      correctAnswer: "c",
       explanation: "Current VLMs struggle with precise spatial reasoning ('What is to the left of X?') and accurate counting ('How many cats are there?'). They excel at recognition, captioning, and qualitative understanding, but quantitative and precise spatial tasks remain challenging."
     },
     {
+      id: "q5",
+      type: "multiple-choice",
       question: "What is classifier-free guidance in diffusion models?",
       options: [
-        "A technique for classifying generated images into categories",
-        "A method that amplifies conditioning by comparing conditional and unconditional predictions",
-        "A way to train diffusion models without labeled data",
-        "An approach for filtering out low-quality generations"
+        { id: "a", text: "A technique for classifying generated images into categories" },
+        { id: "b", text: "A method that amplifies conditioning by comparing conditional and unconditional predictions" },
+        { id: "c", text: "A way to train diffusion models without labeled data" },
+        { id: "d", text: "An approach for filtering out low-quality generations" }
       ],
-      correctAnswer: 1,
+      correctAnswer: "b",
       explanation: "Classifier-free guidance runs the denoiser twice (with and without text conditioning) and amplifies the difference between these predictions. This pushes the output more strongly toward matching the prompt, improving adherence at the cost of some diversity."
     }
   ]}
+  passingScore={70}
+  allowRetry={true}
 />
 
 ## Summary

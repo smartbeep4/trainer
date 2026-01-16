@@ -635,64 +635,78 @@ graph TB
 ## Knowledge Check
 
 <Quiz
-  client:load
+  client:visible
+  quizId="module-15-knowledge-check"
+  moduleSlug="ai-agents-architecture"
   questions={[
     {
+      id: "q1",
+      type: "multiple-choice",
       question: "What is the fundamental difference between a chatbot and an AI agent?",
       options: [
-        "Agents use larger language models",
-        "Agents pursue goals over multiple steps and take actions in their environment",
-        "Agents have more training data",
-        "Agents can process images and audio"
+        { id: "a", text: "Agents use larger language models" },
+        { id: "b", text: "Agents pursue goals over multiple steps and take actions in their environment" },
+        { id: "c", text: "Agents have more training data" },
+        { id: "d", text: "Agents can process images and audio" }
       ],
-      correctAnswer: 1,
+      correctAnswer: "b",
       explanation: "The key distinction is agency itself. Chatbots respond to prompts reactively - they answer questions but don't take initiative. Agents pursue goals over time, make decisions about what actions to take, observe results, and adapt their behavior. They interact with their environment to accomplish tasks, not just generate text responses."
     },
     {
+      id: "q2",
+      type: "multiple-choice",
       question: "Why do agents need multiple types of memory (short-term, working, long-term)?",
       options: [
-        "To make them more expensive to run",
-        "Short-term memory handles immediate context, working memory tracks task state, and long-term memory provides persistent knowledge",
-        "It's a marketing feature",
-        "To slow down processing"
+        { id: "a", text: "To make them more expensive to run" },
+        { id: "b", text: "Short-term memory handles immediate context, working memory tracks task state, and long-term memory provides persistent knowledge" },
+        { id: "c", text: "It's a marketing feature" },
+        { id: "d", text: "To slow down processing" }
       ],
-      correctAnswer: 1,
+      correctAnswer: "b",
       explanation: "Each memory type serves a distinct purpose. Short-term memory (context window) holds immediate conversation and recent actions. Working memory (scratchpad) tracks structured task state - current goal, plan, findings, failed approaches. Long-term memory (retrieval systems) stores persistent knowledge that exceeds context limits. Together, they enable agents to maintain context, learn from attempts, and leverage accumulated knowledge."
     },
     {
+      id: "q3",
+      type: "multiple-choice",
       question: "What is the most critical safety principle for production agents?",
       options: [
-        "Use the largest possible model",
-        "Give agents maximum permissions for flexibility",
-        "Defense in depth: multiple layers of protection including sandboxing, permissions, rate limits, and human oversight",
-        "Trust the LLM's judgment completely"
+        { id: "a", text: "Use the largest possible model" },
+        { id: "b", text: "Give agents maximum permissions for flexibility" },
+        { id: "c", text: "Defense in depth: multiple layers of protection including sandboxing, permissions, rate limits, and human oversight" },
+        { id: "d", text: "Trust the LLM's judgment completely" }
       ],
-      correctAnswer: 2,
+      correctAnswer: "c",
       explanation: "Production agents require defense in depth. No single safety measure is sufficient. Sandboxing restricts what actions can affect. Permissions control what's allowed. Rate limits prevent runaway resource consumption. Human oversight catches what automated systems miss. Each layer catches failures that slip through others."
     },
     {
+      id: "q4",
+      type: "multiple-choice",
       question: "When should you use a simple agent design versus a complex multi-agent system?",
       options: [
-        "Always use complex systems for better results",
-        "Start with the simplest design that could work; add complexity only when simpler approaches fail",
-        "Complex systems are always faster",
-        "Simple agents can't use tools"
+        { id: "a", text: "Always use complex systems for better results" },
+        { id: "b", text: "Start with the simplest design that could work; add complexity only when simpler approaches fail" },
+        { id: "c", text: "Complex systems are always faster" },
+        { id: "d", text: "Simple agents can't use tools" }
       ],
-      correctAnswer: 1,
+      correctAnswer: "b",
       explanation: "Complexity has costs: harder debugging, higher latency, more failure modes, greater resource usage. Simple agents are easier to understand, debug, and maintain. Start simple: can a basic tool-using LLM accomplish the task? Only add planning, reflection, or multi-agent coordination when simpler approaches demonstrably fail."
     },
     {
+      id: "q5",
+      type: "multiple-choice",
       question: "What are the three pillars of agent observability?",
       options: [
-        "Speed, accuracy, and cost",
-        "Tracing, logging, and metrics",
-        "Planning, execution, and evaluation",
-        "Input, processing, and output"
+        { id: "a", text: "Speed, accuracy, and cost" },
+        { id: "b", text: "Tracing, logging, and metrics" },
+        { id: "c", text: "Planning, execution, and evaluation" },
+        { id: "d", text: "Input, processing, and output" }
       ],
-      correctAnswer: 1,
+      correctAnswer: "b",
       explanation: "Agent observability relies on three pillars. Tracing captures what happened and in what order - the full execution path. Logging captures details at each step with timestamps and context. Metrics show aggregate patterns over time - success rates, steps per task, duration. Together, these enable debugging failures, understanding decisions, and monitoring performance."
     }
   ]}
+  passingScore={70}
+  allowRetry={true}
 />
 
 ## Summary

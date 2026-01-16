@@ -723,64 +723,78 @@ graph LR
 ## Knowledge Check
 
 <Quiz
-  client:load
+  client:visible
+  quizId="module-12-knowledge-check"
+  moduleSlug="reasoning-models-frontiers"
   questions={[
     {
+      id: "q1",
+      type: "multiple-choice",
       question: "What is the primary mechanism by which Chain-of-Thought prompting improves reasoning performance?",
       options: [
-        "It increases the model's parameter count during inference",
-        "It externalizes intermediate reasoning steps, allowing the model to reference and build on them",
-        "It accesses a separate reasoning module in the model architecture",
-        "It fine-tunes the model on the specific problem during inference"
+        { id: "a", text: "It increases the model's parameter count during inference" },
+        { id: "b", text: "It externalizes intermediate reasoning steps, allowing the model to reference and build on them" },
+        { id: "c", text: "It accesses a separate reasoning module in the model architecture" },
+        { id: "d", text: "It fine-tunes the model on the specific problem during inference" }
       ],
-      correctAnswer: 1,
+      correctAnswer: "b",
       explanation: "Chain-of-Thought works by externalizing intermediate reasoning steps into the context. This allows the model to 'see' its previous reasoning and build on it, effectively using the context window as working memory. It doesn't change parameters or access separate modules."
     },
     {
+      id: "q2",
+      type: "multiple-choice",
       question: "What distinguishes test-time compute models like o1 from standard LLMs?",
       options: [
-        "They use larger parameter counts for every query",
-        "They spend variable amounts of compute based on problem difficulty, thinking longer on harder problems",
-        "They require less compute than standard models",
-        "They only work on mathematical problems"
+        { id: "a", text: "They use larger parameter counts for every query" },
+        { id: "b", text: "They spend variable amounts of compute based on problem difficulty, thinking longer on harder problems" },
+        { id: "c", text: "They require less compute than standard models" },
+        { id: "d", text: "They only work on mathematical problems" }
       ],
-      correctAnswer: 1,
+      correctAnswer: "b",
       explanation: "The key innovation of test-time compute models is variable inference compute. They can spend more reasoning tokens on difficult problems, effectively 'thinking longer' before responding. This contrasts with standard LLMs that use fixed compute per token regardless of difficulty."
     },
     {
+      id: "q3",
+      type: "multiple-choice",
       question: "In a Mixture of Experts architecture, what is the role of the router?",
       options: [
-        "To compress the model for faster inference",
-        "To decide which subset of expert networks should process each token",
-        "To translate between different languages",
-        "To store the model's long-term memory"
+        { id: "a", text: "To compress the model for faster inference" },
+        { id: "b", text: "To decide which subset of expert networks should process each token" },
+        { id: "c", text: "To translate between different languages" },
+        { id: "d", text: "To store the model's long-term memory" }
       ],
-      correctAnswer: 1,
+      correctAnswer: "b",
       explanation: "The router in MoE architectures examines each token and determines which experts (typically top-1 or top-2 out of many) should process it. This selective activation enables large total parameter counts with lower active compute per token."
     },
     {
+      id: "q4",
+      type: "multiple-choice",
       question: "Which of the following is NOT a significant limitation of current AI benchmarks?",
       options: [
-        "Potential contamination from benchmark data appearing in training sets",
-        "Narrow task formats that don't capture real-world complexity",
-        "Benchmarks being too difficult for any model to make progress",
-        "Risk of models being optimized specifically for benchmarks rather than general capability"
+        { id: "a", text: "Potential contamination from benchmark data appearing in training sets" },
+        { id: "b", text: "Narrow task formats that don't capture real-world complexity" },
+        { id: "c", text: "Benchmarks being too difficult for any model to make progress" },
+        { id: "d", text: "Risk of models being optimized specifically for benchmarks rather than general capability" }
       ],
-      correctAnswer: 2,
+      correctAnswer: "c",
       explanation: "Current frontier models perform very well on most benchmarks, often approaching or exceeding human performance. The real limitations are contamination, narrow formats, and benchmark-specific optimization. The challenge is often that benchmarks are too easy or narrow, not too hard."
     },
     {
+      id: "q5",
+      type: "multiple-choice",
       question: "What advantage does self-consistency provide over a single Chain-of-Thought response?",
       options: [
-        "It reduces the number of tokens generated",
-        "Correct reasoning paths tend to converge while incorrect paths vary, so majority voting improves accuracy",
-        "It allows the model to access more training data",
-        "It bypasses the model's safety filters"
+        { id: "a", text: "It reduces the number of tokens generated" },
+        { id: "b", text: "Correct reasoning paths tend to converge while incorrect paths vary, so majority voting improves accuracy" },
+        { id: "c", text: "It allows the model to access more training data" },
+        { id: "d", text: "It bypasses the model's safety filters" }
       ],
-      correctAnswer: 1,
+      correctAnswer: "b",
       explanation: "Self-consistency samples multiple reasoning chains and uses majority voting. Correct reasoning tends to converge on the same answer, while different errors produce varied wrong answers. With enough samples, the correct answer typically wins the vote."
     }
   ]}
+  passingScore={70}
+  allowRetry={true}
 />
 
 ## Summary
