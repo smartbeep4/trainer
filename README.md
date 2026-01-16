@@ -97,8 +97,8 @@ This entire project was built using a structured AI-assisted workflow that demon
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-org/developer-of-tomorrow.git
-cd developer-of-tomorrow
+git clone https://github.com/smartbeep4/trainer.git
+cd trainer
 
 # Install dependencies
 npm install
