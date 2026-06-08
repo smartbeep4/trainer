@@ -695,7 +695,9 @@ graph TB
 ## Knowledge Check
 
 <Quiz
-  client:load
+  client:visible
+  quizId="module-11-knowledge-check"
+  moduleSlug="diffusion-multimodal-ai"
   questions={[
     {
       question:
@@ -711,6 +713,8 @@ graph TB
         "Diffusion models work by first defining a forward process that gradually adds noise to images until they become pure noise, then learning the reverse process to denoise. During generation, the model starts from pure noise and iteratively removes it to produce a clean image.",
     },
     {
+      id: "q2",
+      type: "multiple-choice",
       question: "How does CLIP enable text-to-image generation?",
       options: [
         "CLIP directly generates images from text",
@@ -749,6 +753,8 @@ graph TB
         "Current VLMs struggle with precise spatial reasoning ('What is to the left of X?') and accurate counting ('How many cats are there?'). They excel at recognition, captioning, and qualitative understanding, but quantitative and precise spatial tasks remain challenging.",
     },
     {
+      id: "q5",
+      type: "multiple-choice",
       question: "What is classifier-free guidance in diffusion models?",
       options: [
         "A technique for classifying generated images into categories",
@@ -761,6 +767,8 @@ graph TB
         "Classifier-free guidance runs the denoiser twice (with and without text conditioning) and amplifies the difference between these predictions. This pushes the output more strongly toward matching the prompt, improving adherence at the cost of some diversity.",
     },
   ]}
+  passingScore={70}
+  allowRetry={true}
 />
 
 ## Summary
@@ -786,27 +794,38 @@ In the next module, we will explore reasoning models and the frontiers of AI cap
 ### Foundational Papers
 
 - Ho, J., Jain, A., & Abbeel, P. (2020). "Denoising Diffusion Probabilistic Models." NeurIPS 2020. The paper that established modern diffusion models.
+  [arxiv.org/abs/2006.11239](https://arxiv.org/abs/2006.11239)
 
 - Song, J., Meng, C., & Ermon, S. (2020). "Denoising Diffusion Implicit Models." ICLR 2021. Introduced DDIM for faster sampling.
+  [arxiv.org/abs/2010.02502](https://arxiv.org/abs/2010.02502)
 
 - Rombach, R., et al. (2022). "High-Resolution Image Synthesis with Latent Diffusion Models." CVPR 2022. The Stable Diffusion paper.
+  [arxiv.org/abs/2112.10752](https://arxiv.org/abs/2112.10752)
 
 - Radford, A., et al. (2021). "Learning Transferable Visual Models From Natural Language Supervision." ICML 2021. The CLIP paper.
+  [arxiv.org/abs/2103.00020](https://arxiv.org/abs/2103.00020)
 
 - Liu, H., et al. (2023). "Visual Instruction Tuning." NeurIPS 2023. The LLaVA paper on efficient vision-language model training.
+  [arxiv.org/abs/2304.08485](https://arxiv.org/abs/2304.08485)
 
 ### Tutorials and Resources
 
-- "The Illustrated Stable Diffusion" by Jay Alammar. Visual explanation of diffusion model mechanics.
+- **"The Illustrated Stable Diffusion"** by Jay Alammar. Visual explanation of diffusion model mechanics.
+  [jalammar.github.io/illustrated-stable-diffusion](https://jalammar.github.io/illustrated-stable-diffusion/)
 
-- "What are Diffusion Models?" by Lilian Weng. Comprehensive technical overview of diffusion theory.
+- **"What are Diffusion Models?"** by Lilian Weng. Comprehensive technical overview of diffusion theory.
+  [lilianweng.github.io/posts/2021-07-11-diffusion-models](https://lilianweng.github.io/posts/2021-07-11-diffusion-models/)
 
-- Hugging Face Diffusers documentation. Practical guides for implementing and using diffusion models.
+- **Hugging Face Diffusers documentation.** Practical guides for implementing and using diffusion models.
+  [huggingface.co/docs/diffusers](https://huggingface.co/docs/diffusers)
 
 ### Tools
 
-- Stable Diffusion WebUI (Automatic1111). Popular interface for local image generation.
+- **Stable Diffusion WebUI (Automatic1111).** Popular interface for local image generation.
+  [github.com/AUTOMATIC1111/stable-diffusion-webui](https://github.com/AUTOMATIC1111/stable-diffusion-webui)
 
-- ComfyUI. Node-based interface for complex diffusion workflows.
+- **ComfyUI.** Node-based interface for complex diffusion workflows.
+  [github.com/comfyanonymous/ComfyUI](https://github.com/comfyanonymous/ComfyUI)
 
-- Hugging Face Diffusers library. Python library for working with diffusion models programmatically.
+- **Hugging Face Diffusers library.** Python library for working with diffusion models programmatically.
+  [github.com/huggingface/diffusers](https://github.com/huggingface/diffusers)
