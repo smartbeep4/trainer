@@ -47,7 +47,12 @@ Character-level tokenization makes each character a token so vocabulary is tiny 
 Each approach trades vocabulary size against sequence length. Modern tokenization finds a middle ground.
 
 <Info title="Why Tokenization Matters for Developers">
-Understanding tokenization is not just academic. Token limits mean GPT-4's context window is measured in tokens, not words. A 128K token limit might be 90K-100K words depending on content. API costs from OpenAI, Anthropic, and other providers are charged per token. Code with short tokens like braces and equals signs uses more tokens per line than prose. Model behavior is affected because tokenization affects what the model "sees".
+  Understanding tokenization is not just academic. Token limits mean GPT-4's
+  context window is measured in tokens, not words. A 128K token limit might be
+  90K-100K words depending on content. API costs from OpenAI, Anthropic, and
+  other providers are charged per token. Code with short tokens like braces and
+  equals signs uses more tokens per line than prose. Model behavior is affected
+  because tokenization affects what the model "sees".
 </Info>
 
 ---
@@ -61,7 +66,12 @@ Modern language models use subword tokenization, which splits text into pieces s
 The key insight is that you can represent any text with a fixed, manageable vocabulary by allowing words to be decomposed into subparts.
 
 <Definition term="Byte Pair Encoding (BPE)">
-The most widely used subword tokenization algorithm, used by GPT models. BPE starts with a character-level vocabulary, counts all adjacent pair frequencies in the training corpus, merges the most frequent pair into a new token, and repeats until vocabulary reaches target size. This learns which character sequences commonly appear together, creating tokens that balance vocabulary size against sequence length.
+  The most widely used subword tokenization algorithm, used by GPT models. BPE
+  starts with a character-level vocabulary, counts all adjacent pair frequencies
+  in the training corpus, merges the most frequent pair into a new token, and
+  repeats until vocabulary reaches target size. This learns which character
+  sequences commonly appear together, creating tokens that balance vocabulary
+  size against sequence length.
 </Definition>
 
 ### The BPE Algorithm
@@ -84,7 +94,7 @@ Understanding tokenization explains many model behaviors.
 
 Arithmetic struggles occur because "123456" might tokenize as ["123", "456"], making digit-level operations hard. The model sees two tokens, not six digits.
 
-Spacing sensitivity means "Hello world" and "Hello  world" with two spaces produce different token sequences.
+Spacing sensitivity means "Hello world" and "Hello world" with two spaces produce different token sequences.
 
 Capitalization effects mean "THE" and "the" are different tokens using different embedding space positions.
 
@@ -93,7 +103,11 @@ Programming quirks mean variable names affect token count. "calculateTotalPrice"
 Non-English penalties mean Chinese text often uses 2-3 times more tokens than equivalent English text, effectively reducing context window size and increasing costs.
 
 <Warning title="Multilingual Token Costs">
-English-centric tokenizers represent non-English text with more tokens than equivalent English. This means non-English users effectively get smaller context windows and pay higher API costs for the same semantic content. When building multilingual applications, test token efficiency across your target languages.
+  English-centric tokenizers represent non-English text with more tokens than
+  equivalent English. This means non-English users effectively get smaller
+  context windows and pay higher API costs for the same semantic content. When
+  building multilingual applications, test token efficiency across your target
+  languages.
 </Warning>
 
 ---
@@ -117,7 +131,12 @@ The famous discovery was that word arithmetic works. Vector("king") minus vector
 This showed that the embedding space was not random. Directions in the space corresponded to semantic relationships like male/female, capital city, verb tense, and comparative/superlative.
 
 <Definition term="Cosine Similarity">
-The standard metric for comparing embeddings, measuring the cosine of the angle between two vectors. Values range from -1 (opposite) to 1 (identical direction). Cosine similarity captures semantic similarity: "cat" and "dog" might have similarity around 0.85, while "cat" and "car" might have similarity around 0.30. This metric is preferred over Euclidean distance because it focuses on direction rather than magnitude.
+  The standard metric for comparing embeddings, measuring the cosine of the
+  angle between two vectors. Values range from -1 (opposite) to 1 (identical
+  direction). Cosine similarity captures semantic similarity: "cat" and "dog"
+  might have similarity around 0.85, while "cat" and "car" might have similarity
+  around 0.30. This metric is preferred over Euclidean distance because it
+  focuses on direction rather than magnitude.
 </Definition>
 
 ### Static vs. Contextual Embeddings
@@ -159,7 +178,13 @@ Late layers from 9 to 12 and beyond handle semantic meaning, long-range dependen
 This has been validated through probing experiments where simple classifiers are trained on layer outputs to predict linguistic properties.
 
 <Tip title="The Feed-Forward Networks as Memory">
-Feed-forward networks in transformers are surprisingly important. Research suggests they act as key-value memories storing factual knowledge. When the model answers "The Eiffel Tower is in [Paris]", middle layer attention identifies "Eiffel Tower" in context, FFN recognizes this pattern and activates certain neurons, and FFN outputs information about Paris toward the final token. This explains why knowledge can be edited by modifying specific weight matrices.
+  Feed-forward networks in transformers are surprisingly important. Research
+  suggests they act as key-value memories storing factual knowledge. When the
+  model answers "The Eiffel Tower is in [Paris]", middle layer attention
+  identifies "Eiffel Tower" in context, FFN recognizes this pattern and
+  activates certain neurons, and FFN outputs information about Paris toward the
+  final token. This explains why knowledge can be edited by modifying specific
+  weight matrices.
 </Tip>
 
 ### Attention Patterns
@@ -211,7 +236,13 @@ What we learn is that some heads attend to the previous token as positional patt
 Limitations exist because attention shows where the model looks, not what it does with that information. High attention does not mean the attended position influenced the output.
 
 <Definition term="Mechanistic Interpretability">
-A research approach that aims to reverse-engineer neural networks into understandable algorithms. Key discoveries include induction heads (two-layer circuits implementing pattern matching that enable in-context learning), indirect object identification (circuits tracking who did what to whom), and modular arithmetic (models trained on simple tasks developing interpretable Fourier-based algorithms). This research suggests models implement interpretable algorithms rather than just memorization.
+  A research approach that aims to reverse-engineer neural networks into
+  understandable algorithms. Key discoveries include induction heads (two-layer
+  circuits implementing pattern matching that enable in-context learning),
+  indirect object identification (circuits tracking who did what to whom), and
+  modular arithmetic (models trained on simple tasks developing interpretable
+  Fourier-based algorithms). This research suggests models implement
+  interpretable algorithms rather than just memorization.
 </Definition>
 
 ### Limitations of Current Interpretability
@@ -243,7 +274,11 @@ Embeddings power many practical applications.
 Semantic search embeds documents and queries then finds nearest neighbors. Clustering groups similar documents without labeled data. Classification fine-tunes on embeddings for downstream tasks using the final layer embedding. Recommendation finds items similar to user preferences.
 
 <Info title="RAG (Retrieval-Augmented Generation)">
-A powerful pattern combining embeddings with generation. Embed the user query, find relevant documents via vector similarity search, include those documents in context, and have the LLM generate a response grounded in retrieved content. This extends model knowledge beyond training data and provides citations for responses.
+  A powerful pattern combining embeddings with generation. Embed the user query,
+  find relevant documents via vector similarity search, include those documents
+  in context, and have the LLM generate a response grounded in retrieved
+  content. This extends model knowledge beyond training data and provides
+  citations for responses.
 </Info>
 
 ### Cost Optimization
@@ -390,7 +425,7 @@ pie title GPT-3 Parameter Distribution
   setupInstructions={[
     "Install required libraries: pip install transformers tiktoken torch",
     "Ensure you have Python 3.8 or higher",
-    "Have a notebook or Python environment ready"
+    "Have a notebook or Python environment ready",
   ]}
   parts={[
     {
@@ -402,9 +437,10 @@ pie title GPT-3 Parameter Distribution
         "Tokenize the same text with each: 'The quick brown fox jumps over the lazy dog.'",
         "Compare token counts and boundaries",
         "Test on code: 'def calculate_total(items): return sum(items)'",
-        "Test on numbers: '12345 + 67890 = 80235'"
+        "Test on numbers: '12345 + 67890 = 80235'",
       ],
-      observePrompt: "Which tokenizer produces the fewest tokens for English prose? How do they differ on code and numbers?"
+      observePrompt:
+        "Which tokenizer produces the fewest tokens for English prose? How do they differ on code and numbers?",
     },
     {
       id: "multilingual",
@@ -414,9 +450,10 @@ pie title GPT-3 Parameter Distribution
         "Tokenize 'Hello, how are you today?' with GPT-4 tokenizer",
         "Tokenize equivalent phrases in Spanish, French, German, and Chinese (pinyin)",
         "Calculate chars/token ratio for each language",
-        "Consider what this means for context windows and API costs"
+        "Consider what this means for context windows and API costs",
       ],
-      observePrompt: "Which languages get the best token efficiency? What are the implications for non-English users?"
+      observePrompt:
+        "Which languages get the best token efficiency? What are the implications for non-English users?",
     },
     {
       id: "edge-cases",
@@ -426,9 +463,10 @@ pie title GPT-3 Parameter Distribution
         "Test whitespace sensitivity: 'Hello world' vs 'Hello  world' (double space)",
         "Test capitalization: 'hello' vs 'HELLO' vs 'Hello'",
         "Test code patterns: 'calculateTotalPrice' vs 'calculate_total_price'",
-        "Find at least 3 surprising tokenization behaviors"
+        "Find at least 3 surprising tokenization behaviors",
       ],
-      observePrompt: "What surprising behaviors did you find? How might these affect model behavior?"
+      observePrompt:
+        "What surprising behaviors did you find? How might these affect model behavior?",
     },
     {
       id: "cost-analysis",
@@ -438,8 +476,8 @@ pie title GPT-3 Parameter Distribution
         "Create a token counter function",
         "Estimate cost for: short question, code review request, long document summary",
         "Calculate monthly costs at 10,000 requests/day for each scenario",
-        "Identify strategies to reduce token usage"
-      ]
+        "Identify strategies to reduce token usage",
+      ],
     },
     {
       id: "build-tool",
@@ -449,16 +487,25 @@ pie title GPT-3 Parameter Distribution
         "Create a TokenCounter class with methods: count(text), analyze(text), estimate_cost(text)",
         "Add a truncate_to_limit(text, max_tokens) method",
         "Test on sample text and verify it works",
-        "Consider how you would use this in a production application"
-      ]
-    }
+        "Consider how you would use this in a production application",
+      ],
+    },
   ]}
   successCriteria={[
-    { id: "compared-tokenizers", text: "Compared at least 3 different tokenizers" },
-    { id: "multilingual-tested", text: "Analyzed token efficiency across languages" },
+    {
+      id: "compared-tokenizers",
+      text: "Compared at least 3 different tokenizers",
+    },
+    {
+      id: "multilingual-tested",
+      text: "Analyzed token efficiency across languages",
+    },
     { id: "edge-cases-found", text: "Found at least 3 surprising edge cases" },
-    { id: "costs-calculated", text: "Calculated costs for realistic scenarios" },
-    { id: "tool-built", text: "Built working token counter tool" }
+    {
+      id: "costs-calculated",
+      text: "Calculated costs for realistic scenarios",
+    },
+    { id: "tool-built", text: "Built working token counter tool" },
   ]}
 />
 
@@ -474,68 +521,99 @@ pie title GPT-3 Parameter Distribution
     {
       id: "q1",
       type: "multiple-choice",
-      question: "What is the main advantage of subword tokenization (BPE) over word-level tokenization?",
+      question:
+        "What is the main advantage of subword tokenization (BPE) over word-level tokenization?",
       options: [
         { id: "a", text: "It produces shorter sequences" },
-        { id: "b", text: "It handles rare and unknown words by breaking them into known subword pieces" },
+        {
+          id: "b",
+          text: "It handles rare and unknown words by breaking them into known subword pieces",
+        },
         { id: "c", text: "It requires less compute to train" },
-        { id: "d", text: "It produces more accurate embeddings" }
+        { id: "d", text: "It produces more accurate embeddings" },
       ],
       correctAnswer: "b",
-      explanation: "Subword tokenization's key advantage is handling out-of-vocabulary words. If the tokenizer has not seen 'tokenization' during training, it can still represent it as ['token', 'ization']. Word-level tokenization would either fail or produce an unknown token. This vocabulary coverage comes at the cost of slightly longer sequences for rare words, but the tradeoff is worthwhile."
+      explanation:
+        "Subword tokenization's key advantage is handling out-of-vocabulary words. If the tokenizer has not seen 'tokenization' during training, it can still represent it as ['token', 'ization']. Word-level tokenization would either fail or produce an unknown token. This vocabulary coverage comes at the cost of slightly longer sequences for rare words, but the tradeoff is worthwhile.",
     },
     {
       id: "q2",
       type: "multiple-choice",
-      question: "Why do contextual embeddings (like those from BERT or GPT) represent a major advance over static embeddings (like Word2Vec)?",
+      question:
+        "Why do contextual embeddings (like those from BERT or GPT) represent a major advance over static embeddings (like Word2Vec)?",
       options: [
         { id: "a", text: "They use fewer parameters" },
         { id: "b", text: "They are faster to compute" },
-        { id: "c", text: "They produce different vectors for the same word based on context, handling polysemy" },
-        { id: "d", text: "They do not require tokenization" }
+        {
+          id: "c",
+          text: "They produce different vectors for the same word based on context, handling polysemy",
+        },
+        { id: "d", text: "They do not require tokenization" },
       ],
       correctAnswer: "c",
-      explanation: "Static embeddings assign one vector per word regardless of context, so 'bank' (financial) and 'bank' (river) have identical representations. Contextual embeddings from transformers produce different vectors based on surrounding context, allowing the model to distinguish word senses. This is possible because attention mechanisms incorporate the full sequence when computing each token's representation."
+      explanation:
+        "Static embeddings assign one vector per word regardless of context, so 'bank' (financial) and 'bank' (river) have identical representations. Contextual embeddings from transformers produce different vectors based on surrounding context, allowing the model to distinguish word senses. This is possible because attention mechanisms incorporate the full sequence when computing each token's representation.",
     },
     {
       id: "q3",
       type: "multiple-choice",
-      question: "Where does most of the parameter count reside in large transformer language models?",
+      question:
+        "Where does most of the parameter count reside in large transformer language models?",
       options: [
         { id: "a", text: "The embedding matrix" },
         { id: "b", text: "The attention weight matrices" },
         { id: "c", text: "The feed-forward network (MLP) layers" },
-        { id: "d", text: "The positional encodings" }
+        { id: "d", text: "The positional encodings" },
       ],
       correctAnswer: "c",
-      explanation: "In models like GPT-3, approximately 66% of parameters are in the feed-forward networks (FFN). Each layer has two large matrices: one projecting from d_model to about 4x larger dimension, and one projecting back. Research suggests these FFN layers serve as key-value memories storing factual knowledge. Attention layers contain the next largest portion at about 33%, while embeddings are relatively small at about 0.4% in GPT-3."
+      explanation:
+        "In models like GPT-3, approximately 66% of parameters are in the feed-forward networks (FFN). Each layer has two large matrices: one projecting from d_model to about 4x larger dimension, and one projecting back. Research suggests these FFN layers serve as key-value memories storing factual knowledge. Attention layers contain the next largest portion at about 33%, while embeddings are relatively small at about 0.4% in GPT-3.",
     },
     {
       id: "q4",
       type: "multiple-choice",
-      question: "What does probing classifier research reveal about transformer layers?",
+      question:
+        "What does probing classifier research reveal about transformer layers?",
       options: [
         { id: "a", text: "All layers learn the same representations" },
-        { id: "b", text: "Early layers encode syntax, late layers encode surface features" },
-        { id: "c", text: "Early layers encode surface features, middle layers encode syntax, late layers encode semantics" },
-        { id: "d", text: "Layers do not specialize; all information is distributed uniformly" }
+        {
+          id: "b",
+          text: "Early layers encode syntax, late layers encode surface features",
+        },
+        {
+          id: "c",
+          text: "Early layers encode surface features, middle layers encode syntax, late layers encode semantics",
+        },
+        {
+          id: "d",
+          text: "Layers do not specialize; all information is distributed uniformly",
+        },
       ],
       correctAnswer: "c",
-      explanation: "Probing experiments consistently show that transformer layers develop specialized functions. Early layers (0-3) capture surface-level features like capitalization and word boundaries. Middle layers (4-8) encode syntactic structure like part-of-speech and dependencies. Late layers (9+) encode semantic meaning and task-specific computations. This layered abstraction enables transformers to build complex understanding from simple foundations."
+      explanation:
+        "Probing experiments consistently show that transformer layers develop specialized functions. Early layers (0-3) capture surface-level features like capitalization and word boundaries. Middle layers (4-8) encode syntactic structure like part-of-speech and dependencies. Late layers (9+) encode semantic meaning and task-specific computations. This layered abstraction enables transformers to build complex understanding from simple foundations.",
     },
     {
       id: "q5",
       type: "multiple-choice",
-      question: "Why might a model struggle with arithmetic despite being highly capable at language tasks?",
+      question:
+        "Why might a model struggle with arithmetic despite being highly capable at language tasks?",
       options: [
         { id: "a", text: "Models are not trained on any mathematical content" },
-        { id: "b", text: "Tokenization may split numbers in ways that obscure digit-level operations" },
-        { id: "c", text: "Arithmetic requires different hardware than language processing" },
-        { id: "d", text: "Models cannot process numerical data at all" }
+        {
+          id: "b",
+          text: "Tokenization may split numbers in ways that obscure digit-level operations",
+        },
+        {
+          id: "c",
+          text: "Arithmetic requires different hardware than language processing",
+        },
+        { id: "d", text: "Models cannot process numerical data at all" },
       ],
       correctAnswer: "b",
-      explanation: "Tokenization significantly affects arithmetic capability. A number like '123456' might tokenize as ['123', '456'], so the model sees two tokens rather than six digits. This makes digit-level operations like carrying in addition difficult. The model must learn arithmetic patterns at the token level rather than the digit level, which is less intuitive and more prone to errors."
-    }
+      explanation:
+        "Tokenization significantly affects arithmetic capability. A number like '123456' might tokenize as ['123', '456'], so the model sees two tokens rather than six digits. This makes digit-level operations like carrying in addition difficult. The model must learn arithmetic patterns at the token level rather than the digit level, which is less intuitive and more prone to errors.",
+    },
   ]}
   passingScore={70}
   allowRetry={true}

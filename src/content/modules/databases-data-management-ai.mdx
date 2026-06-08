@@ -33,7 +33,12 @@ Traditional applications primarily work with structured data: users, products, t
 This shift requires a fundamental rethinking of database architecture.
 
 <Definition term="The Three Data Layers">
-Most production AI systems operate with three complementary data layers: a **transactional layer** (traditional databases for structured business data), a **semantic layer** (vector databases for meaning-based retrieval), and a **cache layer** (fast access for frequently needed data). Understanding when and how to use each layer is crucial for building AI systems that are both powerful and practical.
+  Most production AI systems operate with three complementary data layers: a
+  **transactional layer** (traditional databases for structured business data),
+  a **semantic layer** (vector databases for meaning-based retrieval), and a
+  **cache layer** (fast access for frequently needed data). Understanding when
+  and how to use each layer is crucial for building AI systems that are both
+  powerful and practical.
 </Definition>
 
 ### From Keywords to Concepts
@@ -65,7 +70,11 @@ NoSQL databases excel at storing the variable, unstructured data common in AI ap
 Use NoSQL for document storage: original documents before chunking, full conversation histories, and flexible schemas as AI features evolve. Use it for session context: temporary user state during AI interactions, prompt templates and variations, and A/B test configurations. Use it for metadata and tags: document categories, tags, custom fields, user-defined attributes for search, and rapidly changing feature flags.
 
 <Info title="The Hybrid Approach">
-Most production AI systems use both SQL and NoSQL databases alongside vector databases. SQL handles critical structured data requiring transactions. NoSQL handles flexible document storage and rapid iteration. Vector databases handle semantic search and similarity operations. The key is understanding the strengths of each and designing your architecture accordingly.
+  Most production AI systems use both SQL and NoSQL databases alongside vector
+  databases. SQL handles critical structured data requiring transactions. NoSQL
+  handles flexible document storage and rapid iteration. Vector databases handle
+  semantic search and similarity operations. The key is understanding the
+  strengths of each and designing your architecture accordingly.
 </Info>
 
 ---
@@ -79,7 +88,10 @@ Traditional databases answer the question "give me the exact record with this ID
 When you search a traditional database for a user by ID, the system uses hash tables or B-trees to find the exact record instantly. When you search a vector database for documents similar to a query, the system must compare your query embedding against potentially millions of stored embeddings. Brute-force comparison would be O(n), impossibly slow. So vector databases use clever index structures like HNSW that organize vectors by similarity, enabling approximate nearest neighbor search in O(log n) time.
 
 <Definition term="Vector">
-In AI contexts, a vector is an array of numbers (typically 384 to 1536 dimensions) that represents the meaning of some content. Two vectors that are close together in this high-dimensional space represent similar meanings, even if the original text was completely different.
+  In AI contexts, a vector is an array of numbers (typically 384 to 1536
+  dimensions) that represents the meaning of some content. Two vectors that are
+  close together in this high-dimensional space represent similar meanings, even
+  if the original text was completely different.
 </Definition>
 
 ### Vector Similarity Metrics
@@ -103,7 +115,10 @@ HNSW offers fast query times at O(log n), excellent recall for finding true near
 IVF (Inverted File Index) divides the vector space into clusters, then searches only relevant clusters. It clusters vectors using k-means or similar algorithms. At query time, it finds the closest cluster centers and searches only within those clusters. IVF offers very fast queries and lower memory usage, but there's some accuracy loss because it may miss nearest neighbors in other clusters. It's well-suited for massive scale with billions of vectors.
 
 <Tip title="Choosing an Index">
-For most applications with millions of vectors, HNSW provides the best balance of speed and accuracy. Use IVF when you need to scale to billions of vectors or memory is constrained. Flat (brute force) search is only practical for small datasets under 10,000 vectors, but provides perfect accuracy.
+  For most applications with millions of vectors, HNSW provides the best balance
+  of speed and accuracy. Use IVF when you need to scale to billions of vectors
+  or memory is constrained. Flat (brute force) search is only practical for
+  small datasets under 10,000 vectors, but provides perfect accuracy.
 </Tip>
 
 ### Major Vector Database Options
@@ -127,7 +142,12 @@ Retrieval-Augmented Generation (RAG) is the most common pattern for building AI 
 When you ask Claude a question about your company's documentation, this is what happens behind the scenes: your question gets embedded into a vector, that vector gets compared against millions of document chunks, the most similar chunks get retrieved, and they're stuffed into the prompt alongside your question. Claude answers based on that retrieved context. That's RAG.
 
 <Definition term="RAG (Retrieval-Augmented Generation)">
-A pattern that combines information retrieval with text generation. First, relevant documents are retrieved using similarity search. Then, these documents are provided as context to an LLM, which generates an answer grounded in the retrieved information. RAG solves the problem of LLMs only knowing their training data by giving them access to your specific knowledge base at query time.
+  A pattern that combines information retrieval with text generation. First,
+  relevant documents are retrieved using similarity search. Then, these
+  documents are provided as context to an LLM, which generates an answer
+  grounded in the retrieved information. RAG solves the problem of LLMs only
+  knowing their training data by giving them access to your specific knowledge
+  base at query time.
 </Definition>
 
 The three stages are indexing (offline), retrieval (query time), and generation (query time). Indexing ingests documents, splits them into chunks, generates embeddings, and stores them in a vector database. Retrieval converts the user question to an embedding, searches for similar chunks, and applies filters and re-ranking. Generation constructs a prompt with retrieved context, sends it to the LLM, and returns the answer.
@@ -149,7 +169,11 @@ Recursive chunking splits hierarchically using paragraphs, then sentences, then 
 Semantic chunking uses embeddings to find natural topic boundaries. When similarity between consecutive sentences drops below a threshold, it indicates a topic change and a good place to split. This respects semantic boundaries but is expensive (requires embedding every sentence) and produces variable sizes.
 
 <Warning title="Chunking Strategy Matters">
-Choose based on your content type. Technical documentation benefits from recursive chunking that respects structure. Conversational text works well with sentence or paragraph boundaries. Mixed content often does best with fixed-size chunking with overlap as a reliable default. High-quality corpora where accuracy is paramount may justify the cost of semantic chunking.
+  Choose based on your content type. Technical documentation benefits from
+  recursive chunking that respects structure. Conversational text works well
+  with sentence or paragraph boundaries. Mixed content often does best with
+  fixed-size chunking with overlap as a reliable default. High-quality corpora
+  where accuracy is paramount may justify the cost of semantic chunking.
 </Warning>
 
 ### Metadata and Filtering
@@ -203,7 +227,11 @@ The storage stage stores embeddings in the vector database, stores metadata in a
 A robust storage implementation stores the original document first, then metadata, then embeddings. If any step fails, a rollback function cleans up partial writes to maintain consistency.
 
 <Info title="Incremental Updates">
-Real-world systems need to handle updates, not just initial loads. Strategies include full replacement (delete all old chunks and reinsert, simple but wasteful), smart diff (compare content hashes and only update changed sections, more efficient but complex), and append-only with versioning (keep old versions marked inactive, enables rollback and history).
+  Real-world systems need to handle updates, not just initial loads. Strategies
+  include full replacement (delete all old chunks and reinsert, simple but
+  wasteful), smart diff (compare content hashes and only update changed
+  sections, more efficient but complex), and append-only with versioning (keep
+  old versions marked inactive, enables rollback and history).
 </Info>
 
 ---
@@ -403,7 +431,7 @@ flowchart LR
     "Install Python 3.8+ if not already installed",
     "Install required libraries: pip install openai chromadb nltk tiktoken",
     "Set your API key: export OPENAI_API_KEY='your-key-here'",
-    "Create a new file called rag_system.py for your code"
+    "Create a new file called rag_system.py for your code",
   ]}
   parts={[
     {
@@ -414,9 +442,10 @@ flowchart LR
         "Create a MiniRAGSystem class that initializes OpenAI and ChromaDB clients",
         "Implement a chunk_text() method that splits text into overlapping chunks using sentence tokenization",
         "Use tiktoken to count tokens and ensure chunks stay within limits (400 tokens max)",
-        "Include 2-sentence overlap between chunks to preserve context"
+        "Include 2-sentence overlap between chunks to preserve context",
       ],
-      observePrompt: "How do different chunk sizes affect the number of chunks created?"
+      observePrompt:
+        "How do different chunk sizes affect the number of chunks created?",
     },
     {
       id: "embedding-storage",
@@ -426,9 +455,10 @@ flowchart LR
         "Implement generate_embedding() method using OpenAI's text-embedding-3-small model",
         "Create ingest_document() method that chunks text, generates embeddings, and stores in ChromaDB",
         "Add metadata to each chunk including chunk_index and chunk_total",
-        "Test by ingesting 2-3 sample documents about different topics"
+        "Test by ingesting 2-3 sample documents about different topics",
       ],
-      observePrompt: "How long does embedding generation take? What metadata would be useful to track?"
+      observePrompt:
+        "How long does embedding generation take? What metadata would be useful to track?",
     },
     {
       id: "retrieval-implementation",
@@ -438,9 +468,10 @@ flowchart LR
         "Implement retrieve() method that embeds a query and searches ChromaDB",
         "Return the top 3 most similar chunks with their metadata",
         "Test retrieval with various queries to verify relevance",
-        "Experiment with different n_results values"
+        "Experiment with different n_results values",
       ],
-      observePrompt: "Are the retrieved chunks relevant to your queries? What happens with vague queries?"
+      observePrompt:
+        "Are the retrieved chunks relevant to your queries? What happens with vague queries?",
     },
     {
       id: "rag-pipeline",
@@ -451,18 +482,25 @@ flowchart LR
         "Build a prompt that includes retrieved chunks as context",
         "Use GPT-4 or Claude to generate answers grounded in the context",
         "Return both the answer and the source chunks used",
-        "Compare RAG answers to asking the LLM directly without context"
+        "Compare RAG answers to asking the LLM directly without context",
       ],
-      observePrompt: "How do RAG answers differ from non-RAG answers? When does RAG help most?"
-    }
+      observePrompt:
+        "How do RAG answers differ from non-RAG answers? When does RAG help most?",
+    },
   ]}
   successCriteria={[
-    { id: "chunking", text: "Successfully loaded and chunked documents with overlap" },
+    {
+      id: "chunking",
+      text: "Successfully loaded and chunked documents with overlap",
+    },
     { id: "embeddings", text: "Generated and stored embeddings in ChromaDB" },
     { id: "retrieval", text: "Retrieval returns relevant chunks for queries" },
-    { id: "rag-pipeline", text: "RAG pipeline produces grounded, accurate responses" },
+    {
+      id: "rag-pipeline",
+      text: "RAG pipeline produces grounded, accurate responses",
+    },
     { id: "experimented", text: "Experimented with chunk size trade-offs" },
-    { id: "metadata", text: "Added useful metadata to chunks" }
+    { id: "metadata", text: "Added useful metadata to chunks" },
   ]}
 />
 
@@ -478,15 +516,23 @@ flowchart LR
     {
       id: "q1",
       type: "multiple-choice",
-      question: "What is the primary purpose of a vector database in AI applications?",
+      question:
+        "What is the primary purpose of a vector database in AI applications?",
       options: [
         { id: "a", text: "To store large files efficiently" },
-        { id: "b", text: "To enable similarity-based retrieval by storing and searching embeddings" },
-        { id: "c", text: "To replace traditional relational databases entirely" },
-        { id: "d", text: "To train machine learning models faster" }
+        {
+          id: "b",
+          text: "To enable similarity-based retrieval by storing and searching embeddings",
+        },
+        {
+          id: "c",
+          text: "To replace traditional relational databases entirely",
+        },
+        { id: "d", text: "To train machine learning models faster" },
       ],
       correctAnswer: "b",
-      explanation: "Vector databases are designed specifically for storing embeddings (vectors) and enabling efficient similarity search - finding the closest matches to a query vector rather than exact matches. This semantic search capability is essential for RAG systems and other AI applications that need to find conceptually related content."
+      explanation:
+        "Vector databases are designed specifically for storing embeddings (vectors) and enabling efficient similarity search - finding the closest matches to a query vector rather than exact matches. This semantic search capability is essential for RAG systems and other AI applications that need to find conceptually related content.",
     },
     {
       id: "q2",
@@ -494,25 +540,40 @@ flowchart LR
       question: "What is 'chunking' in the context of RAG systems?",
       options: [
         { id: "a", text: "Compressing files for more efficient storage" },
-        { id: "b", text: "Splitting documents into smaller pieces for embedding and retrieval" },
+        {
+          id: "b",
+          text: "Splitting documents into smaller pieces for embedding and retrieval",
+        },
         { id: "c", text: "A type of database index for faster queries" },
-        { id: "d", text: "Batch processing of API requests to reduce costs" }
+        { id: "d", text: "Batch processing of API requests to reduce costs" },
       ],
       correctAnswer: "b",
-      explanation: "Chunking divides large documents into smaller segments that can be individually embedded and retrieved. The chunk size and strategy significantly impact retrieval quality - too large and you get irrelevant content, too small and you lose context. Most production systems use 500-800 tokens with overlap."
+      explanation:
+        "Chunking divides large documents into smaller segments that can be individually embedded and retrieved. The chunk size and strategy significantly impact retrieval quality - too large and you get irrelevant content, too small and you lose context. Most production systems use 500-800 tokens with overlap.",
     },
     {
       id: "q3",
       type: "multiple-choice",
-      question: "Why is HNSW (Hierarchical Navigable Small World) commonly used for vector search?",
+      question:
+        "Why is HNSW (Hierarchical Navigable Small World) commonly used for vector search?",
       options: [
-        { id: "a", text: "It provides exact nearest neighbor results with perfect accuracy" },
-        { id: "b", text: "It offers O(log n) approximate search while maintaining good accuracy" },
+        {
+          id: "a",
+          text: "It provides exact nearest neighbor results with perfect accuracy",
+        },
+        {
+          id: "b",
+          text: "It offers O(log n) approximate search while maintaining good accuracy",
+        },
         { id: "c", text: "It uses the least memory of any index type" },
-        { id: "d", text: "It's the fastest option for datasets under 1000 vectors" }
+        {
+          id: "d",
+          text: "It's the fastest option for datasets under 1000 vectors",
+        },
       ],
       correctAnswer: "b",
-      explanation: "HNSW builds a multi-layer graph where each layer progressively coarsens the search space. This enables logarithmic time complexity for approximate nearest neighbor search, making it practical for millions of vectors while maintaining high accuracy. It uses more memory than IVF but offers better accuracy."
+      explanation:
+        "HNSW builds a multi-layer graph where each layer progressively coarsens the search space. This enables logarithmic time complexity for approximate nearest neighbor search, making it practical for millions of vectors while maintaining high accuracy. It uses more memory than IVF but offers better accuracy.",
     },
     {
       id: "q4",
@@ -520,12 +581,16 @@ flowchart LR
       question: "What is hybrid search in the context of retrieval systems?",
       options: [
         { id: "a", text: "Using two different LLMs to generate answers" },
-        { id: "b", text: "Combining keyword-based search with semantic vector search" },
+        {
+          id: "b",
+          text: "Combining keyword-based search with semantic vector search",
+        },
         { id: "c", text: "Searching local and cloud databases simultaneously" },
-        { id: "d", text: "Using both SQL and NoSQL databases in one query" }
+        { id: "d", text: "Using both SQL and NoSQL databases in one query" },
       ],
       correctAnswer: "b",
-      explanation: "Hybrid search combines traditional keyword/BM25 search with semantic vector search, then fuses the results. This captures both exact keyword matches (useful for names, codes, specific terms) and semantic similarity (useful for concepts and paraphrases), improving both precision and recall."
+      explanation:
+        "Hybrid search combines traditional keyword/BM25 search with semantic vector search, then fuses the results. This captures both exact keyword matches (useful for names, codes, specific terms) and semantic similarity (useful for concepts and paraphrases), improving both precision and recall.",
     },
     {
       id: "q5",
@@ -533,13 +598,20 @@ flowchart LR
       question: "Why is content deduplication important in RAG data pipelines?",
       options: [
         { id: "a", text: "To improve the accuracy of the LLM's responses" },
-        { id: "b", text: "To reduce storage costs and avoid generating expensive embeddings for duplicate content" },
-        { id: "c", text: "To make vector search faster by reducing index size" },
-        { id: "d", text: "To comply with data privacy regulations" }
+        {
+          id: "b",
+          text: "To reduce storage costs and avoid generating expensive embeddings for duplicate content",
+        },
+        {
+          id: "c",
+          text: "To make vector search faster by reducing index size",
+        },
+        { id: "d", text: "To comply with data privacy regulations" },
       ],
       correctAnswer: "b",
-      explanation: "Deduplication prevents generating embeddings for essentially identical content, which directly eliminates unnecessary API calls. Embedding generation costs money, so avoiding duplicate embeddings is one of the most effective cost optimization strategies for RAG systems at scale."
-    }
+      explanation:
+        "Deduplication prevents generating embeddings for essentially identical content, which directly eliminates unnecessary API calls. Embedding generation costs money, so avoiding duplicate embeddings is one of the most effective cost optimization strategies for RAG systems at scale.",
+    },
   ]}
   passingScore={70}
   allowRetry={true}

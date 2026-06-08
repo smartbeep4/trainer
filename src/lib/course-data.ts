@@ -1,5 +1,18 @@
 /**
- * Course structure data for navigation and progress tracking
+ * Course structure data for navigation and progress tracking.
+ *
+ * ⚠️ DUPLICATION WARNING:
+ * This file contains a hand-maintained copy of module metadata.
+ * The source of truth is the MDX frontmatter in src/content/modules/*.mdx
+ * (validated by the content collection schema in src/content/config.ts).
+ *
+ * When adding/editing modules:
+ * 1. Update the MDX frontmatter first.
+ * 2. Keep this file in sync (title, duration, difficulty, part, description).
+ * 3. Run `npm run build` or `npm run check` — the duplication guard test
+ *    + getStaticPaths will catch most mismatches at build time.
+ *
+ * Long-term: consider deriving this data at build time from the collection.
  */
 
 export interface Module {

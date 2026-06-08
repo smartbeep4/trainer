@@ -143,7 +143,7 @@ response = requests.post(
         "anthropic-version": "2024-01-01"
     },
     json={
-        "model": "claude-sonnet-4-20250514",
+        "model": "claude-3-5-sonnet-latest",
         "max_tokens": 1024,
         "messages": [
             {"role": "user", "content": "Explain networking"}
@@ -185,7 +185,7 @@ Responses follow predictable patterns:
       "text": "Networking in AI applications involves..."
     }
   ],
-  "model": "claude-sonnet-4-20250514",
+  "model": "claude-3-5-sonnet-latest",
   "stop_reason": "end_turn",
   "usage": {
     "input_tokens": 12,
@@ -382,7 +382,7 @@ client = anthropic.Anthropic()
 
 # Streaming response
 with client.messages.stream(
-    model="claude-sonnet-4-20250514",
+    model="claude-3-5-sonnet-latest",
     max_tokens=1024,
     messages=[{"role": "user", "content": "Write a short story"}]
 ) as stream:
@@ -406,7 +406,7 @@ response = requests.post(
         "Content-Type": "application/json"
     },
     json={
-        "model": "claude-sonnet-4-20250514",
+        "model": "claude-3-5-sonnet-latest",
         "max_tokens": 1024,
         "messages": [{"role": "user", "content": "Tell me a story"}],
         "stream": True  # Enable streaming
@@ -503,7 +503,7 @@ class ResilientStreamHandler:
         for attempt in range(self.max_retries):
             try:
                 with self.client.messages.stream(
-                    model="claude-sonnet-4-20250514",
+                    model="claude-3-5-sonnet-latest",
                     max_tokens=1024,
                     messages=self.messages
                 ) as stream:
@@ -1454,7 +1454,7 @@ class RobustAIClient:
     def complete(
         self,
         prompt: str,
-        model: str = "claude-sonnet-4-20250514",
+        model: str = "claude-3-5-sonnet-latest",
         max_tokens: int = 1024
     ) -> str:
         """Get a completion with automatic retries."""
@@ -1512,7 +1512,7 @@ Add streaming to your client:
 def stream(
     self,
     prompt: str,
-    model: str = "claude-sonnet-4-20250514",
+    model: str = "claude-3-5-sonnet-latest",
     max_tokens: int = 1024
 ) -> Generator[str, None, None]:
     """Stream a completion token by token."""

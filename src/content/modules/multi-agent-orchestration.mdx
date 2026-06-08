@@ -33,7 +33,9 @@ This module teaches you when multi-agent systems make sense, how to design them 
 Single agents work well for many tasks, but they struggle when certain conditions arise. Understanding these limitations helps you recognize when multi-agent architectures become valuable.
 
 <Definition term="Multi-Agent System">
-A system where multiple autonomous agents work together, communicating and coordinating their actions to achieve goals that would be difficult or impossible for a single agent to accomplish alone.
+  A system where multiple autonomous agents work together, communicating and
+  coordinating their actions to achieve goals that would be difficult or
+  impossible for a single agent to accomplish alone.
 </Definition>
 
 Complexity can exceed context limits. Even with large context windows, some tasks involve more information than a single agent can process coherently. A code review across a million-line codebase, legal analysis spanning thousands of documents, or research synthesis across hundreds of papers all challenge single-agent approaches.
@@ -84,7 +86,9 @@ Customer support escalation demonstrates hierarchical multi-agent patterns. A fr
 Content creation pipelines show sequential multi-agent patterns. A research agent gathers information, a writer agent creates drafts, an editor agent refines and improves, and a fact-checker agent verifies claims. The result is higher quality content with fewer errors.
 
 <Info>
-Multi-agent systems are not always better. They introduce communication overhead, coordination complexity, and debugging challenges. Use them when the benefits clearly outweigh the costs.
+  Multi-agent systems are not always better. They introduce communication
+  overhead, coordination complexity, and debugging challenges. Use them when the
+  benefits clearly outweigh the costs.
 </Info>
 
 ### The Complexity Trade-Off
@@ -102,7 +106,9 @@ Cost multiplication is inevitable. More agents mean more LLM calls. Without care
 Emergent failures create new risk categories. Interactions between agents can produce unexpected behaviors that would not occur in single-agent systems.
 
 <Warning>
-The question is not "Should I use multi-agent?" but "Does the benefit of multi-agent outweigh its complexity for this specific problem?" Start with single agents and add complexity only when you hit clear limitations.
+  The question is not "Should I use multi-agent?" but "Does the benefit of
+  multi-agent outweigh its complexity for this specific problem?" Start with
+  single agents and add complexity only when you hit clear limitations.
 </Warning>
 
 ## Coordination Patterns
@@ -154,7 +160,9 @@ Consider a debate and synthesis scenario about whether to migrate from REST to G
 This pattern works well when tasks benefit from multiple perspectives, there is no clear hierarchical structure, agents have complementary expertise, and consensus or debate improves outcomes. The advantages include no single bottleneck, emergent collaboration, resilience to individual agent failures, and broader exploration of the solution space. The disadvantages include implicit and harder to control coordination, potential for non-convergence, harder debugging without a central log, and risk of groupthink or deadlock.
 
 <Tip>
-Peer-to-peer patterns excel for creative and analytical tasks where diverse perspectives add value. Add convergence mechanisms like voting or synthesis agents to prevent endless debate.
+  Peer-to-peer patterns excel for creative and analytical tasks where diverse
+  perspectives add value. Add convergence mechanisms like voting or synthesis
+  agents to prevent endless debate.
 </Tip>
 
 ### Hierarchical Pattern
@@ -279,7 +287,9 @@ When one agent passes work to another, clear handoff protocols prevent informati
 Poor handoffs lose critical context. A message saying only "Done with research, your turn" loses the original request, the findings, and success criteria. Similarly, dumping 500 pages of raw research notes overwhelms the receiving agent and wastes tokens.
 
 <Tip>
-Design handoff templates for each transition in your system. Include original request, summary of work done, processed output, clear remaining work, and success criteria.
+  Design handoff templates for each transition in your system. Include original
+  request, summary of work done, processed output, clear remaining work, and
+  success criteria.
 </Tip>
 
 ### Context Management
@@ -322,11 +332,11 @@ CrewAI strengths include an intuitive role-based model, rich agent personas, cle
 
 ### Framework Selection
 
-| Framework | Model | Best For | Complexity |
-|-----------|-------|----------|------------|
+| Framework | Model               | Best For                           | Complexity  |
+| --------- | ------------------- | ---------------------------------- | ----------- |
 | LangGraph | Graph/State Machine | Complex workflows, precise control | Medium-High |
-| AutoGen | Conversations | Debate, collaboration, chat | Low-Medium |
-| CrewAI | Teams/Roles | Role-based workflows, delegation | Low |
+| AutoGen   | Conversations       | Debate, collaboration, chat        | Low-Medium  |
+| CrewAI    | Teams/Roles         | Role-based workflows, delegation   | Low         |
 
 Use a framework when your pattern matches the framework's model, you need the framework's features like checkpointing and observability, and development speed matters more than full control. Build custom when your pattern does not fit available frameworks, you need maximum performance and efficiency, you have unique coordination requirements, or you are building a platform rather than an application.
 
@@ -379,7 +389,9 @@ When multiple agents access shared state, consistency matters. Race conditions o
 Solutions include locking where operations acquire a lock before reading and writing. Optimistic concurrency reads a version, computes new state, and only writes if the version has not changed, retrying otherwise. Append-only state appends operations rather than modifying state, computing current values by replaying operations. Agent-scoped state gives each agent its own state section, with only the supervisor writing to shared sections.
 
 <Warning>
-State consistency bugs in multi-agent systems are notoriously hard to debug because they occur non-deterministically. Design your state model carefully and test concurrent scenarios thoroughly.
+  State consistency bugs in multi-agent systems are notoriously hard to debug
+  because they occur non-deterministically. Design your state model carefully
+  and test concurrent scenarios thoroughly.
 </Warning>
 
 ## Production Multi-Agent Systems
@@ -462,68 +474,90 @@ Circuit breaker tracks failure counts, thresholds, and reset timeouts. The state
     {
       id: "q1",
       type: "multiple-choice",
-      question: "When is a multi-agent system most likely to provide significant benefits over a single agent?",
+      question:
+        "When is a multi-agent system most likely to provide significant benefits over a single agent?",
       options: [
         { id: "a", text: "When the task is simple and well-defined" },
-        { id: "b", text: "When maximum speed is required and latency is critical" },
-        { id: "c", text: "When the task requires specialized expertise across multiple domains and benefits from verification" },
-        { id: "d", text: "When you want to minimize operational complexity" }
+        {
+          id: "b",
+          text: "When maximum speed is required and latency is critical",
+        },
+        {
+          id: "c",
+          text: "When the task requires specialized expertise across multiple domains and benefits from verification",
+        },
+        { id: "d", text: "When you want to minimize operational complexity" },
       ],
       correctAnswer: "c",
-      explanation: "Multi-agent systems excel when tasks require diverse specialized expertise (different agents for security, performance, style review) and when quality benefits from verification (one agent checks another's work). Single agents are often better for simple tasks, multi-agent adds latency overhead, and multi-agent increases operational complexity."
+      explanation:
+        "Multi-agent systems excel when tasks require diverse specialized expertise (different agents for security, performance, style review) and when quality benefits from verification (one agent checks another's work). Single agents are often better for simple tasks, multi-agent adds latency overhead, and multi-agent increases operational complexity.",
     },
     {
       id: "q2",
       type: "multiple-choice",
-      question: "In the supervisor/worker pattern, what is the primary responsibility of the supervisor agent?",
+      question:
+        "In the supervisor/worker pattern, what is the primary responsibility of the supervisor agent?",
       options: [
         { id: "a", text: "Executing all the actual work tasks" },
-        { id: "b", text: "Decomposing tasks, routing to workers, and synthesizing results" },
+        {
+          id: "b",
+          text: "Decomposing tasks, routing to workers, and synthesizing results",
+        },
         { id: "c", text: "Providing computational resources to worker agents" },
-        { id: "d", text: "Storing state and handling persistence" }
+        { id: "d", text: "Storing state and handling persistence" },
       ],
       correctAnswer: "b",
-      explanation: "The supervisor's role is coordination: it receives the overall task, breaks it into subtasks, assigns them to appropriate workers, collects results, and synthesizes the final output. Workers execute the actual tasks, infrastructure provides resources, and state management is a separate concern."
+      explanation:
+        "The supervisor's role is coordination: it receives the overall task, breaks it into subtasks, assigns them to appropriate workers, collects results, and synthesizes the final output. Workers execute the actual tasks, infrastructure provides resources, and state management is a separate concern.",
     },
     {
       id: "q3",
       type: "multiple-choice",
-      question: "What is the main advantage of checkpointing in multi-agent workflows?",
+      question:
+        "What is the main advantage of checkpointing in multi-agent workflows?",
       options: [
         { id: "a", text: "It makes agents run faster" },
         { id: "b", text: "It reduces the number of agents needed" },
-        { id: "c", text: "It enables recovery from failures without losing all progress" },
-        { id: "d", text: "It prevents agents from making errors" }
+        {
+          id: "c",
+          text: "It enables recovery from failures without losing all progress",
+        },
+        { id: "d", text: "It prevents agents from making errors" },
       ],
       correctAnswer: "c",
-      explanation: "Checkpointing saves workflow state at key points, allowing recovery from the last checkpoint rather than restarting from scratch when failures occur. It does not affect speed, agent count, or prevent errors, but it does make errors recoverable."
+      explanation:
+        "Checkpointing saves workflow state at key points, allowing recovery from the last checkpoint rather than restarting from scratch when failures occur. It does not affect speed, agent count, or prevent errors, but it does make errors recoverable.",
     },
     {
       id: "q4",
       type: "multiple-choice",
-      question: "Which framework would be most appropriate for implementing a debate between multiple AI perspectives that should converge on a consensus?",
+      question:
+        "Which framework would be most appropriate for implementing a debate between multiple AI perspectives that should converge on a consensus?",
       options: [
         { id: "a", text: "LangGraph (graph-based workflows)" },
         { id: "b", text: "AutoGen (conversational multi-agent)" },
         { id: "c", text: "A swarm pattern with work queues" },
-        { id: "d", text: "A strict pipeline pattern" }
+        { id: "d", text: "A strict pipeline pattern" },
       ],
       correctAnswer: "b",
-      explanation: "AutoGen's conversational model is designed for debate and collaboration patterns where agents exchange messages, respond to each other, and work toward consensus. LangGraph is better for structured workflows, swarm for parallel independent tasks, and pipeline for sequential processing."
+      explanation:
+        "AutoGen's conversational model is designed for debate and collaboration patterns where agents exchange messages, respond to each other, and work toward consensus. LangGraph is better for structured workflows, swarm for parallel independent tasks, and pipeline for sequential processing.",
     },
     {
       id: "q5",
       type: "multiple-choice",
-      question: "When using shared state for agent communication, what is the primary risk that requires careful handling?",
+      question:
+        "When using shared state for agent communication, what is the primary risk that requires careful handling?",
       options: [
         { id: "a", text: "Messages being lost in transit" },
         { id: "b", text: "Race conditions causing inconsistent state" },
         { id: "c", text: "Agents not being able to communicate at all" },
-        { id: "d", text: "State becoming too small to be useful" }
+        { id: "d", text: "State becoming too small to be useful" },
       ],
       correctAnswer: "b",
-      explanation: "When multiple agents read and write shared state concurrently, race conditions can occur where agents work from stale data and overwrite each other's changes. Solutions include locking, optimistic concurrency, append-only state, or agent-scoped state sections."
-    }
+      explanation:
+        "When multiple agents read and write shared state concurrently, race conditions can occur where agents work from stale data and overwrite each other's changes. Solutions include locking, optimistic concurrency, append-only state, or agent-scoped state sections.",
+    },
   ]}
   passingScore={70}
   allowRetry={true}
@@ -540,7 +574,7 @@ Circuit breaker tracks failure counts, thresholds, and reset timeouts. The state
     "Set up a Python project with virtual environment",
     "Install required packages: anthropic (or openai), pydantic for data models",
     "Prepare 3 code samples to review: one with security issues, one with performance issues, one with style issues",
-    "Set up your API key in a .env file"
+    "Set up your API key in a .env file",
   ]}
   parts={[
     {
@@ -552,9 +586,10 @@ Circuit breaker tracks failure counts, thresholds, and reset timeouts. The state
         "Specify input/output for each agent: what code format, what findings structure",
         "Design message schemas: ReviewRequest, TaskAssignment, FindingsReport, FinalReport",
         "Sketch the supervisor flow: receive request → analyze needs → assign to workers → collect results → synthesize report",
-        "Draw a sequence diagram showing message flow between supervisor and workers"
+        "Draw a sequence diagram showing message flow between supervisor and workers",
       ],
-      observePrompt: "Is your architecture clear enough that you could hand it to another developer to implement?"
+      observePrompt:
+        "Is your architecture clear enough that you could hand it to another developer to implement?",
     },
     {
       id: "implement-base-classes",
@@ -564,9 +599,10 @@ Circuit breaker tracks failure counts, thresholds, and reset timeouts. The state
         "Create Agent base class with: name, system_prompt, execute(input) method that calls LLM",
         "Create data models using Pydantic: ReviewRequest, TaskAssignment, Finding (severity, location, description, remediation), FindingsReport",
         "Implement basic execute method that sends system_prompt + user input to LLM",
-        "Test the base class with a simple prompt to verify it works"
+        "Test the base class with a simple prompt to verify it works",
       ],
-      observePrompt: "Can your base class handle any type of agent by just changing the system_prompt?"
+      observePrompt:
+        "Can your base class handle any type of agent by just changing the system_prompt?",
     },
     {
       id: "implement-worker-agents",
@@ -577,9 +613,10 @@ Circuit breaker tracks failure counts, thresholds, and reset timeouts. The state
         "Implement PerformanceAgent: system prompt focused on algorithmic complexity, resource usage, bottlenecks",
         "Implement StyleAgent: system prompt focused on naming, documentation, code organization",
         "Each agent should parse LLM output into structured Finding objects",
-        "Test each agent individually with appropriate code samples"
+        "Test each agent individually with appropriate code samples",
       ],
-      observePrompt: "Are your agent prompts specific enough to produce useful findings? Do they return structured data?"
+      observePrompt:
+        "Are your agent prompts specific enough to produce useful findings? Do they return structured data?",
     },
     {
       id: "implement-supervisor",
@@ -590,9 +627,10 @@ Circuit breaker tracks failure counts, thresholds, and reset timeouts. The state
         "Implement create_assignments: analyze request, decide which agents to invoke (could be all or subset)",
         "Implement execute_agents: invoke worker agents in parallel or sequence, collect results",
         "Implement synthesize_report: combine findings, identify conflicts, prioritize by severity, generate unified report",
-        "Test end-to-end with a code sample that has multiple issue types"
+        "Test end-to-end with a code sample that has multiple issue types",
       ],
-      observePrompt: "Does your supervisor successfully coordinate workers and produce coherent reports? How does it handle conflicts between agents?"
+      observePrompt:
+        "Does your supervisor successfully coordinate workers and produce coherent reports? How does it handle conflicts between agents?",
     },
     {
       id: "add-reliability",
@@ -603,18 +641,37 @@ Circuit breaker tracks failure counts, thresholds, and reset timeouts. The state
         "Add checkpoint system: save_checkpoint(workflow_id, state) and restore_checkpoint(workflow_id)",
         "Checkpoint after each worker completes",
         "Test failure recovery: raise an exception in a worker, verify checkpoint restores state",
-        "Test retry logic: simulate transient API error, verify retry succeeds"
+        "Test retry logic: simulate transient API error, verify retry succeeds",
       ],
-      observePrompt: "How much more robust does the system feel with retries and checkpointing? What edge cases remain?"
-    }
+      observePrompt:
+        "How much more robust does the system feel with retries and checkpointing? What edge cases remain?",
+    },
   ]}
   successCriteria={[
-    { id: "architecture-design", text: "Designed clear architecture with agent responsibilities, message schemas, and supervisor flow" },
-    { id: "base-implementation", text: "Implemented Agent base class and data models with Pydantic" },
-    { id: "specialized-agents", text: "Created SecurityAgent, PerformanceAgent, and StyleAgent with appropriate prompts" },
-    { id: "supervisor-working", text: "Built Supervisor that coordinates workers and synthesizes unified reports" },
-    { id: "reliability-features", text: "Added retry logic with exponential backoff and checkpoint/restore functionality" },
-    { id: "comprehensive-testing", text: "Tested with multiple code samples covering security, performance, and style issues" }
+    {
+      id: "architecture-design",
+      text: "Designed clear architecture with agent responsibilities, message schemas, and supervisor flow",
+    },
+    {
+      id: "base-implementation",
+      text: "Implemented Agent base class and data models with Pydantic",
+    },
+    {
+      id: "specialized-agents",
+      text: "Created SecurityAgent, PerformanceAgent, and StyleAgent with appropriate prompts",
+    },
+    {
+      id: "supervisor-working",
+      text: "Built Supervisor that coordinates workers and synthesizes unified reports",
+    },
+    {
+      id: "reliability-features",
+      text: "Added retry logic with exponential backoff and checkpoint/restore functionality",
+    },
+    {
+      id: "comprehensive-testing",
+      text: "Tested with multiple code samples covering security, performance, and style issues",
+    },
   ]}
 />
 

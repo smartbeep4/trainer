@@ -36,7 +36,10 @@ Large language models learn to predict the next token based on patterns in train
 Reasoning is different. Consider this problem: If all bloops are razzies, and all razzies are lazzies, are all bloops lazzies? This requires applying logical rules to novel terms. The answer, which is yes, does not come from having seen this specific example before. It comes from understanding the structure of transitivity: if A implies B, and B implies C, then A implies C.
 
 <Definition term="Reasoning">
-The process of drawing conclusions from premises through logical rules, rather than retrieving patterns from memory. True reasoning applies abstract principles to novel situations, including those that may contradict statistical patterns in training data.
+  The process of drawing conclusions from premises through logical rules, rather
+  than retrieving patterns from memory. True reasoning applies abstract
+  principles to novel situations, including those that may contradict
+  statistical patterns in training data.
 </Definition>
 
 The fundamental tension is this: language models learn statistical patterns, but reasoning requires applying rules to novel situations, including situations that may contradict those statistical patterns.
@@ -50,7 +53,9 @@ Multi-step arithmetic often fails because models lose track of intermediate resu
 Logical consistency proves difficult to maintain across a problem. When asked whether 847 is prime, a model might note that it ends in 7 (odd), is not divisible by 2, 3, or 5, and conclude it is prime. This reasoning misses that 847 equals 7 times 121, which equals 7 times 11 times 11. The model did not systematically check all relevant factors.
 
 <Warning>
-Models can produce confident, well-structured reasoning that leads to wrong answers. The appearance of step-by-step logic does not guarantee correct conclusions. Always verify reasoning on critical tasks.
+  Models can produce confident, well-structured reasoning that leads to wrong
+  answers. The appearance of step-by-step logic does not guarantee correct
+  conclusions. Always verify reasoning on critical tasks.
 </Warning>
 
 Counterfactual reasoning poses particular challenges. When asked how keyboards would differ if humans had four arms instead of two, models may default to describing real keyboards, struggle to maintain the hypothetical premise, or produce superficial responses rather than thinking through the implications.
@@ -66,7 +71,9 @@ Diminishing returns set in as models grow. Each doubling of parameters yields sm
 Reasoning does not scale linearly with other capabilities. Some reasoning abilities show minimal improvement with scale, while others improve dramatically. Logical consistency improves less than factual recall.
 
 <Info>
-The cost and data constraints of scaling have driven research toward methods that improve reasoning without proportional increases in training compute: better prompting, test-time compute, and architectural innovations.
+  The cost and data constraints of scaling have driven research toward methods
+  that improve reasoning without proportional increases in training compute:
+  better prompting, test-time compute, and architectural innovations.
 </Info>
 
 Cost prohibitions become severe at the frontier. Training models 10 times larger requires roughly 10 times more compute. We are approaching limits of what is economically feasible through pure scaling.
@@ -96,7 +103,9 @@ In 2022, researchers discovered that explicitly prompting models to "think step 
 Consider a standard prompting approach to a math problem. You present the question, and the model produces an answer. For "Roger has 5 tennis balls. He buys 2 more cans of tennis balls. Each can has 3 tennis balls. How many tennis balls does he have now?" the model might jump directly to an answer, often getting it wrong.
 
 <Definition term="Chain-of-Thought (CoT)">
-A prompting technique that encourages models to generate intermediate reasoning steps before producing a final answer. By externalizing the reasoning process, models can reference previous steps and catch errors.
+  A prompting technique that encourages models to generate intermediate
+  reasoning steps before producing a final answer. By externalizing the
+  reasoning process, models can reference previous steps and catch errors.
 </Definition>
 
 With Chain-of-Thought prompting, you add "Let's think step by step" or provide examples showing the reasoning process. The model then walks through: Roger starts with 5 tennis balls, he buys 2 cans with 3 balls each, that is 2 times 3 equals 6 new balls, total is 5 plus 6 equals 11 tennis balls.
@@ -112,7 +121,9 @@ Decomposition breaks complex problems into simpler sub-problems that the model c
 Working memory externalization uses the model's context window as external working memory. Intermediate results written in text can be referenced, whereas internal computations are opaque and limited.
 
 <Tip>
-The phrase "Let's think step by step" is remarkably effective as a zero-shot technique. Adding it to any question often triggers more structured reasoning, even without examples of the desired format.
+  The phrase "Let's think step by step" is remarkably effective as a zero-shot
+  technique. Adding it to any question often triggers more structured reasoning,
+  even without examples of the desired format.
 </Tip>
 
 Eliciting learned procedures activates capabilities the model may have acquired during training but does not apply by default. CoT prompts trigger these latent abilities.
@@ -128,7 +139,9 @@ A single chain of thought can be wrong. Self-consistency improves reliability by
 The process works as follows. Generate N different reasoning chains for the same problem using temperature greater than 0 to get variety. Extract the final answer from each chain. Return the most common answer through majority vote.
 
 <Info>
-Self-consistency works because correct reasoning paths tend to converge on the same answer, while incorrect paths produce varied wrong answers. With enough samples, the correct answer typically wins.
+  Self-consistency works because correct reasoning paths tend to converge on the
+  same answer, while incorrect paths produce varied wrong answers. With enough
+  samples, the correct answer typically wins.
 </Info>
 
 Consider the famous bat-and-ball problem: "A bat and ball cost $1.10. The bat costs $1 more than the ball. How much does the ball cost?" The intuitive wrong answer is $0.10. The correct answer is $0.05.
@@ -144,7 +157,9 @@ Tree of Thoughts extends CoT by explicitly exploring multiple reasoning paths an
 The key insight is that some problems require exploring alternatives, not just step-by-step reasoning. If you realize mid-solution that your approach will not work, you should try a different path.
 
 <Definition term="Tree of Thoughts (ToT)">
-A reasoning framework that structures problem-solving as tree search. At each step, multiple possible continuations are generated, evaluated, and explored, with the ability to backtrack from unpromising paths.
+  A reasoning framework that structures problem-solving as tree search. At each
+  step, multiple possible continuations are generated, evaluated, and explored,
+  with the ability to backtrack from unpromising paths.
 </Definition>
 
 How ToT works: Decompose the problem into steps. Generate multiple possible next steps at each point. Evaluate each candidate step using the model itself or heuristics. Search the tree of possibilities using breadth-first, depth-first, or best-first strategies. Backtrack when paths seem unpromising.
@@ -160,7 +175,9 @@ Context window constraints mean that long chains of thought consume tokens. Very
 Compounding errors accumulate as each step can introduce mistakes. Long chains may fail despite step-by-step reasoning.
 
 <Warning>
-Prompt sensitivity affects performance significantly. "Think step by step" works differently than "Reason carefully" or "Show your work." Experiment with different phrasings for your specific tasks.
+  Prompt sensitivity affects performance significantly. "Think step by step"
+  works differently than "Reason carefully" or "Show your work." Experiment with
+  different phrasings for your specific tasks.
 </Warning>
 
 Prompt sensitivity means performance depends heavily on phrasing. Small changes in how you ask can produce large changes in quality.
@@ -182,20 +199,25 @@ Test-time compute refers to techniques that allow models to spend more computati
 This mirrors human cognition: easy questions get fast, reflexive answers, while hard questions require deliberation.
 
 <Definition term="Test-Time Compute">
-Techniques that allow AI models to allocate variable computational resources during inference based on problem difficulty. Harder problems receive more reasoning steps, verification passes, or search iterations.
+  Techniques that allow AI models to allocate variable computational resources
+  during inference based on problem difficulty. Harder problems receive more
+  reasoning steps, verification passes, or search iterations.
 </Definition>
 
 ### The Thinking Paradigm
 
-OpenAI's o1 model represents a major step toward test-time compute. Rather than generating an answer immediately, o1 produces an extended internal reasoning trace before its final response.
+One of the first prominent examples of this approach was OpenAI's o1 (released in late 2024). Rather than generating an answer immediately, o1-style models produce an extended internal reasoning trace before the final response.
 
-The observable behavior looks like this. Given a problem like "Find a number that when you multiply all its digits, you get 0, and when you add all its digits, you get 5," the model takes time, potentially seconds to minutes, to reason before responding. This reasoning is not shown to users but influences the final answer.
+The observable behavior is that the model may take extra time (seconds to minutes on hard problems) to "think" before responding. This reasoning is typically not shown to the user but strongly influences the quality of the final answer.
 
 <Info>
-Test-time compute models trade latency for accuracy. They can spend more tokens on internal reasoning for hard problems, achieving substantially better results on math, coding, and logic benchmarks at the cost of higher latency and expense.
+  Test-time compute models trade latency for accuracy. They can spend more
+  tokens on internal reasoning for hard problems, achieving substantially better
+  results on math, coding, and logic benchmarks at the cost of higher latency
+  and expense.
 </Info>
 
-Key characteristics of o1-style models include being trained with reinforcement learning to produce reasoning traces, the ability to spend more tokens on internal reasoning for hard problems, substantially better performance on math, coding, and logic benchmarks, and higher latency and cost than standard models.
+Key characteristics of these models include being trained with reinforcement learning to produce reasoning traces, the ability to spend more tokens on internal reasoning for hard problems, substantially better performance on math, coding, and logic benchmarks, and higher latency and cost than standard models. Later generations have continued to improve speed and reliability.
 
 ### How Test-Time Compute Works
 
@@ -216,7 +238,10 @@ Research suggests that test-time compute follows its own scaling laws, complemen
 Training compute shows that larger models trained on more data are generally more capable, but with diminishing returns and enormous costs.
 
 <Tip>
-It may be more efficient to train a medium-sized model that can allocate variable inference compute than to train an enormous model that uses fixed compute per token. This insight is reshaping how frontier labs think about model development.
+  It may be more efficient to train a medium-sized model that can allocate
+  variable inference compute than to train an enormous model that uses fixed
+  compute per token. This insight is reshaping how frontier labs think about
+  model development.
 </Tip>
 
 Test-time compute shows that given a fixed model, spending more inference compute through more reasoning tokens, more samples, or more search improves results on hard problems. This scales more efficiently for some problem types.
@@ -232,7 +257,9 @@ The generate-and-verify pattern works as follows: generate a candidate solution,
 Self-critique prompts the model to check its own work. "Check if 42 is correct by substituting back into the original equation..." The model may then discover "42 gives left side 85, right side 87. This is incorrect. Let me try again..."
 
 <Info>
-Verification is often easier than generation. A model that struggles to solve a math problem directly may reliably verify whether a proposed answer is correct. This enables sample-and-verify approaches.
+  Verification is often easier than generation. A model that struggles to solve
+  a math problem directly may reliably verify whether a proposed answer is
+  correct. This enables sample-and-verify approaches.
 </Info>
 
 ### Tool Use in Reasoning
@@ -274,7 +301,10 @@ Scaling language models has been remarkably effective, but standard dense transf
 This creates challenges in memory, where all parameters must be in GPU memory; in compute, where all parameters participate in each forward pass; and in energy, where larger models consume proportionally more power.
 
 <Definition term="Mixture of Experts (MoE)">
-An architecture where models have many expert networks but only activate a subset for each input. A router network decides which experts process each token, enabling larger total parameter counts with lower active compute per token.
+  An architecture where models have many expert networks but only activate a
+  subset for each input. A router network decides which experts process each
+  token, enabling larger total parameter counts with lower active compute per
+  token.
 </Definition>
 
 The question is whether we can build models that are "large" in some sense but do not use all their capacity for every input.
@@ -288,7 +318,10 @@ In an MoE layer, input flows through self-attention to a router, which selects t
 The router, a small learned network, examines each token and decides which experts should process it. Only the selected experts, typically 1 or 2 out of 8 to 64, are activated.
 
 <Info>
-Different experts can specialize in different types of content. A token like "mitochondria" might route to biology and chemistry experts, while "touchdown" routes to a sports expert. The router learns to match tokens to appropriate specialists.
+  Different experts can specialize in different types of content. A token like
+  "mitochondria" might route to biology and chemistry experts, while "touchdown"
+  routes to a sports expert. The router learns to match tokens to appropriate
+  specialists.
 </Info>
 
 ### Scaling Properties
@@ -310,10 +343,12 @@ Several influential models use MoE.
 Switch Transformer from Google in 2021 was one of the first successful large MoE LLMs, simplified routing to send each token to exactly one expert, and showed MoE can train efficiently at scale.
 
 <Tip>
-Mixtral 8x7B demonstrates the efficiency advantage of MoE: with 8 experts and 2 active per token, its roughly 47 billion total parameters achieve performance matching or exceeding Llama 2 70B at lower inference cost.
+  Mixtral 8x7B demonstrates the efficiency advantage of MoE: with 8 experts and
+  2 active per token, its roughly 47 billion total parameters achieve
+  performance matching or exceeding Llama 2 70B at lower inference cost.
 </Tip>
 
-Mixtral 8x7B from Mistral in 2024 has 8 experts with 2 active per token, roughly 47 billion total parameters, roughly 13 billion active parameters per token, and matches or exceeds Llama 2 70B performance at lower inference cost.
+Mixtral 8x7B (Mistral, 2023–2024) was an influential early demonstration of the MoE pattern at accessible scale: 8 experts, 2 active per token.
 
 GPT-4, while OpenAI has not confirmed architecture details, is widely speculated to use MoE based on industry analysis of its capability level relative to reported parameter counts.
 
@@ -334,7 +369,9 @@ Token dropping occurs in some architectures that drop tokens when experts are ov
 Advantages include compute efficiency with larger effective model size for similar FLOPS, specialization where experts can develop distinct capabilities, scalability to more total parameters than dense models, and training efficiency with more parameters trained on the same compute.
 
 <Warning>
-MoE models require all expert weights in memory even though only some are active. This can make deployment more challenging than dense models with the same active parameter count.
+  MoE models require all expert weights in memory even though only some are
+  active. This can make deployment more challenging than dense models with the
+  same active parameter count.
 </Warning>
 
 Limitations include memory requirements for all expert weights, routing overhead adding computational and architectural complexity, communication costs in distributed training from cross-device routing, difficulty analyzing which experts do what, and load balancing requiring careful design.
@@ -358,22 +395,24 @@ Benchmarks drive research direction. What we measure shapes what we optimize. Un
 A cautionary note: benchmarks measure specific capabilities under specific conditions. High benchmark scores do not guarantee real-world reliability. Low scores on one benchmark do not mean a model is useless.
 
 <Info>
-Benchmarks are proxies for capability, not measures of it. A model that scores 90 percent on a math benchmark may still fail on the math problems you actually care about. Always evaluate on your specific use cases.
+  Benchmarks are proxies for capability, not measures of it. A model that scores
+  90 percent on a math benchmark may still fail on the math problems you
+  actually care about. Always evaluate on your specific use cases.
 </Info>
 
-### Major Reasoning and Knowledge Benchmarks
+### Major Reasoning and Knowledge Benchmarks (as of 2024–early 2025)
 
-MMLU (Massive Multitask Language Understanding) covers 57 tasks spanning STEM, humanities, and social sciences with multiple-choice questions from elementary to professional level. It tests broad knowledge and basic reasoning. Frontier models achieve 85 to 90 percent accuracy.
+MMLU (Massive Multitask Language Understanding) covers 57 tasks spanning STEM, humanities, and social sciences with multiple-choice questions from elementary to professional level. It tests broad knowledge and basic reasoning. At the time, frontier models were reaching the mid-to-high 80s to low 90s percent accuracy on the original version (many older benchmarks have since saturated or been replaced by harder variants).
 
-GSM8K (Grade School Math) contains 8,500 grade-school math word problems requiring multi-step reasoning. It tests arithmetic and word problem comprehension. Frontier models achieve 90 to 95 percent with CoT.
+GSM8K (Grade School Math) contains 8,500 grade-school math word problems requiring multi-step reasoning. It tests arithmetic and word problem comprehension. Strong models with CoT were achieving high 80s to mid-90s percent.
 
-HumanEval has 164 programming problems testing code generation from docstrings, measured by pass@k showing the percentage of problems solved with k attempts. Frontier models achieve 80 to 90 percent pass@1.
+HumanEval has 164 programming problems testing code generation from docstrings, measured by pass@k. Capable models were reaching the 70–90% range depending on the exact setup.
 
-ARC (AI2 Reasoning Challenge) contains science questions from standardized tests, split into ARC-Easy and ARC-Challenge, testing scientific reasoning and common sense. Frontier models exceed 95 percent on ARC-Challenge.
+ARC (AI2 Reasoning Challenge) and MATH remain useful signals, though real progress is better measured on newer, harder evaluations designed to resist contamination and saturation.
 
-MATH has 12,500 competition mathematics problems covering algebra, geometry, number theory, and more. It tests complex mathematical reasoning at AMC and AIME competition level. Frontier models achieve 50 to 70 percent, much harder than GSM8K.
+GPQA (Graduate-Level Google-Proof Q&A) is particularly valuable because it was written by domain experts and is hard for both models and people without deep expertise.
 
-GPQA (Graduate-Level Google-Proof Q&A) contains questions written by domain experts that cannot be easily answered by search, testing deep domain expertise. Frontier models achieve 40 to 60 percent while experts score 70 to 80 percent.
+> **Important**: Benchmarks are moving targets. Once a benchmark becomes popular, models are often optimized specifically for it. Always evaluate on _your_ actual tasks rather than relying solely on published numbers.
 
 ### Limitations of Current Benchmarks
 
@@ -384,7 +423,9 @@ Contamination means models may have seen benchmark questions during training. Ne
 Narrow scope limits what multiple-choice and short-answer formats capture. Helping a user debug code is harder than passing HumanEval.
 
 <Warning>
-Once a benchmark becomes popular, models may be optimized specifically for it, inflating scores without improving general capability. This "teaching to the test" effect limits what benchmarks tell us about real progress.
+  Once a benchmark becomes popular, models may be optimized specifically for it,
+  inflating scores without improving general capability. This "teaching to the
+  test" effect limits what benchmarks tell us about real progress.
 </Warning>
 
 Gaming occurs when models are optimized specifically for popular benchmarks, inflating scores without improving general capability.
@@ -414,7 +455,9 @@ Real capability assessment often requires more than benchmark scores.
 Human evaluation has humans rate model outputs on specific criteria. It is more expensive but captures nuance. Challenges include consistency, scale, and defining criteria.
 
 <Tip>
-For production systems, A/B testing on real user tasks is the gold standard for evaluation. It measures actual utility rather than proxy metrics, though it requires enough usage volume to be statistically meaningful.
+  For production systems, A/B testing on real user tasks is the gold standard
+  for evaluation. It measures actual utility rather than proxy metrics, though
+  it requires enough usage volume to be statistically meaningful.
 </Tip>
 
 A/B testing compares models on real user tasks, measures actual utility not proxy metrics, and is the gold standard for production systems.
@@ -442,7 +485,9 @@ AI research moves rapidly. Techniques that were frontier six months ago may be m
 Scaling test-time compute is early in our understanding. Research questions include what is the optimal balance between model size and reasoning depth, how do we train models to use test-time compute effectively, and can we predict problem difficulty to allocate compute adaptively.
 
 <Info>
-The research frontier moves quickly. Techniques that seem exotic today may be standard practice next year. Understanding the current landscape prepares you to adopt new approaches as they mature.
+  The research frontier moves quickly. Techniques that seem exotic today may be
+  standard practice next year. Understanding the current landscape prepares you
+  to adopt new approaches as they mature.
 </Info>
 
 Improved chain-of-thought research continues since CoT works but we do not fully understand why. Ongoing research addresses what makes some reasoning traces better than others, whether we can train models to produce better CoT natively, and how to combine CoT with external verification.
@@ -649,7 +694,7 @@ graph LR
   setupInstructions={[
     "Get access to a frontier LLM (Claude, GPT-4, or similar)",
     "Open a document or notebook for recording observations",
-    "Prepare to test multiple problems with different prompting approaches"
+    "Prepare to test multiple problems with different prompting approaches",
   ]}
   parts={[
     {
@@ -663,9 +708,10 @@ graph LR
         "Medium problem: 'A store offers a 20% discount, then applies a 10% loyalty discount on the reduced price. What is the total percentage off?' - Repeat all three prompting approaches",
         "Hard problem: 'In a family, each daughter has the same number of brothers as sisters. Each son has twice as many sisters as brothers. How many sons and daughters?' - Repeat all three approaches",
         "Document which approach works best for each difficulty level",
-        "Note where errors occur and whether CoT helps catch them"
+        "Note where errors occur and whether CoT helps catch them",
       ],
-      observePrompt: "When does CoT help most? Does the benefit increase with problem difficulty? Are there cases where CoT makes things worse?"
+      observePrompt:
+        "When does CoT help most? Does the benefit increase with problem difficulty? Are there cases where CoT makes things worse?",
     },
     {
       id: "self-consistency",
@@ -677,9 +723,10 @@ graph LR
         "Ask this question 5 times with fresh context each time (start new conversation or clear context)",
         "For each trial, record the answer given, whether reasoning was shown, and whether the reasoning was correct",
         "Calculate whether majority voting across the 5 trials gives the correct answer",
-        "Observe whether the model falls into the intuitive trap or reasons correctly"
+        "Observe whether the model falls into the intuitive trap or reasons correctly",
       ],
-      observePrompt: "Does the model consistently get this right or wrong? How does self-consistency voting help with problems that have intuitive wrong answers?"
+      observePrompt:
+        "Does the model consistently get this right or wrong? How does self-consistency voting help with problems that have intuitive wrong answers?",
     },
     {
       id: "benchmark-questions",
@@ -692,9 +739,10 @@ graph LR
         "For each question, use CoT prompting ('Let's think step by step')",
         "Evaluate whether the answer was correct",
         "Assess whether the reasoning was sound even if the answer was wrong",
-        "Note where errors occurred in the reasoning chain"
+        "Note where errors occurred in the reasoning chain",
       ],
-      observePrompt: "Which benchmark types does the model handle best? What kinds of reasoning errors are most common?"
+      observePrompt:
+        "Which benchmark types does the model handle best? What kinds of reasoning errors are most common?",
     },
     {
       id: "identify-limitations",
@@ -706,17 +754,33 @@ graph LR
         "Describe how high benchmark scores might be misleading about real-world capability",
         "Design a novel benchmark question that tests something current benchmarks miss",
         "Explain what capability your question tests",
-        "Explain why existing benchmarks don't capture this capability"
+        "Explain why existing benchmarks don't capture this capability",
       ],
-      observePrompt: "If you were building an AI product, would benchmark scores tell you everything you need to know about model capabilities? What else would you test?"
-    }
+      observePrompt:
+        "If you were building an AI product, would benchmark scores tell you everything you need to know about model capabilities? What else would you test?",
+    },
   ]}
   successCriteria={[
-    { id: "cot-testing", text: "Tested CoT on problems of varying difficulty and documented when it helps" },
-    { id: "self-consistency", text: "Explored self-consistency across multiple trials" },
-    { id: "benchmarks", text: "Attempted questions from at least 2 different benchmark types" },
-    { id: "limitations", text: "Identified specific limitations of benchmark evaluation" },
-    { id: "novel-approach", text: "Proposed at least one novel evaluation approach or question" }
+    {
+      id: "cot-testing",
+      text: "Tested CoT on problems of varying difficulty and documented when it helps",
+    },
+    {
+      id: "self-consistency",
+      text: "Explored self-consistency across multiple trials",
+    },
+    {
+      id: "benchmarks",
+      text: "Attempted questions from at least 2 different benchmark types",
+    },
+    {
+      id: "limitations",
+      text: "Identified specific limitations of benchmark evaluation",
+    },
+    {
+      id: "novel-approach",
+      text: "Proposed at least one novel evaluation approach or question",
+    },
   ]}
 />
 
@@ -726,60 +790,70 @@ graph LR
   client:load
   questions={[
     {
-      question: "What is the primary mechanism by which Chain-of-Thought prompting improves reasoning performance?",
+      question:
+        "What is the primary mechanism by which Chain-of-Thought prompting improves reasoning performance?",
       options: [
         "It increases the model's parameter count during inference",
         "It externalizes intermediate reasoning steps, allowing the model to reference and build on them",
         "It accesses a separate reasoning module in the model architecture",
-        "It fine-tunes the model on the specific problem during inference"
+        "It fine-tunes the model on the specific problem during inference",
       ],
       correctAnswer: 1,
-      explanation: "Chain-of-Thought works by externalizing intermediate reasoning steps into the context. This allows the model to 'see' its previous reasoning and build on it, effectively using the context window as working memory. It doesn't change parameters or access separate modules."
+      explanation:
+        "Chain-of-Thought works by externalizing intermediate reasoning steps into the context. This allows the model to 'see' its previous reasoning and build on it, effectively using the context window as working memory. It doesn't change parameters or access separate modules.",
     },
     {
-      question: "What distinguishes test-time compute models like o1 from standard LLMs?",
+      question:
+        "What distinguishes test-time compute models like o1 from standard LLMs?",
       options: [
         "They use larger parameter counts for every query",
         "They spend variable amounts of compute based on problem difficulty, thinking longer on harder problems",
         "They require less compute than standard models",
-        "They only work on mathematical problems"
+        "They only work on mathematical problems",
       ],
       correctAnswer: 1,
-      explanation: "The key innovation of test-time compute models is variable inference compute. They can spend more reasoning tokens on difficult problems, effectively 'thinking longer' before responding. This contrasts with standard LLMs that use fixed compute per token regardless of difficulty."
+      explanation:
+        "The key innovation of test-time compute models is variable inference compute. They can spend more reasoning tokens on difficult problems, effectively 'thinking longer' before responding. This contrasts with standard LLMs that use fixed compute per token regardless of difficulty.",
     },
     {
-      question: "In a Mixture of Experts architecture, what is the role of the router?",
+      question:
+        "In a Mixture of Experts architecture, what is the role of the router?",
       options: [
         "To compress the model for faster inference",
         "To decide which subset of expert networks should process each token",
         "To translate between different languages",
-        "To store the model's long-term memory"
+        "To store the model's long-term memory",
       ],
       correctAnswer: 1,
-      explanation: "The router in MoE architectures examines each token and determines which experts (typically top-1 or top-2 out of many) should process it. This selective activation enables large total parameter counts with lower active compute per token."
+      explanation:
+        "The router in MoE architectures examines each token and determines which experts (typically top-1 or top-2 out of many) should process it. This selective activation enables large total parameter counts with lower active compute per token.",
     },
     {
-      question: "Which of the following is NOT a significant limitation of current AI benchmarks?",
+      question:
+        "Which of the following is NOT a significant limitation of current AI benchmarks?",
       options: [
         "Potential contamination from benchmark data appearing in training sets",
         "Narrow task formats that don't capture real-world complexity",
         "Benchmarks being too difficult for any model to make progress",
-        "Risk of models being optimized specifically for benchmarks rather than general capability"
+        "Risk of models being optimized specifically for benchmarks rather than general capability",
       ],
       correctAnswer: 2,
-      explanation: "Current frontier models perform very well on most benchmarks, often approaching or exceeding human performance. The real limitations are contamination, narrow formats, and benchmark-specific optimization. The challenge is often that benchmarks are too easy or narrow, not too hard."
+      explanation:
+        "Current frontier models perform very well on most benchmarks, often approaching or exceeding human performance. The real limitations are contamination, narrow formats, and benchmark-specific optimization. The challenge is often that benchmarks are too easy or narrow, not too hard.",
     },
     {
-      question: "What advantage does self-consistency provide over a single Chain-of-Thought response?",
+      question:
+        "What advantage does self-consistency provide over a single Chain-of-Thought response?",
       options: [
         "It reduces the number of tokens generated",
         "Correct reasoning paths tend to converge while incorrect paths vary, so majority voting improves accuracy",
         "It allows the model to access more training data",
-        "It bypasses the model's safety filters"
+        "It bypasses the model's safety filters",
       ],
       correctAnswer: 1,
-      explanation: "Self-consistency samples multiple reasoning chains and uses majority voting. Correct reasoning tends to converge on the same answer, while different errors produce varied wrong answers. With enough samples, the correct answer typically wins the vote."
-    }
+      explanation:
+        "Self-consistency samples multiple reasoning chains and uses majority voting. Correct reasoning tends to converge on the same answer, while different errors produce varied wrong answers. With enough samples, the correct answer typically wins the vote.",
+    },
   ]}
 />
 

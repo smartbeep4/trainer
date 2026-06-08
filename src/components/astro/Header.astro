@@ -3,11 +3,20 @@ import ThemeToggle from "@components/react/ThemeToggle";
 import MobileMenu from "@components/react/MobileMenu";
 ---
 
-<header class="sticky top-0 z-40 w-full border-b border-neutral-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 dark:border-dark-border dark:bg-dark-bg/95 dark:supports-[backdrop-filter]:bg-dark-bg/80">
-  <div class="mx-auto flex h-16 max-w-screen-2xl items-center justify-between px-4 lg:px-8">
+<header
+  class="sticky top-0 z-40 w-full border-b border-neutral-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 dark:border-dark-border dark:bg-dark-bg/95 dark:supports-[backdrop-filter]:bg-dark-bg/80"
+>
+  <div
+    class="mx-auto flex h-16 max-w-screen-2xl items-center justify-between px-4 lg:px-8"
+  >
     <!-- Logo -->
-    <a href="/" class="flex items-center gap-3 transition-opacity hover:opacity-80">
-      <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary-500 to-primary-600">
+    <a
+      href="/"
+      class="flex items-center gap-3 transition-opacity hover:opacity-80"
+    >
+      <div
+        class="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary-500 to-primary-600"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
@@ -18,13 +27,15 @@ import MobileMenu from "@components/react/MobileMenu";
           stroke-linejoin="round"
           class="h-5 w-5 text-white"
         >
-          <path d="M4 6h8" />
-          <path d="M4 12h12" />
-          <path d="M4 18h10" />
-          <path d="M18 8l4 4-4 4" />
+          <path d="M4 6h8"></path>
+          <path d="M4 12h12"></path>
+          <path d="M4 18h10"></path>
+          <path d="M18 8l4 4-4 4"></path>
         </svg>
       </div>
-      <span class="hidden font-semibold text-neutral-900 sm:block dark:text-neutral-100">
+      <span
+        class="hidden font-semibold text-neutral-900 dark:text-neutral-100 sm:block"
+      >
         Developer of Tomorrow
       </span>
     </a>
@@ -47,11 +58,12 @@ import MobileMenu from "@components/react/MobileMenu";
 
     <!-- Actions -->
     <div class="flex items-center gap-2">
-      <!-- Search button (placeholder for future) -->
+      <!-- Search button (opens global Cmd/Ctrl+K search) -->
       <button
         type="button"
-        class="hidden items-center gap-2 rounded-lg border border-neutral-200 bg-neutral-50 px-3 py-1.5 text-sm text-neutral-500 transition-colors hover:bg-neutral-100 sm:flex dark:border-dark-border dark:bg-dark-surface dark:text-neutral-400 dark:hover:bg-dark-elevated"
-        aria-label="Search"
+        class="hidden items-center gap-2 rounded-lg border border-neutral-200 bg-neutral-50 px-3 py-1.5 text-sm text-neutral-500 transition-colors hover:bg-neutral-100 dark:border-dark-border dark:bg-dark-surface dark:text-neutral-400 dark:hover:bg-dark-elevated sm:flex"
+        aria-label="Search the course (Ctrl+K)"
+        onclick="window.dispatchEvent(new Event('open-global-search'))"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -63,11 +75,13 @@ import MobileMenu from "@components/react/MobileMenu";
           stroke-linejoin="round"
           class="h-4 w-4"
         >
-          <circle cx="11" cy="11" r="8" />
-          <path d="m21 21-4.3-4.3" />
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.3-4.3"></path>
         </svg>
         <span class="hidden lg:inline">Search...</span>
-        <kbd class="hidden rounded bg-neutral-200 px-1.5 py-0.5 text-xs font-medium lg:inline dark:bg-dark-elevated">
+        <kbd
+          class="hidden rounded bg-neutral-200 px-1.5 py-0.5 text-xs font-medium dark:bg-dark-elevated lg:inline"
+        >
           Ctrl+K
         </kbd>
       </button>

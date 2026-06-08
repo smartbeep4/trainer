@@ -34,7 +34,9 @@ Prompt engineering is not about finding magic words. It is about understanding h
 When you call a function in code, you provide parameters in a specific format. The function does not guess what you mean. It processes exactly what you give it. Prompts work similarly, but the "function" is a probabilistic token predictor, not deterministic logic.
 
 <Definition term="Prompt Engineering">
-The practice of designing and refining inputs to language models to achieve desired outputs. It combines understanding of how models process text with systematic testing and iteration to produce reliable, consistent results.
+  The practice of designing and refining inputs to language models to achieve
+  desired outputs. It combines understanding of how models process text with
+  systematic testing and iteration to produce reliable, consistent results.
 </Definition>
 
 This creates both challenges and opportunities.
@@ -48,7 +50,10 @@ The opportunities include that iterative refinement can dramatically improve out
 Consider this perspective: prompt engineering is a form of programming where your code is natural language, your compiler is a language model, your output is generated text, and your debugging is iterative testing.
 
 <Info>
-Traditional programming gives you deterministic execution: the same input always produces the same output. Prompt programming gives you probabilistic generation: similar inputs tend to produce similar outputs, but variation is inherent. This requires different skills and expectations.
+  Traditional programming gives you deterministic execution: the same input
+  always produces the same output. Prompt programming gives you probabilistic
+  generation: similar inputs tend to produce similar outputs, but variation is
+  inherent. This requires different skills and expectations.
 </Info>
 
 In traditional programming, you write a function like `calculate_tax(income, rate)` that returns `income * rate`. In prompt programming, you write something like "Given an income and tax rate, calculate the tax owed. Income: $50,000. Tax rate: 22%. Step by step:" Both specify inputs, operations, and expected outputs, but prompts work with a probabilistic system that requires different techniques.
@@ -62,7 +67,9 @@ Precision means being specific about what you want. "Write a function" is vague.
 Experimentation recognizes that your first prompt rarely works perfectly. Expect to iterate.
 
 <Warning>
-Always validate outputs. The model can sound confident while being completely wrong. Good prompts improve the odds of correct outputs but never guarantee them.
+  Always validate outputs. The model can sound confident while being completely
+  wrong. Good prompts improve the odds of correct outputs but never guarantee
+  them.
 </Warning>
 
 Verification means always validating outputs. The model can sound confident while being completely wrong.
@@ -78,7 +85,9 @@ Effective prompts typically include several components.
 Context provides background information the model needs. Instruction specifies what you want it to do. Input contains the specific data or query. Output format describes how you want the response structured. Constraints indicate what to avoid or emphasize. Examples provide few-shot demonstrations, which are optional but powerful.
 
 <Tip>
-Not every prompt needs all components, but thinking in these terms helps structure your requests effectively. Start with context, instruction, and input, then add format and constraints as needed.
+  Not every prompt needs all components, but thinking in these terms helps
+  structure your requests effectively. Start with context, instruction, and
+  input, then add format and constraints as needed.
 </Tip>
 
 ## Foundational Techniques
@@ -98,7 +107,9 @@ Models have no memory beyond the conversation. Every prompt exists in isolation 
 Without context, asking "How do I fix this error?" is essentially unanswerable. With context, explaining that you are building a Node.js Express API, getting a specific error when querying PostgreSQL, providing your connection code, and specifying your environment transforms an impossible question into an answerable one.
 
 <Info>
-Context transforms vague questions into answerable ones. The more relevant context you provide, the more useful the response will be. But avoid overwhelming the model with irrelevant details.
+  Context transforms vague questions into answerable ones. The more relevant
+  context you provide, the more useful the response will be. But avoid
+  overwhelming the model with irrelevant details.
 </Info>
 
 ### Role Assignment
@@ -110,7 +121,10 @@ Effective roles include "You are a senior code reviewer for a Python project fol
 This works because training data likely contains many examples of experts explaining concepts. The role primes the model to match those patterns.
 
 <Definition term="Role Assignment">
-A prompting technique where you specify a persona or expertise level for the model to adopt, activating relevant patterns from training data. Effective roles are specific, domain-relevant, and establish clear expertise or perspective.
+  A prompting technique where you specify a persona or expertise level for the
+  model to adopt, activating relevant patterns from training data. Effective
+  roles are specific, domain-relevant, and establish clear expertise or
+  perspective.
 </Definition>
 
 Ineffective roles include overly creative ones like "You are a time-traveling wizard who codes," contradictory ones like "You are always right and never make mistakes," or too vague ones like "You are helpful."
@@ -122,7 +136,10 @@ Instead of describing what you want, show examples. This is called few-shot prom
 Zero-shot provides only instruction without examples. Few-shot provides instruction with examples that demonstrate the desired behavior.
 
 <Tip>
-Few-shot learning is powerful because it shows rather than tells, handles edge cases through examples, establishes patterns the model can follow, and works across domains. Two or three well-chosen examples often improve results more than lengthy instructions.
+  Few-shot learning is powerful because it shows rather than tells, handles edge
+  cases through examples, establishes patterns the model can follow, and works
+  across domains. Two or three well-chosen examples often improve results more
+  than lengthy instructions.
 </Tip>
 
 For a task like converting sentences to title case while preserving lowercase for articles and prepositions, showing examples like "the quick brown fox jumps over the lazy dog" becoming "The Quick Brown Fox Jumps Over the Lazy Dog" teaches the pattern more effectively than describing the rules.
@@ -140,7 +157,9 @@ Common formats include JSON for structured data, markdown for documentation, cod
 Do not ask the model to do everything at once. Break complex tasks into steps.
 
 <Warning>
-Monolithic prompts that request complete systems with authentication, database models, and tests are prone to failure. Chain prompts that build incrementally, verifying each step before proceeding, are more reliable.
+  Monolithic prompts that request complete systems with authentication, database
+  models, and tests are prone to failure. Chain prompts that build
+  incrementally, verifying each step before proceeding, are more reliable.
 </Warning>
 
 A monolithic prompt requesting "a complete REST API for a blog with users, posts, and comments, including authentication, database models, and tests" will often fail. A chained approach that first designs the schema, then creates models based on that schema, then builds endpoints based on those models, produces better results because each step can be verified before proceeding.
@@ -150,7 +169,10 @@ A monolithic prompt requesting "a complete REST API for a blog with users, posts
 Chain-of-Thought prompting encourages models to show their reasoning process rather than jumping directly to answers. This improves accuracy, especially for tasks requiring multiple reasoning steps.
 
 <Definition term="Chain-of-Thought (CoT)">
-A prompting technique that elicits step-by-step reasoning from language models. By asking models to show their work, CoT improves accuracy on complex tasks by creating intermediate checkpoints and activating reasoning patterns from training data.
+  A prompting technique that elicits step-by-step reasoning from language
+  models. By asking models to show their work, CoT improves accuracy on complex
+  tasks by creating intermediate checkpoints and activating reasoning patterns
+  from training data.
 </Definition>
 
 ### Why CoT Works
@@ -164,7 +186,9 @@ Better token predictions result because training data contains more correct answ
 The basic CoT structure presents a problem and adds "Let's solve this step by step" or similar phrasing. The model then generates numbered steps that walk through the reasoning before arriving at a final answer.
 
 <Info>
-Remarkably, simply adding "Let's think step by step" often triggers reasoning without any examples. This zero-shot CoT works because the phrase appears in training data associated with correct reasoning processes.
+  Remarkably, simply adding "Let's think step by step" often triggers reasoning
+  without any examples. This zero-shot CoT works because the phrase appears in
+  training data associated with correct reasoning processes.
 </Info>
 
 ### When CoT Helps Most
@@ -180,7 +204,9 @@ CoT is less useful or even counterproductive for simple fact retrieval, pattern 
 For consistent results, provide a reasoning structure. Instead of letting the model choose its reasoning format, specify the analysis framework. For code review, you might specify steps like "What does the current code do?" then "What does the new code do?" then "What are the differences?" then "What depends on the changed behavior?" then "Conclusion: Breaking or non-breaking?"
 
 <Tip>
-Combining CoT with few-shot learning is particularly effective. Show examples of the reasoning pattern you want, then ask the model to apply the same pattern to new inputs.
+  Combining CoT with few-shot learning is particularly effective. Show examples
+  of the reasoning pattern you want, then ask the model to apply the same
+  pattern to new inputs.
 </Tip>
 
 ## Chain-of-Verification
@@ -190,7 +216,10 @@ Language models hallucinate, generating confident falsehoods. Chain-of-Verificat
 The key insight is that models are often better at verification than generation. A model might incorrectly claim "Python was released in 1995" but correctly answer "Was Python released in 1995?" with "No, it was first released in 1991."
 
 <Definition term="Chain-of-Verification (CoV)">
-A technique that reduces hallucinations by having the model verify its own outputs. The model generates an initial response, creates verification questions, answers those questions, and produces a revised response incorporating any corrections.
+  A technique that reduces hallucinations by having the model verify its own
+  outputs. The model generates an initial response, creates verification
+  questions, answers those questions, and produces a revised response
+  incorporating any corrections.
 </Definition>
 
 ### Basic CoV Pattern
@@ -202,7 +231,10 @@ The structure is straightforward. Generate an initial response. Generate verific
 Ask the model to solve problems multiple times using different approaches, then reconcile. For calculating time complexity, you might use operation counting, recurrence relations, and comparison to known patterns, then check if all approaches agree. Disagreement between approaches signals potential errors.
 
 <Warning>
-Chain-of-Verification has limits. If the model does not know something, verification will not help. Models can verify incorrect information confidently. For critical information, verify against actual sources, not model self-checking.
+  Chain-of-Verification has limits. If the model does not know something,
+  verification will not help. Models can verify incorrect information
+  confidently. For critical information, verify against actual sources, not
+  model self-checking.
 </Warning>
 
 ### Limitations of CoV
@@ -220,7 +252,9 @@ While CoV focuses on factual verification, reflection techniques ask models to c
 Generate initial output, then evaluate on specific dimensions like clarity, completeness, examples, and accuracy. Rate each dimension and explain deficiencies. Revise based on the critique.
 
 <Tip>
-Multiple perspectives often catch issues single-perspective analysis misses. Have the model review from different roles: security reviewer, performance engineer, maintainability advocate. Then synthesize the findings.
+  Multiple perspectives often catch issues single-perspective analysis misses.
+  Have the model review from different roles: security reviewer, performance
+  engineer, maintainability advocate. Then synthesize the findings.
 </Tip>
 
 ### The "What Could Go Wrong" Technique
@@ -234,7 +268,10 @@ This "pre-mortem" approach improves robustness.
 Models have inherent limitations in self-correction. They cannot fix unknown unknowns. They may double-down on errors. They have limited meta-cognition. Diminishing returns set in beyond two or three rounds. The process is still probabilistic.
 
 <Info>
-To maximize effectiveness, be specific about evaluation criteria, use concrete examples in critique, limit reflection rounds to two or three, verify critical outputs externally, and compare before and after since sometimes the original is better than the "improved" version.
+  To maximize effectiveness, be specific about evaluation criteria, use concrete
+  examples in critique, limit reflection rounds to two or three, verify critical
+  outputs externally, and compare before and after since sometimes the original
+  is better than the "improved" version.
 </Info>
 
 ## Tree-of-Thoughts and Beyond
@@ -242,7 +279,9 @@ To maximize effectiveness, be specific about evaluation criteria, use concrete e
 Chain-of-Thought follows a single reasoning path. But complex problems often require exploring multiple paths before committing to one. Tree-of-Thoughts enables this exploration.
 
 <Definition term="Tree-of-Thoughts (ToT)">
-A reasoning framework that generates multiple solution approaches, evaluates each, and pursues the most promising ones. Unlike linear Chain-of-Thought, ToT enables exploration and backtracking, similar to beam search for reasoning.
+  A reasoning framework that generates multiple solution approaches, evaluates
+  each, and pursues the most promising ones. Unlike linear Chain-of-Thought, ToT
+  enables exploration and backtracking, similar to beam search for reasoning.
 </Definition>
 
 ### Basic Tree-of-Thoughts Structure
@@ -260,7 +299,10 @@ ToT can explode combinatorially. Use pruning to stay manageable.
 Evaluation-based pruning generates many solutions but pursues only the top performers. Constraint-based pruning discards any solutions that violate requirements. Threshold-based pruning pursues only those scoring above a minimum threshold.
 
 <Warning>
-Tree-of-Thoughts has significant downsides: computational cost (potentially 10x tokens for a simple question), latency from sequential generation, complexity in prompt design, and diminishing returns for simple problems. Use ToT selectively for complex, high-value problems.
+  Tree-of-Thoughts has significant downsides: computational cost (potentially
+  10x tokens for a simple question), latency from sequential generation,
+  complexity in prompt design, and diminishing returns for simple problems. Use
+  ToT selectively for complex, high-value problems.
 </Warning>
 
 ### Combining Techniques
@@ -276,7 +318,9 @@ Prompt engineering is empirical. What works must be tested, not assumed.
 Create test cases covering easy, moderate, hard, and edge cases. Run your prompt against all test cases. Measure specific characteristics of outputs.
 
 <Tip>
-Treat prompts like code: version them. Track the version number, date, changes made, performance metrics, and remaining issues. This history helps you understand what improvements work.
+  Treat prompts like code: version them. Track the version number, date, changes
+  made, performance metrics, and remaining issues. This history helps you
+  understand what improvements work.
 </Tip>
 
 ### A/B Testing Prompts
@@ -308,7 +352,9 @@ Here is a library of reusable prompt patterns for common scenarios.
 Provide task description, then examples showing input, reasoning steps, and output. Then present the actual input and ask for reasoning.
 
 <Info>
-Building a personal prompt library accelerates your work. Save effective prompts, generalize them into templates, document when each works best, share and iterate with your team, and version control changes.
+  Building a personal prompt library accelerates your work. Save effective
+  prompts, generalize them into templates, document when each works best, share
+  and iterate with your team, and version control changes.
 </Info>
 
 ### Pattern: Generate-Critique-Revise
@@ -444,7 +490,7 @@ graph LR
   setupInstructions={[
     "Get access to an AI assistant (Claude, GPT-4, or similar)",
     "Open a text editor or notebook for documenting prompts and results",
-    "Prepare code samples for testing (email validation, buggy function, etc.)"
+    "Prepare code samples for testing (email validation, buggy function, etc.)",
   ]}
   parts={[
     {
@@ -458,9 +504,10 @@ graph LR
         "Document how outputs improved and what gaps remain",
         "Attempt 3 - Few-Shot: Add 2-3 examples of email addresses with validity status, including edge cases like plus addressing (user+tag@example.com)",
         "Test whether it now handles both shown and unshown edge cases",
-        "Compare all three approaches and identify which produced the best code"
+        "Compare all three approaches and identify which produced the best code",
       ],
-      observePrompt: "Which prompting technique had the biggest impact on code quality? What made the difference - role, structure, or examples?"
+      observePrompt:
+        "Which prompting technique had the biggest impact on code quality? What made the difference - role, structure, or examples?",
     },
     {
       id: "debugging-cot",
@@ -472,9 +519,10 @@ graph LR
         "Document whether it identified the issue correctly and if the fix works",
         "Attempt 2 - With CoT: Use structured reasoning that asks to trace execution step by step, identify when items get added to duplicates, pinpoint the bug, and provide a fix",
         "Compare whether CoT improved debugging accuracy and explanation quality",
-        "Test the suggested fixes to verify they work"
+        "Test the suggested fixes to verify they work",
       ],
-      observePrompt: "How does asking for step-by-step reasoning change the quality of debugging? Does the model catch its own mistakes more often with CoT?"
+      observePrompt:
+        "How does asking for step-by-step reasoning change the quality of debugging? Does the model catch its own mistakes more often with CoT?",
     },
     {
       id: "system-design-tot",
@@ -487,9 +535,10 @@ graph LR
         "Attempt 2 - Tree-of-Thoughts: Ask to generate 4 different caching approaches (e.g., LRU, TTL, adaptive, tiered)",
         "Request evaluation of each approach on: hit rate potential, memory usage, implementation complexity, and consistency guarantees",
         "Ask it to rank the approaches and develop detailed implementation for the top-ranked option",
-        "Compare whether ToT exploration produced a better design than direct approach"
+        "Compare whether ToT exploration produced a better design than direct approach",
       ],
-      observePrompt: "Does exploring multiple approaches lead to better solutions? Is the exploration overhead worth it for this type of problem?"
+      observePrompt:
+        "Does exploring multiple approaches lead to better solutions? Is the exploration overhead worth it for this type of problem?",
     },
     {
       id: "build-pattern",
@@ -502,17 +551,30 @@ graph LR
         "Test your pattern on 2-3 different code samples (different languages or problem types)",
         "Refine the pattern based on what works and what doesn't",
         "Document the final pattern as a template with placeholders",
-        "Write what you learned during the refinement process"
+        "Write what you learned during the refinement process",
       ],
-      observePrompt: "What makes a prompt pattern reusable? How specific should instructions be versus leaving room for context-appropriate responses?"
-    }
+      observePrompt:
+        "What makes a prompt pattern reusable? How specific should instructions be versus leaving room for context-appropriate responses?",
+    },
   ]}
   successCriteria={[
-    { id: "all-attempts", text: "Attempted all challenges with multiple approaches" },
-    { id: "comparison", text: "Documented specific differences between outputs" },
+    {
+      id: "all-attempts",
+      text: "Attempted all challenges with multiple approaches",
+    },
+    {
+      id: "comparison",
+      text: "Documented specific differences between outputs",
+    },
     { id: "pattern", text: "Created at least one reusable prompt pattern" },
-    { id: "technique-matching", text: "Identified which techniques work best for which scenarios" },
-    { id: "reflection", text: "Reflected on practical applications in your own work" }
+    {
+      id: "technique-matching",
+      text: "Identified which techniques work best for which scenarios",
+    },
+    {
+      id: "reflection",
+      text: "Reflected on practical applications in your own work",
+    },
   ]}
 />
 
@@ -522,15 +584,17 @@ graph LR
   client:load
   questions={[
     {
-      question: "What is the primary reason Chain-of-Thought prompting improves accuracy on complex reasoning tasks?",
+      question:
+        "What is the primary reason Chain-of-Thought prompting improves accuracy on complex reasoning tasks?",
       options: [
         "It makes the model work harder by using more compute",
         "It uses more tokens, giving the model more context",
         "Training data contains more correct answers that show reasoning steps",
-        "It forces the model to check its work against external sources"
+        "It forces the model to check its work against external sources",
       ],
       correctAnswer: 2,
-      explanation: "CoT works because training data (especially educational and technical content) frequently includes correct answers with reasoning steps shown. When you prompt for step-by-step thinking, you're priming the model to match those patterns, which are statistically more likely to lead to correct conclusions."
+      explanation:
+        "CoT works because training data (especially educational and technical content) frequently includes correct answers with reasoning steps shown. When you prompt for step-by-step thinking, you're priming the model to match those patterns, which are statistically more likely to lead to correct conclusions.",
     },
     {
       question: "When is Chain-of-Verification (CoV) LEAST useful?",
@@ -538,44 +602,51 @@ graph LR
         "When generating factual technical documentation",
         "When solving multi-step math problems",
         "When lives or large sums of money depend on accuracy",
-        "When writing code that will be reviewed by humans"
+        "When writing code that will be reviewed by humans",
       ],
       correctAnswer: 2,
-      explanation: "CoV has inherent limitations because it's the same model verifying itself. For critical applications where accuracy is life-or-death or involves significant financial risk, you must verify outputs against authoritative external sources, not rely on model self-verification."
+      explanation:
+        "CoV has inherent limitations because it's the same model verifying itself. For critical applications where accuracy is life-or-death or involves significant financial risk, you must verify outputs against authoritative external sources, not rely on model self-verification.",
     },
     {
-      question: "Which component is most important for consistent, structured outputs?",
+      question:
+        "Which component is most important for consistent, structured outputs?",
       options: [
         "Polite language like 'please' and 'thank you'",
         "Explicit output format specification",
         "Multiple examples of unrelated tasks",
-        "Warnings about consequences for bad outputs"
+        "Warnings about consequences for bad outputs",
       ],
       correctAnswer: 1,
-      explanation: "Specifying the output format (JSON structure, markdown sections, specific fields) is crucial for consistent, parseable outputs. Models respond well to explicit structure. Politeness doesn't affect output quality, unrelated examples add noise, and warnings are meaningless to models."
+      explanation:
+        "Specifying the output format (JSON structure, markdown sections, specific fields) is crucial for consistent, parseable outputs. Models respond well to explicit structure. Politeness doesn't affect output quality, unrelated examples add noise, and warnings are meaningless to models.",
     },
     {
-      question: "Tree-of-Thoughts (ToT) is most valuable for which type of task?",
+      question:
+        "Tree-of-Thoughts (ToT) is most valuable for which type of task?",
       options: [
         "Simple fact retrieval",
         "Complex problems with multiple viable solution approaches",
         "Generating short, concise summaries",
-        "Tasks requiring maximum speed and minimum latency"
+        "Tasks requiring maximum speed and minimum latency",
       ],
       correctAnswer: 1,
-      explanation: "ToT shines when problems have multiple potential approaches that need exploration and evaluation. It's overkill for simple tasks, counterproductive for tasks requiring conciseness, and too slow for latency-critical applications."
+      explanation:
+        "ToT shines when problems have multiple potential approaches that need exploration and evaluation. It's overkill for simple tasks, counterproductive for tasks requiring conciseness, and too slow for latency-critical applications.",
     },
     {
-      question: "What is the most effective way to improve an underperforming prompt?",
+      question:
+        "What is the most effective way to improve an underperforming prompt?",
       options: [
         "Make it longer and more detailed",
         "Add more polite language",
         "Test against diverse inputs, identify failure patterns, and make targeted improvements",
-        "Repeat the same instruction multiple times"
+        "Repeat the same instruction multiple times",
       ],
       correctAnswer: 2,
-      explanation: "Prompt optimization is empirical. The systematic approach is: test against diverse inputs, identify where and why it fails, hypothesize improvements, implement changes, and test again. Simply making prompts longer or repeating instructions doesn't address underlying issues."
-    }
+      explanation:
+        "Prompt optimization is empirical. The systematic approach is: test against diverse inputs, identify where and why it fails, hypothesize improvements, implement changes, and test again. Simply making prompts longer or repeating instructions doesn't address underlying issues.",
+    },
   ]}
 />
 

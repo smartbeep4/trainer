@@ -6,9 +6,13 @@ interface Props {
 const { title = "Try It Yourself" } = Astro.props;
 ---
 
-<div class="my-6 rounded-lg border-l-4 border-l-purple-500 bg-purple-50 p-4 dark:bg-purple-900/10">
+<div
+  class="my-6 rounded-lg border-l-4 border-l-purple-500 bg-purple-50 p-4 dark:bg-purple-900/10"
+>
   <div class="flex items-start gap-3">
-    <div class="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400">
+    <div
+      class="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
@@ -19,9 +23,9 @@ const { title = "Try It Yourself" } = Astro.props;
         stroke-linejoin="round"
         class="h-4 w-4"
       >
-        <path d="m18 16 4-4-4-4" />
-        <path d="m6 8-4 4 4 4" />
-        <path d="m14.5 4-5 16" />
+        <path d="m18 16 4-4-4-4"></path>
+        <path d="m6 8-4 4 4 4"></path>
+        <path d="m14.5 4-5 16"></path>
       </svg>
     </div>
     <div class="flex-1">

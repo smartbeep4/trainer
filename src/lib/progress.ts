@@ -298,8 +298,9 @@ export function getExportSizeInfo(): ExportSizeInfo {
  */
 export function encodeProgressData(data: ExportData): string {
   const json = JSON.stringify(data);
-  // Use base64url encoding (URL-safe base64)
-  const base64 = btoa(unescape(encodeURIComponent(json)));
+  // Modern UTF-8 safe base64url encoding (no deprecated escape/unescape)
+  const bytes = new TextEncoder().encode(json);
+  const base64 = btoa(String.fromCharCode(...bytes));
   // Make URL-safe: replace + with -, / with _, remove =
   return base64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
@@ -315,7 +316,10 @@ export function decodeProgressData(encoded: string): ExportData | null {
     while (base64.length % 4) {
       base64 += "=";
     }
-    const json = decodeURIComponent(escape(atob(base64)));
+    // Modern UTF-8 safe decode (no deprecated escape/unescape)
+    const binary = atob(base64);
+    const bytes = Uint8Array.from(binary, (c) => c.charCodeAt(0));
+    const json = new TextDecoder().decode(bytes);
     const data = JSON.parse(json);
 
     // Handle v1 format (upgrade to v2 structure)

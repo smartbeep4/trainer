@@ -113,7 +113,7 @@ from langchain_anthropic import ChatAnthropic
 llm = ChatOpenAI(model="gpt-4", temperature=0)
 
 # Or use Claude
-llm = ChatAnthropic(model="claude-sonnet-4-20250514")
+llm = ChatAnthropic(model="claude-3-5-sonnet-latest")
 
 # Simple invocation
 response = llm.invoke("What is the capital of France?")
@@ -1013,7 +1013,7 @@ client = Anthropic()
 
 # Direct API call
 response = client.messages.create(
-    model="claude-sonnet-4-20250514",
+    model="claude-3-5-sonnet-latest",
     max_tokens=1024,
     messages=[
         {"role": "user", "content": "Explain quantum computing."}
@@ -1024,7 +1024,7 @@ print(response.content[0].text)
 
 # With tool use
 response = client.messages.create(
-    model="claude-sonnet-4-20250514",
+    model="claude-3-5-sonnet-latest",
     max_tokens=1024,
     tools=[{
         "name": "get_weather",

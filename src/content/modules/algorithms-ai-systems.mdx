@@ -36,7 +36,11 @@ Modern AI systems are built on algorithmic foundations. The transformer architec
 When you use an AI coding assistant, multiple algorithmic layers are at work simultaneously. Tokenization algorithms break your code into processable units. Search algorithms find relevant context from your codebase. Optimization algorithms trained the model's billions of parameters. Sampling algorithms select which tokens to generate next. You don't need to implement these from scratch. But understanding them transforms AI from a black box into a comprehensible system with predictable behaviors.
 
 <Info title="The Three Pillars of AI Algorithms">
-AI systems rely on three fundamental algorithmic categories: **Search** (finding solutions in large spaces), **Optimization** (finding the best solution among alternatives), and **Sampling** (selecting from probability distributions). This module explores each pillar, building your intuition for how they combine to create intelligent-seeming behavior.
+  AI systems rely on three fundamental algorithmic categories: **Search**
+  (finding solutions in large spaces), **Optimization** (finding the best
+  solution among alternatives), and **Sampling** (selecting from probability
+  distributions). This module explores each pillar, building your intuition for
+  how they combine to create intelligent-seeming behavior.
 </Info>
 
 ### From Classical to AI Applications
@@ -70,7 +74,10 @@ The principle of systematically eliminating half the possibilities appears throu
 The efficiency insight matters: when you can impose structure on your search space, you can search exponentially faster.
 
 <Definition term="Approximate Nearest Neighbor (ANN) Search">
-A family of algorithms that trade perfect accuracy for massive speed improvements when searching for similar items in high-dimensional spaces. Instead of checking every item, these algorithms use clever data structures to find very good matches in milliseconds rather than seconds.
+  A family of algorithms that trade perfect accuracy for massive speed
+  improvements when searching for similar items in high-dimensional spaces.
+  Instead of checking every item, these algorithms use clever data structures to
+  find very good matches in milliseconds rather than seconds.
 </Definition>
 
 ### Approximate Nearest Neighbor Search
@@ -84,7 +91,9 @@ Enter Approximate Nearest Neighbor algorithms. These trade perfect accuracy for 
 These algorithms enable the vector databases powering modern AI applications. When you use semantic search, RAG, or recommendation systems, ANN search is doing the heavy lifting.
 
 <Tip title="The Practical Tradeoff">
-ANN might miss the true nearest neighbor occasionally. But finding a very good match in milliseconds beats finding the perfect match in minutes. For most AI applications, "good enough, fast" beats "perfect, slow."
+  ANN might miss the true nearest neighbor occasionally. But finding a very good
+  match in milliseconds beats finding the perfect match in minutes. For most AI
+  applications, "good enough, fast" beats "perfect, slow."
 </Tip>
 
 ### Beam Search: Structured Generation
@@ -132,7 +141,10 @@ This "loss landscape" has topography. Valleys are good because they represent lo
 Real models have millions or billions of parameters, and the landscape exists in high-dimensional space. We can't visualize it, but the same concepts apply. The optimization problem is: starting from some point in this landscape, find a valley with low loss.
 
 <Definition term="Local vs Global Optima">
-A **global optimum** is the absolute best solution: the deepest valley in the entire landscape. A **local optimum** is the best solution in a neighborhood: a valley surrounded by higher terrain, but might not be the deepest valley overall. Simple optimization algorithms can get stuck in local optima.
+  A **global optimum** is the absolute best solution: the deepest valley in the
+  entire landscape. A **local optimum** is the best solution in a neighborhood:
+  a valley surrounded by higher terrain, but might not be the deepest valley
+  overall. Simple optimization algorithms can get stuck in local optima.
 </Definition>
 
 ### Why Local Optima Are Less Scary Than They Sound
@@ -146,7 +158,11 @@ Beyond local optima, optimization faces other challenges. Saddle points are posi
 Understanding these landscape features explains puzzling training behaviors. Loss suddenly dropping after a plateau means escaping a flat region. Training stuck despite more data might mean being trapped in a local optimum. Different random seeds producing different final performance means finding different minima.
 
 <Warning title="Why This Matters Practically">
-Model training failing or succeeding is an optimization story. Fine-tuning working better on some tasks than others relates to loss landscape structure. The randomness in AI training comes from stochastic optimization. Learning rate is the most important hyperparameter because it controls how big a step to take.
+  Model training failing or succeeding is an optimization story. Fine-tuning
+  working better on some tasks than others relates to loss landscape structure.
+  The randomness in AI training comes from stochastic optimization. Learning
+  rate is the most important hyperparameter because it controls how big a step
+  to take.
 </Warning>
 
 ---
@@ -174,7 +190,11 @@ Pick a random batch, perhaps 32 examples. Compute gradient on just that batch. U
 The gradient estimate is noisy, meaning it might not point exactly toward the optimum. But on average, it points in the right direction, and the noise can actually help escape local optima.
 
 <Info title="Why Batch Size Matters">
-SGD enables training on massive datasets. Instead of one slow update per pass through the data, you get many fast updates. Modern AI training processes billions of examples through trillions of SGD steps. Smaller batches give noisier gradients and more updates, which can help generalization. Larger batches give smoother gradients and more stable training.
+  SGD enables training on massive datasets. Instead of one slow update per pass
+  through the data, you get many fast updates. Modern AI training processes
+  billions of examples through trillions of SGD steps. Smaller batches give
+  noisier gradients and more updates, which can help generalization. Larger
+  batches give smoother gradients and more stable training.
 </Info>
 
 ### Momentum and Adam
@@ -222,7 +242,10 @@ The simplest approach, always picking the highest probability token, produces de
 Instead, LLMs sample from the distribution, introducing controlled randomness. The sampling strategy dramatically affects output quality and style.
 
 <Definition term="Temperature">
-A parameter that scales the model's probability distribution before sampling. Lower temperature (closer to 0) makes the distribution "peakier," concentrating probability on the most likely tokens. Higher temperature flattens the distribution, making less likely tokens more probable.
+  A parameter that scales the model's probability distribution before sampling.
+  Lower temperature (closer to 0) makes the distribution "peakier,"
+  concentrating probability on the most likely tokens. Higher temperature
+  flattens the distribution, making less likely tokens more probable.
 </Definition>
 
 ### Temperature: Controlling Randomness
@@ -234,7 +257,10 @@ At temperature 0, the model is deterministic and always picks the highest probab
 Mathematically, temperature divides the logits before softmax. Lower temperature makes the probability distribution "peakier" (concentrated on favorites); higher temperature makes it "flatter" (more uniform).
 
 <Tip title="Practical Temperature Guidelines">
-For factual tasks and code generation, use low temperature between 0.0 and 0.3. For general assistance, use moderate temperature between 0.5 and 0.7. For creative writing, use higher temperature between 0.8 and 1.0. For brainstorming, use 1.0 or higher, but watch for incoherence.
+  For factual tasks and code generation, use low temperature between 0.0 and
+  0.3. For general assistance, use moderate temperature between 0.5 and 0.7. For
+  creative writing, use higher temperature between 0.8 and 1.0. For
+  brainstorming, use 1.0 or higher, but watch for incoherence.
 </Tip>
 
 ### Top-k Sampling
@@ -266,7 +292,12 @@ Frequency and presence penalties discourage repetition. Frequency penalty reduce
 Understanding these parameters lets you tune generation for your use case. Use tight parameters for factual, deterministic outputs. Use looser parameters for creative, varied outputs. Use penalties for avoiding repetitive behavior.
 
 <Warning title="Sampling Isn't Just a Technicality">
-The same model with different sampling produces vastly different outputs. You're not changing the model; you're changing how it expresses its learned distribution. A "bad" model output might just need different sampling parameters. Reproducibility requires fixing random seeds and parameters. "Randomness" in AI isn't a bug; it's a feature enabling variety and creativity.
+  The same model with different sampling produces vastly different outputs.
+  You're not changing the model; you're changing how it expresses its learned
+  distribution. A "bad" model output might just need different sampling
+  parameters. Reproducibility requires fixing random seeds and parameters.
+  "Randomness" in AI isn't a bug; it's a feature enabling variety and
+  creativity.
 </Warning>
 
 ---
@@ -433,7 +464,7 @@ flowchart TB
   setupInstructions={[
     "Access an AI system where you can modify generation parameters (OpenAI Playground, Claude API, local model interface like Ollama)",
     "Have a text editor ready to record observations",
-    "Prepare to run the same prompts multiple times with different settings"
+    "Prepare to run the same prompts multiple times with different settings",
   ]}
   parts={[
     {
@@ -444,9 +475,10 @@ flowchart TB
         "Use this prompt for all temperature tests: 'Write a short story opening (2-3 sentences) about a robot discovering something unexpected.'",
         "Generate outputs at temperature = 0.0, 0.3, 0.7, 1.0, and 1.5",
         "Run the same prompt 3 times at temperature 0.7 to observe variation",
-        "Document the differences you observe at each temperature level"
+        "Document the differences you observe at each temperature level",
       ],
-      observePrompt: "At what temperature do outputs start varying noticeably? When does quality degrade?"
+      observePrompt:
+        "At what temperature do outputs start varying noticeably? When does quality degrade?",
     },
     {
       id: "top-p-comparison",
@@ -456,9 +488,10 @@ flowchart TB
         "Fix temperature at 1.0 and vary top_p",
         "Use prompt: 'List three creative uses for a paper clip.'",
         "Test top_p values: 0.1, 0.5, 0.9, 1.0",
-        "Compare how top_p affects creativity differently than temperature"
+        "Compare how top_p affects creativity differently than temperature",
       ],
-      observePrompt: "How does constraining the nucleus affect output variety? What happens with very low top_p?"
+      observePrompt:
+        "How does constraining the nucleus affect output variety? What happens with very low top_p?",
     },
     {
       id: "task-appropriate-settings",
@@ -468,9 +501,10 @@ flowchart TB
         "Test factual task: 'What is the capital of Australia and what is its population?' - try temp=0.0 vs temp=0.7",
         "Test creative task: 'Write a haiku about programming.' - try temp=0.3 vs temp=1.0",
         "Test code task: 'Write a Python function to calculate factorial.' - try temp=0.0 vs temp=0.5",
-        "Document which settings work best for each task type and why"
+        "Document which settings work best for each task type and why",
       ],
-      observePrompt: "What trade-offs do you observe between accuracy and creativity for different tasks?"
+      observePrompt:
+        "What trade-offs do you observe between accuracy and creativity for different tasks?",
     },
     {
       id: "synthesis",
@@ -480,17 +514,32 @@ flowchart TB
         "Based on your experiments, document recommended settings for: Factual Q&A, Code Generation, Creative Writing, Brainstorming",
         "For each, note your recommended temperature, top_p, and reasoning",
         "Identify any parameter combinations that produced problematic results",
-        "Write a brief summary of the key insight you gained"
-      ]
-    }
+        "Write a brief summary of the key insight you gained",
+      ],
+    },
   ]}
   successCriteria={[
-    { id: "tested-temperature", text: "Tested at least 5 different temperature values" },
+    {
+      id: "tested-temperature",
+      text: "Tested at least 5 different temperature values",
+    },
     { id: "tested-top-p", text: "Tested at least 4 different top_p values" },
-    { id: "documented-differences", text: "Documented observable differences between settings" },
-    { id: "identified-trade-offs", text: "Identified trade-offs between coherence and creativity" },
-    { id: "created-cheat-sheet", text: "Created a personal settings cheat sheet with reasoning" },
-    { id: "can-explain", text: "Can explain to someone else how temperature affects output" }
+    {
+      id: "documented-differences",
+      text: "Documented observable differences between settings",
+    },
+    {
+      id: "identified-trade-offs",
+      text: "Identified trade-offs between coherence and creativity",
+    },
+    {
+      id: "created-cheat-sheet",
+      text: "Created a personal settings cheat sheet with reasoning",
+    },
+    {
+      id: "can-explain",
+      text: "Can explain to someone else how temperature affects output",
+    },
   ]}
 />
 
@@ -506,68 +555,99 @@ flowchart TB
     {
       id: "q1",
       type: "multiple-choice",
-      question: "Why do modern AI systems use Approximate Nearest Neighbor (ANN) search instead of exact nearest neighbor search?",
+      question:
+        "Why do modern AI systems use Approximate Nearest Neighbor (ANN) search instead of exact nearest neighbor search?",
       options: [
         { id: "a", text: "ANN is more accurate than exact search" },
-        { id: "b", text: "Exact search is computationally infeasible for large-scale vector databases with real-time requirements" },
+        {
+          id: "b",
+          text: "Exact search is computationally infeasible for large-scale vector databases with real-time requirements",
+        },
         { id: "c", text: "ANN uses less memory" },
-        { id: "d", text: "Exact search doesn't work with embeddings" }
+        { id: "d", text: "Exact search doesn't work with embeddings" },
       ],
       correctAnswer: "b",
-      explanation: "With millions or billions of vectors, computing exact distances to every item for every query is too slow for real-time applications. ANN algorithms like HNSW and LSH trade a small amount of accuracy for orders-of-magnitude speed improvements. The slight possibility of missing the true nearest neighbor is acceptable when queries complete in milliseconds instead of seconds."
+      explanation:
+        "With millions or billions of vectors, computing exact distances to every item for every query is too slow for real-time applications. ANN algorithms like HNSW and LSH trade a small amount of accuracy for orders-of-magnitude speed improvements. The slight possibility of missing the true nearest neighbor is acceptable when queries complete in milliseconds instead of seconds.",
     },
     {
       id: "q2",
       type: "multiple-choice",
-      question: "What happens when you increase the temperature parameter during LLM text generation?",
+      question:
+        "What happens when you increase the temperature parameter during LLM text generation?",
       options: [
         { id: "a", text: "The model generates text faster" },
-        { id: "b", text: "The probability distribution becomes more uniform, increasing randomness in token selection" },
+        {
+          id: "b",
+          text: "The probability distribution becomes more uniform, increasing randomness in token selection",
+        },
         { id: "c", text: "The model accesses more training data" },
-        { id: "d", text: "The output becomes more factually accurate" }
+        { id: "d", text: "The output becomes more factually accurate" },
       ],
       correctAnswer: "b",
-      explanation: "Temperature scales the logits before converting to probabilities. Higher temperature flattens the distribution, making lower-probability tokens relatively more likely to be selected. This increases variety and creativity in outputs but can also lead to less coherent or accurate text. Lower temperature sharpens the distribution, making the model more likely to select high-probability tokens."
+      explanation:
+        "Temperature scales the logits before converting to probabilities. Higher temperature flattens the distribution, making lower-probability tokens relatively more likely to be selected. This increases variety and creativity in outputs but can also lead to less coherent or accurate text. Lower temperature sharpens the distribution, making the model more likely to select high-probability tokens.",
     },
     {
       id: "q3",
       type: "multiple-choice",
-      question: "What is the relationship between gradient descent and machine learning training?",
+      question:
+        "What is the relationship between gradient descent and machine learning training?",
       options: [
-        { id: "a", text: "Gradient descent is one possible training method among many equally common alternatives" },
-        { id: "b", text: "Gradient descent is the core optimization algorithm that adjusts model parameters to minimize prediction error" },
+        {
+          id: "a",
+          text: "Gradient descent is one possible training method among many equally common alternatives",
+        },
+        {
+          id: "b",
+          text: "Gradient descent is the core optimization algorithm that adjusts model parameters to minimize prediction error",
+        },
         { id: "c", text: "Gradient descent is only used for small models" },
-        { id: "d", text: "Gradient descent was replaced by attention mechanisms" }
+        {
+          id: "d",
+          text: "Gradient descent was replaced by attention mechanisms",
+        },
       ],
       correctAnswer: "b",
-      explanation: "Gradient descent and its variants like SGD and Adam are the foundational algorithms for training virtually all modern neural networks, including LLMs. The algorithm works by computing how the loss changes with respect to each parameter (the gradient) and taking small steps to reduce that loss. Without gradient descent, we couldn't train the billion-parameter models that power modern AI."
+      explanation:
+        "Gradient descent and its variants like SGD and Adam are the foundational algorithms for training virtually all modern neural networks, including LLMs. The algorithm works by computing how the loss changes with respect to each parameter (the gradient) and taking small steps to reduce that loss. Without gradient descent, we couldn't train the billion-parameter models that power modern AI.",
     },
     {
       id: "q4",
       type: "multiple-choice",
-      question: "Why might beam search be preferred over greedy decoding for certain AI tasks?",
+      question:
+        "Why might beam search be preferred over greedy decoding for certain AI tasks?",
       options: [
         { id: "a", text: "Beam search is faster than greedy decoding" },
         { id: "b", text: "Beam search uses less memory" },
-        { id: "c", text: "Beam search explores multiple candidate sequences, often finding better overall solutions than greedy decoding" },
-        { id: "d", text: "Greedy decoding doesn't work with transformers" }
+        {
+          id: "c",
+          text: "Beam search explores multiple candidate sequences, often finding better overall solutions than greedy decoding",
+        },
+        { id: "d", text: "Greedy decoding doesn't work with transformers" },
       ],
       correctAnswer: "c",
-      explanation: "Greedy decoding picks the locally optimal choice at each step, but locally optimal choices don't always lead to globally optimal sequences. A token that seems less likely now might lead to a much better overall output. Beam search maintains multiple candidate sequences, evaluating them as they develop. This is especially valuable for tasks like translation where early word choices constrain later options."
+      explanation:
+        "Greedy decoding picks the locally optimal choice at each step, but locally optimal choices don't always lead to globally optimal sequences. A token that seems less likely now might lead to a much better overall output. Beam search maintains multiple candidate sequences, evaluating them as they develop. This is especially valuable for tasks like translation where early word choices constrain later options.",
     },
     {
       id: "q5",
       type: "multiple-choice",
-      question: "What trade-off does approximate nearest neighbor (ANN) search make?",
+      question:
+        "What trade-off does approximate nearest neighbor (ANN) search make?",
       options: [
         { id: "a", text: "Speed for memory usage" },
-        { id: "b", text: "Accuracy for speed - it may miss the true nearest neighbors but runs much faster" },
+        {
+          id: "b",
+          text: "Accuracy for speed - it may miss the true nearest neighbors but runs much faster",
+        },
         { id: "c", text: "Memory for accuracy" },
-        { id: "d", text: "Training time for inference time" }
+        { id: "d", text: "Training time for inference time" },
       ],
       correctAnswer: "b",
-      explanation: "ANN algorithms like HNSW and IVF sacrifice perfect accuracy for dramatically improved search speed, returning approximate (usually very good) nearest neighbors instead of guaranteed exact matches. This trade-off is essential for production systems that need to search millions of vectors in milliseconds."
-    }
+      explanation:
+        "ANN algorithms like HNSW and IVF sacrifice perfect accuracy for dramatically improved search speed, returning approximate (usually very good) nearest neighbors instead of guaranteed exact matches. This trade-off is essential for production systems that need to search millions of vectors in milliseconds.",
+    },
   ]}
   passingScore={70}
   allowRetry={true}

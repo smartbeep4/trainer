@@ -138,7 +138,7 @@ The course spans **23 modules** across **4 parts**, totaling approximately **35 
 - **Progress Tracking** - Browser-based progress stored in localStorage
 - **Interactive Quizzes** - Multiple-choice and code-completion questions with immediate feedback
 - **Dark Mode** - System preference detection with manual toggle
-- **Global Search** - Cmd/Ctrl+K search across all content
+- **Global Search** - Cmd/Ctrl+K search across all modules, headings, and content (powered by Fuse.js)
 - **Responsive Design** - Mobile-first approach with touch-friendly interactions
 
 ## Deployment

@@ -124,7 +124,7 @@ practice deliberately, and build thoughtfully. That choice matters.
 
 ### 1. AI Development Trajectory
 
-Timeline/flow: Past (rule-based, early neural nets) -> Present 2024/2025 (transformers, agents, reasoning) -> Near Future 1-3 years (mature agents, million-token context) -> Longer Term 3-5 years (AI-native development, hybrid workflows) -> Unknown (fundamental breakthroughs?).
+Timeline/flow: Past (rule-based, early neural nets) -> 2024/2025 era (transformers, early test-time compute like o1, agent experimentation) -> Near Future from that point (more mature agentic systems, large context) -> Longer Term (AI-native dev environments, hybrid workflows) -> Unknown. Frame "current" references as of the 2024-2025 writing period.
 
 ### 2. Skill Evolution Model
 

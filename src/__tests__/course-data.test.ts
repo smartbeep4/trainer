@@ -143,4 +143,10 @@ describe("Course Data Module", () => {
       expect(courseStats.totalHours).toBeDefined();
     });
   });
+
+  // Duplication guard note:
+  // The authoritative validation happens at build time via astro:content + getStaticPaths
+  // (see the JSDoc in src/lib/course-data.ts). We intentionally do not run a runtime
+  // collection import test here because Vitest does not fully replicate the Astro
+  // content layer. Run `npm run build` or `npm run check` after editing modules.
 });

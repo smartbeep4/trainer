@@ -36,7 +36,10 @@ Consider the difference between interactions with and without tools.
 Without tools, when a user asks "What's the weather in Tokyo?", the LLM responds: "I don't have access to current weather data, but typical weather in Tokyo..."
 
 <Definition term="Tool Use">
-A structured protocol that enables language models to interact with external systems, APIs, and functions. The model decides when to call tools, formats proper requests, receives results, and incorporates those results into its response.
+  A structured protocol that enables language models to interact with external
+  systems, APIs, and functions. The model decides when to call tools, formats
+  proper requests, receives results, and incorporates those results into its
+  response.
 </Definition>
 
 With tools, when a user asks the same question, the LLM calls weather_api("Tokyo"), receives temperature, condition, and humidity data, then responds: "It's currently 22 degrees Celsius and partly cloudy in Tokyo with 65 percent humidity."
@@ -50,7 +53,11 @@ Think of tool use as giving an LLM hands to interact with the world.
 Without tools, the LLM is a brain in a jar. Incredibly capable at processing and generating language, but isolated from external reality.
 
 <Info>
-With tools, the LLM gains the ability to read from external sources like search engines, databases, and APIs. It can write to external systems like sending emails, creating tickets, and updating records. It can execute computations through calculators, code interpreters, and data analysis. It can control other systems including home automation, robots, and software.
+  With tools, the LLM gains the ability to read from external sources like
+  search engines, databases, and APIs. It can write to external systems like
+  sending emails, creating tickets, and updating records. It can execute
+  computations through calculators, code interpreters, and data analysis. It can
+  control other systems including home automation, robots, and software.
 </Info>
 
 This transforms LLMs from passive text generators into active agents that can accomplish tasks.
@@ -64,7 +71,9 @@ Information retrieval includes web search, database queries, document retrieval,
 Computation includes calculators, code execution, data analysis, and mathematical proofs.
 
 <Tip>
-System interaction includes file operations, email and messaging, calendar management, and CRM updates. External actions include e-commerce, payments, IoT control, and robotics.
+  System interaction includes file operations, email and messaging, calendar
+  management, and CRM updates. External actions include e-commerce, payments,
+  IoT control, and robotics.
 </Tip>
 
 Each category has different risk profiles and execution patterns. A search is relatively safe; a payment requires careful validation.
@@ -78,7 +87,8 @@ It is how modern AI applications work. ChatGPT plugins, Claude's computer use, G
 You will build tool-using systems. Any AI feature that interacts with your systems needs well-designed tools.
 
 <Warning>
-Security depends on proper tool design. Poorly designed tools create attack vectors. Understanding the patterns helps you build safely.
+  Security depends on proper tool design. Poorly designed tools create attack
+  vectors. Understanding the patterns helps you build safely.
 </Warning>
 
 Cost and latency are affected. Each tool call has overhead. Design choices directly impact user experience and bills.
@@ -88,7 +98,10 @@ Cost and latency are affected. Each tool call has overhead. Design choices direc
 Function calling is a structured protocol where you define available tools with their schemas, the model decides when to call tools and with what arguments, you execute the tool and return results, and the model incorporates results into its response. This is not prompt engineering. It is a distinct API feature with structured inputs and outputs.
 
 <Definition term="Function Calling">
-The API feature that enables language models to request execution of defined functions with structured arguments. The model outputs a function name and parameters; your code executes the function and returns results; the model continues based on those results.
+  The API feature that enables language models to request execution of defined
+  functions with structured arguments. The model outputs a function name and
+  parameters; your code executes the function and returns results; the model
+  continues based on those results.
 </Definition>
 
 ### Tool Definition Anatomy
@@ -106,7 +119,9 @@ Both OpenAI and Anthropic patterns follow the same logical flow.
 User sends message. Model receives message plus tool definitions. Model decides to respond directly or call tools. If tool call, model outputs structured tool call request, your code executes the tool, you send tool result back to model, and the model may call more tools or respond. Finally, the model generates a final response.
 
 <Info>
-This loop can continue multiple times. A complex query might require several tool calls before the model can respond. Understanding this loop is fundamental to building tool-using applications.
+  This loop can continue multiple times. A complex query might require several
+  tool calls before the model can respond. Understanding this loop is
+  fundamental to building tool-using applications.
 </Info>
 
 ### Tool Choice Control
@@ -128,7 +143,10 @@ The model decides which tool to use based primarily on descriptions. Poor descri
 A bad description says only "Search function" for a tool named "search."
 
 <Tip>
-A good description says "Search the web for current information. Use this when the user asks about recent events, needs up-to-date facts, or asks questions about topics that may have changed since your knowledge cutoff. Returns a list of relevant web pages with titles, URLs, and snippets."
+  A good description says "Search the web for current information. Use this when
+  the user asks about recent events, needs up-to-date facts, or asks questions
+  about topics that may have changed since your knowledge cutoff. Returns a list
+  of relevant web pages with titles, URLs, and snippets."
 </Tip>
 
 Elements of a good description include what it does with a clear, specific action, when to use it with conditions that trigger usage, what it returns with the shape of the response, and what it does not do to clarify boundaries and prevent misuse.
@@ -140,7 +158,9 @@ Each tool should do one thing well. Avoid "god tools" that do everything.
 Bad design creates a single "database" tool with an operation enum of read, write, delete, update, query, create_table, and so on, plus table and data parameters.
 
 <Warning>
-God tools are harder for the model to understand, have larger blast radius for errors, are harder to test, and are less composable. Prefer many small atomic tools over one large complex tool.
+  God tools are harder for the model to understand, have larger blast radius for
+  errors, are harder to test, and are less composable. Prefer many small atomic
+  tools over one large complex tool.
 </Warning>
 
 Good design creates separate tools for get_user to retrieve a user by ID, update_user_email to update a user's email address, and list_users to list users with optional filtering. Atomic tools are easier for the model to understand, safer with limited blast radius, easier to test, and more composable.
@@ -162,7 +182,9 @@ Design tools to return structured errors with status, error_code, message, and a
 Design tools that work together. A shopping workflow might include search_products to search by name or category returning product IDs and basic info, get_product_details to get detailed information including price, availability, and reviews, add_to_cart to add a product to the shopping cart, get_cart to view current cart contents and totals, and checkout to process checkout requiring user confirmation.
 
 <Info>
-This enables workflows where the model searches for products, gets details on top results, presents options, adds selected items to cart, and processes checkout. Each tool is simple, but together they enable complex interactions.
+  This enables workflows where the model searches for products, gets details on
+  top results, presents options, adds selected items to cart, and processes
+  checkout. Each tool is simple, but together they enable complex interactions.
 </Info>
 
 ## Execution Patterns
@@ -178,7 +200,10 @@ The loop receives initial messages and tools, sets a maximum iterations count, a
 Tool execution can fail in many ways. Handle each appropriately.
 
 <Definition term="Tool Error Types">
-Common error types include validation errors from bad input, execution errors when the tool fails, timeout errors when execution takes too long, permission errors when the action is not allowed, not_found errors when resources are missing, and rate_limit errors when there are too many requests.
+  Common error types include validation errors from bad input, execution errors
+  when the tool fails, timeout errors when execution takes too long, permission
+  errors when the action is not allowed, not_found errors when resources are
+  missing, and rate_limit errors when there are too many requests.
 </Definition>
 
 Error handling should validate input first, returning validation errors with suggestions to check input format. Check permissions next, returning permission errors if the operation is not permitted. Execute with timeout, catching timeout errors and suggesting the service may be slow. Handle resource not found errors by suggesting the user verify the resource exists. Handle rate limit errors by including retry_after time and suggesting the user wait. Log unexpected errors for debugging and return a generic error message suggesting the user try again.
@@ -194,7 +219,9 @@ Retry with backoff calculates delay with exponential increase capped at a maximu
 When the model requests multiple independent tools, execute in parallel with concurrency limits.
 
 <Tip>
-Parallel execution uses a semaphore to limit concurrent executions, gathers results handling any exceptions, and processes results to handle exceptions as error responses. This improves latency for independent tool calls.
+  Parallel execution uses a semaphore to limit concurrent executions, gathers
+  results handling any exceptions, and processes results to handle exceptions as
+  error responses. This improves latency for independent tool calls.
 </Tip>
 
 ### Result Formatting
@@ -218,7 +245,9 @@ Tool use introduces security risks that do not exist in pure text generation.
 Never trust model-generated input.
 
 <Warning>
-Dangerous code passes command directly to shell with shell=True. Safe code parses and validates the command, checks against an allowed list, and uses list form to prevent shell injection with shell=False.
+  Dangerous code passes command directly to shell with shell=True. Safe code
+  parses and validates the command, checks against an allowed list, and uses
+  list form to prevent shell injection with shell=False.
 </Warning>
 
 Scope limitation restricts what tools can access. A scoped database tool verifies table access against an allowed list, always filters by user ID, and uses parameterized queries.
@@ -236,7 +265,9 @@ Rate limiters track calls per user per tool with configurable limits. Default mi
 Tool use can significantly increase costs through additional API calls for each tool use round-trip, token usage for tool definitions and results, and external service costs for API calls and compute.
 
 <Info>
-Cost trackers record costs per category per day and check against budgets for OpenAI tokens, web searches, email sends, and other resources. Usage reports show current usage, budget, and remaining budget per category.
+  Cost trackers record costs per category per day and check against budgets for
+  OpenAI tokens, web searches, email sends, and other resources. Usage reports
+  show current usage, budget, and remaining budget per category.
 </Info>
 
 Strategies to reduce costs include caching tool results since many queries return the same data, batching operations to combine multiple similar tool calls, limiting tool definitions to include only relevant tools, and setting token budgets to limit response sizes.
@@ -254,7 +285,10 @@ Tool monitors log for debugging and aggregate metrics. Tool statistics include c
 Handle tool failures without breaking the user experience.
 
 <Tip>
-Execute with fallback tries to execute the tool and returns success with data. If the tool is unavailable and a fallback message exists, return success false with fallback true and the fallback message. Otherwise return success false with error message asking the user to try again later.
+  Execute with fallback tries to execute the tool and returns success with data.
+  If the tool is unavailable and a fallback message exists, return success false
+  with fallback true and the fallback message. Otherwise return success false
+  with error message asking the user to try again later.
 </Tip>
 
 Fallback messages provide helpful alternatives. Weather unavailable suggests checking weather.com. Web search unavailable offers to answer based on training data. Stock price unavailable suggests checking a brokerage app.
@@ -280,7 +314,12 @@ Combine tools for complex workflows. Define atomic tools for data gathering like
 Begin with high-value, low-risk tools.
 
 <Info>
-Phase 1 covers read-only tools including search and retrieval, data lookups, and calculations. Phase 2 adds controlled write operations including create with validation, updates with confirmation, and append-only operations. Phase 3 adds full CRUD including delete with safeguards, bulk operations with limits, and external integrations. Each phase should include monitoring, rate limiting, and cost controls before moving to the next.
+  Phase 1 covers read-only tools including search and retrieval, data lookups,
+  and calculations. Phase 2 adds controlled write operations including create
+  with validation, updates with confirmation, and append-only operations. Phase
+  3 adds full CRUD including delete with safeguards, bulk operations with
+  limits, and external integrations. Each phase should include monitoring, rate
+  limiting, and cost controls before moving to the next.
 </Info>
 
 ## Diagrams
@@ -410,7 +449,7 @@ graph TD
   setupInstructions={[
     "Install Python 3.8 or higher",
     "Set up API access to Claude or OpenAI",
-    "Open your code editor and create a new Python project"
+    "Open your code editor and create a new Python project",
   ]}
   parts={[
     {
@@ -425,9 +464,10 @@ graph TD
         "Add parameters: expression (string, required, description: 'Mathematical expression to evaluate')",
         "Create convert_temperature tool with description: 'Convert temperature between Celsius and Fahrenheit'",
         "Add parameters: value (number, required), from_unit (enum: celsius/fahrenheit, required), to_unit (enum: celsius/fahrenheit, required)",
-        "Ensure each description explains when to use the tool and what it returns"
+        "Ensure each description explains when to use the tool and what it returns",
       ],
-      observePrompt: "How does the description quality affect the model's ability to choose the right tool? What happens if descriptions are vague or missing?"
+      observePrompt:
+        "How does the description quality affect the model's ability to choose the right tool? What happens if descriptions are vague or missing?",
     },
     {
       id: "implement-tools",
@@ -440,9 +480,10 @@ graph TD
         "Validate input contains only numbers, operators, and parentheses",
         "Return error for invalid expressions or division by zero",
         "Implement convert_temperature: Celsius to Fahrenheit formula: (value * 9/5) + 32, Fahrenheit to Celsius: (value - 32) * 5/9",
-        "Each function should return structured results: {success: true/false, data: {...}, error: {...}}"
+        "Each function should return structured results: {success: true/false, data: {...}, error: {...}}",
       ],
-      observePrompt: "What edge cases should your tool implementations handle? How do structured error responses help the model respond appropriately?"
+      observePrompt:
+        "What edge cases should your tool implementations handle? How do structured error responses help the model respond appropriately?",
     },
     {
       id: "build-agent-loop",
@@ -457,9 +498,10 @@ graph TD
         "For each tool call: log the tool name and input, execute the tool, log the result, collect tool results",
         "Add assistant message and tool results to conversation history",
         "Continue loop until completion or max iterations (e.g., 10)",
-        "Print trace output showing each step: tool requested, input provided, result received, model response"
+        "Print trace output showing each step: tool requested, input provided, result received, model response",
       ],
-      observePrompt: "What happens if the model requests unknown tools? How does the iteration limit protect against infinite loops?"
+      observePrompt:
+        "What happens if the model requests unknown tools? How does the iteration limit protect against infinite loops?",
     },
     {
       id: "error-handling",
@@ -473,9 +515,10 @@ graph TD
         "Return structured error responses: {success: false, error_type: '...', message: '...', suggestion: '...'}",
         "Handle API errors gracefully with informative messages",
         "Track iteration count and exit with message if max iterations reached",
-        "Test with error-triggering queries: unknown city, invalid math expression, malformed requests"
+        "Test with error-triggering queries: unknown city, invalid math expression, malformed requests",
       ],
-      observePrompt: "Which errors should trigger retries versus immediate failure? How do you communicate errors to the model so it can respond helpfully to users?"
+      observePrompt:
+        "Which errors should trigger retries versus immediate failure? How do you communicate errors to the model so it can respond helpfully to users?",
     },
     {
       id: "test-agent",
@@ -489,18 +532,34 @@ graph TD
         "Test no tool needed: 'Hello, how are you?' - should respond directly without tools",
         "Test complex query: 'Compare temperatures in London and Sydney' - should call get_weather twice",
         "Verify each test produces appropriate output and handles errors gracefully",
-        "Check trace output to understand decision-making process"
+        "Check trace output to understand decision-making process",
       ],
-      observePrompt: "Which queries work best? Where does the agent struggle? How could you improve tool descriptions or implementations based on test results?"
-    }
+      observePrompt:
+        "Which queries work best? Where does the agent struggle? How could you improve tool descriptions or implementations based on test results?",
+    },
   ]}
   successCriteria={[
-    { id: "tool-definitions", text: "Defined at least 3 tools with proper schemas and descriptions" },
-    { id: "execution-loop", text: "Implemented the tool execution loop correctly" },
-    { id: "error-handling", text: "Handled both success and error cases appropriately" },
-    { id: "multi-tool", text: "Tested with queries requiring multiple tool calls" },
+    {
+      id: "tool-definitions",
+      text: "Defined at least 3 tools with proper schemas and descriptions",
+    },
+    {
+      id: "execution-loop",
+      text: "Implemented the tool execution loop correctly",
+    },
+    {
+      id: "error-handling",
+      text: "Handled both success and error cases appropriately",
+    },
+    {
+      id: "multi-tool",
+      text: "Tested with queries requiring multiple tool calls",
+    },
     { id: "retry-logic", text: "Added retry logic for transient failures" },
-    { id: "graceful-errors", text: "Agent responds appropriately to unknown cities and invalid input" }
+    {
+      id: "graceful-errors",
+      text: "Agent responds appropriately to unknown cities and invalid input",
+    },
   ]}
 />
 
@@ -510,37 +569,43 @@ graph TD
   client:load
   questions={[
     {
-      question: "What is the primary purpose of the tool description field in a tool definition?",
+      question:
+        "What is the primary purpose of the tool description field in a tool definition?",
       options: [
         "To document the tool for developers",
         "To help the model decide when to use the tool and how to call it correctly",
         "To validate the tool's response format",
-        "To set rate limits on tool usage"
+        "To set rate limits on tool usage",
       ],
       correctAnswer: 1,
-      explanation: "The description is critical for the model's decision-making. It reads the description to understand when the tool should be used, what it does, and how to format requests. A poor description leads to the model using wrong tools or failing to use tools when appropriate."
+      explanation:
+        "The description is critical for the model's decision-making. It reads the description to understand when the tool should be used, what it does, and how to format requests. A poor description leads to the model using wrong tools or failing to use tools when appropriate.",
     },
     {
-      question: "When a model requests multiple tool calls simultaneously, what is the recommended approach?",
+      question:
+        "When a model requests multiple tool calls simultaneously, what is the recommended approach?",
       options: [
         "Execute them one at a time in order received",
         "Reject multiple tool calls and ask for one at a time",
         "Execute independent tools in parallel, dependent tools sequentially",
-        "Always execute all tools in parallel regardless of dependencies"
+        "Always execute all tools in parallel regardless of dependencies",
       ],
       correctAnswer: 2,
-      explanation: "Independent tool calls should be parallelized for efficiency. However, if tools have dependencies, they must be executed sequentially. Understanding the dependency graph is key to optimal execution."
+      explanation:
+        "Independent tool calls should be parallelized for efficiency. However, if tools have dependencies, they must be executed sequentially. Understanding the dependency graph is key to optimal execution.",
     },
     {
-      question: "Which security practice is MOST important for tools that can modify data?",
+      question:
+        "Which security practice is MOST important for tools that can modify data?",
       options: [
         "Rate limiting",
         "Logging all calls",
         "Input validation and scope restriction",
-        "Caching responses"
+        "Caching responses",
       ],
       correctAnswer: 2,
-      explanation: "While all options are valuable, input validation and scope restriction are most critical for write operations. A model might generate malicious or malformed input. Validating inputs and restricting tools to operate only within appropriate scope prevents data corruption, unauthorized access, and security breaches."
+      explanation:
+        "While all options are valuable, input validation and scope restriction are most critical for write operations. A model might generate malicious or malformed input. Validating inputs and restricting tools to operate only within appropriate scope prevents data corruption, unauthorized access, and security breaches.",
     },
     {
       question: "What should a tool return when it encounters an error?",
@@ -548,22 +613,25 @@ graph TD
         "An empty response",
         "A structured error object with type, message, and suggested action",
         "The exception stack trace",
-        "A boolean false"
+        "A boolean false",
       ],
       correctAnswer: 1,
-      explanation: "The model needs actionable information to respond appropriately to users. A structured error with type, message, and suggestion enables the model to communicate effectively. Empty responses confuse the model; stack traces may leak sensitive info; booleans provide no context for recovery."
+      explanation:
+        "The model needs actionable information to respond appropriately to users. A structured error with type, message, and suggestion enables the model to communicate effectively. Empty responses confuse the model; stack traces may leak sensitive info; booleans provide no context for recovery.",
     },
     {
-      question: "Why should tools be designed as atomic actions rather than combining multiple operations?",
+      question:
+        "Why should tools be designed as atomic actions rather than combining multiple operations?",
       options: [
         "Atomic tools are faster to execute",
         "Atomic tools are easier for the model to understand, safer, and more composable",
         "Atomic tools use less memory",
-        "Atomic tools require fewer API calls"
+        "Atomic tools require fewer API calls",
       ],
       correctAnswer: 1,
-      explanation: "Atomic tools are easier for the model to understand since each does one clear thing. They are safer because errors have limited blast radius. They are easier to test since each function is isolated. They are more composable since the model can combine them for complex workflows."
-    }
+      explanation:
+        "Atomic tools are easier for the model to understand since each does one clear thing. They are safer because errors have limited blast radius. They are easier to test since each function is isolated. They are more composable since the model can combine them for complex workflows.",
+    },
   ]}
 />
 

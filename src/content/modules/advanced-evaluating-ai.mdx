@@ -31,7 +31,10 @@ This module tackles one of the hardest problems in AI engineering: measuring per
 ## The Evaluation Challenge
 
 <Definition term="AI Evaluation">
-The systematic process of measuring how well an AI system performs on its intended tasks. Unlike traditional software testing with deterministic pass/fail outcomes, AI evaluation must handle open-ended outputs, subjective quality judgments, and probabilistic behavior.
+  The systematic process of measuring how well an AI system performs on its
+  intended tasks. Unlike traditional software testing with deterministic
+  pass/fail outcomes, AI evaluation must handle open-ended outputs, subjective
+  quality judgments, and probabilistic behavior.
 </Definition>
 
 Traditional software testing is straightforward. Given inputs, you check outputs against expected values. Tests pass or fail. You can achieve 100% coverage and prove correctness.
@@ -84,7 +87,9 @@ Missed regressions happen when model updates, prompt changes, or system modifica
 Wasted resources result from fine-tuning for weeks to achieve improvements that do not matter, or shipping features users do not actually want.
 
 <Warning>
-Rigorous evaluation is an investment that pays dividends in reliability, confidence, and faster iteration. The cost of thorough evaluation is always less than the cost of shipping broken systems.
+  Rigorous evaluation is an investment that pays dividends in reliability,
+  confidence, and faster iteration. The cost of thorough evaluation is always
+  less than the cost of shipping broken systems.
 </Warning>
 
 ## Benchmark Landscape
@@ -93,7 +98,7 @@ Benchmarks are standardized tests that allow comparison across models. They prov
 
 ### Major Benchmarks
 
-MMLU (Massive Multitask Language Understanding) tests broad knowledge across 57 subjects from STEM to humanities using multiple choice questions. An example question asks which river is the longest in Africa with options Nile, Congo, Niger, or Zambezi. It measures factual knowledge and reasoning across domains. Current top models score around 86-90%.
+MMLU (Massive Multitask Language Understanding) tests broad knowledge across 57 subjects from STEM to humanities using multiple choice questions. An example question asks which river is the longest in Africa with options Nile, Congo, Niger, or Zambezi. It measures factual knowledge and reasoning across domains. On the original MMLU, top models had reached the high 80s–low 90s by 2024 (saturation on this particular benchmark led to harder variants).
 
 HumanEval tests code generation capability with Python programming problems. The format provides a function signature plus docstring, and the model completes the implementation. It measures code generation and algorithmic reasoning using pass@k, the percentage of problems solved with k attempts.
 
@@ -107,7 +112,7 @@ TruthfulQA tests the tendency to generate truthful versus plausible-sounding fal
 
 A critical problem is that benchmarks get saturated. When models approach ceiling performance, the benchmark stops being useful for differentiation.
 
-MMLU progression shows GPT-3 at 43% in 2020, GPT-4 at 86% in 2022, Claude 3 at 86% in 2023, and multiple models at 88-90% in 2024. As models cluster near the ceiling, tiny differences in score do not reflect meaningful capability differences. The benchmark loses discriminative power.
+MMLU progression (as of ~2024): GPT-3 at 43% in 2020, GPT-4 at ~86% in 2022, Claude 3 at ~86% in 2023, and multiple models at 88-90% in 2024 on the original version. As models cluster near the ceiling on older benchmarks, tiny score differences do not reflect meaningful capability differences. The benchmark loses discriminative power, which is why harder successors were created.
 
 Signs of saturation include top models within a few percentage points, improvements requiring memorization rather than generalization, and new capabilities not captured by old benchmarks.
 
@@ -128,7 +133,11 @@ Static nature means benchmarks are frozen in time. They cannot adapt to evolving
 Proxy problems arise because benchmarks measure proxies for what we care about. High reasoning scores do not guarantee helpful, safe, or honest behavior.
 
 <Tip>
-Use benchmarks for initial model selection and capability screening. Compare benchmark performance on tasks related to your use case. But never assume benchmark scores predict production performance or skip application-specific evaluation because benchmarks look good. Benchmark results are a starting point, not a conclusion.
+  Use benchmarks for initial model selection and capability screening. Compare
+  benchmark performance on tasks related to your use case. But never assume
+  benchmark scores predict production performance or skip application-specific
+  evaluation because benchmarks look good. Benchmark results are a starting
+  point, not a conclusion.
 </Tip>
 
 ## LLM-as-Judge
@@ -190,7 +199,11 @@ Complex outputs need multi-dimensional evaluation. Structure your judge to asses
 Improve judge reliability by requesting reasoning. Have the judge first identify key claims in the response, then assess accuracy of each claim, consider whether the response fully addresses the question, assess clarity and organization, and finally provide ratings based on the analysis. Explicit reasoning reduces arbitrary ratings and provides explainable evaluations.
 
 <Info>
-LLM judges can be fooled. Test for length bias with short correct versus long incorrect responses where the judge should prefer short correct. Test for position bias by swapping positions and expecting the same winner. Test for format gaming with same content in different formatting expecting similar ratings.
+  LLM judges can be fooled. Test for length bias with short correct versus long
+  incorrect responses where the judge should prefer short correct. Test for
+  position bias by swapping positions and expecting the same winner. Test for
+  format gaming with same content in different formatting expecting similar
+  ratings.
 </Info>
 
 ## Custom Evaluation
@@ -326,13 +339,20 @@ Evaluation must be reproducible. Track dataset version with name, version date, 
       type: "multiple-choice",
       question: "Why is benchmark saturation a problem for AI evaluation?",
       options: [
-        { id: "a", text: "It means models have achieved human-level performance" },
-        { id: "b", text: "It makes it difficult to differentiate between model capabilities" },
+        {
+          id: "a",
+          text: "It means models have achieved human-level performance",
+        },
+        {
+          id: "b",
+          text: "It makes it difficult to differentiate between model capabilities",
+        },
         { id: "c", text: "It indicates the benchmark was poorly designed" },
-        { id: "d", text: "It shows the models have memorized the benchmark" }
+        { id: "d", text: "It shows the models have memorized the benchmark" },
       ],
       correctAnswer: "b",
-      explanation: "When benchmarks become saturated with many models scoring near the ceiling, small score differences don't reflect meaningful capability differences. A model scoring 88% vs 89% on a saturated benchmark doesn't tell you which is actually better for your use case. This is why the community continuously develops harder benchmarks as capabilities improve."
+      explanation:
+        "When benchmarks become saturated with many models scoring near the ceiling, small score differences don't reflect meaningful capability differences. A model scoring 88% vs 89% on a saturated benchmark doesn't tell you which is actually better for your use case. This is why the community continuously develops harder benchmarks as capabilities improve.",
     },
     {
       id: "q2",
@@ -340,12 +360,22 @@ Evaluation must be reproducible. Track dataset version with name, version date, 
       question: "What is position bias in LLM-as-judge evaluation?",
       options: [
         { id: "a", text: "The tendency to rate longer responses higher" },
-        { id: "b", text: "The tendency to prefer responses in certain positions (e.g., always first)" },
-        { id: "c", text: "The tendency to prefer responses from the same model family" },
-        { id: "d", text: "The tendency to give higher ratings to confident-sounding responses" }
+        {
+          id: "b",
+          text: "The tendency to prefer responses in certain positions (e.g., always first)",
+        },
+        {
+          id: "c",
+          text: "The tendency to prefer responses from the same model family",
+        },
+        {
+          id: "d",
+          text: "The tendency to give higher ratings to confident-sounding responses",
+        },
       ],
       correctAnswer: "b",
-      explanation: "Position bias occurs when judge models systematically prefer responses based on their position in the prompt, often favoring the first option. This can be mitigated by randomizing presentation order and evaluating pairs in both orders, then averaging or requiring agreement."
+      explanation:
+        "Position bias occurs when judge models systematically prefer responses based on their position in the prompt, often favoring the first option. This can be mitigated by randomizing presentation order and evaluating pairs in both orders, then averaging or requiring agreement.",
     },
     {
       id: "q3",
@@ -354,38 +384,46 @@ Evaluation must be reproducible. Track dataset version with name, version date, 
       options: [
         { id: "a", text: "Always, because humans are more accurate" },
         { id: "b", text: "Never, because it's too expensive" },
-        { id: "c", text: "For calibrating your LLM judge and evaluating edge cases" },
-        { id: "d", text: "Only for creative writing tasks" }
+        {
+          id: "c",
+          text: "For calibrating your LLM judge and evaluating edge cases",
+        },
+        { id: "d", text: "Only for creative writing tasks" },
       ],
       correctAnswer: "c",
-      explanation: "Human evaluation is the gold standard but doesn't scale. The best approach is to use humans strategically: to create gold sets for calibrating LLM judges, to evaluate edge cases where judge accuracy is uncertain, and to periodically spot-check that your automated evaluation remains accurate. This combines human quality with automated scale."
+      explanation:
+        "Human evaluation is the gold standard but doesn't scale. The best approach is to use humans strategically: to create gold sets for calibrating LLM judges, to evaluate edge cases where judge accuracy is uncertain, and to periodically spot-check that your automated evaluation remains accurate. This combines human quality with automated scale.",
     },
     {
       id: "q4",
       type: "multiple-choice",
-      question: "What is the primary purpose of regression detection in evaluation pipelines?",
+      question:
+        "What is the primary purpose of regression detection in evaluation pipelines?",
       options: [
         { id: "a", text: "To improve model performance" },
         { id: "b", text: "To catch degradation before it reaches users" },
         { id: "c", text: "To reduce evaluation costs" },
-        { id: "d", text: "To replace human evaluation" }
+        { id: "d", text: "To replace human evaluation" },
       ],
       correctAnswer: "b",
-      explanation: "Regression detection identifies when changes to models, prompts, or systems cause quality to decrease. By detecting regressions before deployment, you can prevent degraded experiences from reaching users. This requires comparing current performance to established baselines using statistical tests and quality thresholds."
+      explanation:
+        "Regression detection identifies when changes to models, prompts, or systems cause quality to decrease. By detecting regressions before deployment, you can prevent degraded experiences from reaching users. This requires comparing current performance to established baselines using statistical tests and quality thresholds.",
     },
     {
       id: "q5",
       type: "multiple-choice",
-      question: "What target agreement level (Cohen's kappa) should you aim for when calibrating an LLM judge against human ratings?",
+      question:
+        "What target agreement level (Cohen's kappa) should you aim for when calibrating an LLM judge against human ratings?",
       options: [
         { id: "a", text: "0.3+ (fair agreement)" },
         { id: "b", text: "0.5+ (moderate agreement)" },
         { id: "c", text: "0.7+ (substantial agreement)" },
-        { id: "d", text: "0.9+ (near perfect agreement)" }
+        { id: "d", text: "0.9+ (near perfect agreement)" },
       ],
       correctAnswer: "c",
-      explanation: "Target agreement of 0.7+ kappa with human raters represents substantial agreement and indicates your LLM judge is reliable enough for production use. Lower agreement means the judge is not capturing human quality judgments well enough. However, requiring 0.9+ is often unrealistic since even human raters rarely achieve this level of agreement."
-    }
+      explanation:
+        "Target agreement of 0.7+ kappa with human raters represents substantial agreement and indicates your LLM judge is reliable enough for production use. Lower agreement means the judge is not capturing human quality judgments well enough. However, requiring 0.9+ is often unrealistic since even human raters rarely achieve this level of agreement.",
+    },
   ]}
   passingScore={70}
   allowRetry={true}
@@ -401,7 +439,7 @@ Evaluation must be reproducible. Track dataset version with name, version date, 
   setupInstructions={[
     "Choose an AI documentation domain to evaluate (e.g., Python API docs, REST API documentation, or framework documentation)",
     "Set up a development environment with Python and access to an LLM API (OpenAI or Anthropic)",
-    "Create a project structure with folders for test cases, evaluation scripts, and results"
+    "Create a project structure with folders for test cases, evaluation scripts, and results",
   ]}
   parts={[
     {
@@ -412,9 +450,10 @@ Evaluation must be reproducible. Track dataset version with name, version date, 
         "Design 20 evaluation examples covering different difficulty levels (easy, medium, hard)",
         "Include diverse question types: how-to, conceptual, debugging, and edge cases",
         "Structure each example with: id, category, difficulty, question, reference answer, and evaluation criteria",
-        "Ensure coverage across common scenarios and potential failure modes"
+        "Ensure coverage across common scenarios and potential failure modes",
       ],
-      observePrompt: "What patterns emerge in the types of questions that are hardest to evaluate? Which categories need the most careful criteria?"
+      observePrompt:
+        "What patterns emerge in the types of questions that are hardest to evaluate? Which categories need the most careful criteria?",
     },
     {
       id: "build-llm-judge",
@@ -424,9 +463,10 @@ Evaluation must be reproducible. Track dataset version with name, version date, 
         "Write a multi-aspect LLM judge prompt that evaluates: technical accuracy, completeness, code quality (if applicable), clarity, and appropriate uncertainty",
         "Use 1-5 scales for each dimension with clear rubrics",
         "Include instructions for the judge to explain its ratings",
-        "Test the judge on 3-5 examples to verify it produces sensible ratings"
+        "Test the judge on 3-5 examples to verify it produces sensible ratings",
       ],
-      observePrompt: "Does your judge show any biases (length bias, format preference)? How consistent are ratings across similar inputs?"
+      observePrompt:
+        "Does your judge show any biases (length bias, format preference)? How consistent are ratings across similar inputs?",
     },
     {
       id: "calibration-plan",
@@ -436,9 +476,10 @@ Evaluation must be reproducible. Track dataset version with name, version date, 
         "Define a calibration plan: how will you create a gold set with human ratings?",
         "Specify agreement measurement metrics (Cohen's kappa, correlation)",
         "Design an iteration process for improving judge-human agreement",
-        "Set a target agreement threshold (e.g., kappa > 0.7)"
+        "Set a target agreement threshold (e.g., kappa > 0.7)",
       ],
-      observePrompt: "What disagreements between human and LLM judges would be most concerning? How would you adjust the prompt based on disagreements?"
+      observePrompt:
+        "What disagreements between human and LLM judges would be most concerning? How would you adjust the prompt based on disagreements?",
     },
     {
       id: "regression-detection",
@@ -448,9 +489,10 @@ Evaluation must be reproducible. Track dataset version with name, version date, 
         "Define quality thresholds for each evaluation dimension and overall scores",
         "Implement regression detection logic using statistical significance tests (paired t-test)",
         "Add absolute threshold checks (e.g., accuracy must stay above 4.0)",
-        "Consider category-specific regressions (e.g., edge cases getting worse)"
+        "Consider category-specific regressions (e.g., edge cases getting worse)",
       ],
-      observePrompt: "How sensitive should your regression detection be? What's worse: false positives blocking good changes or false negatives shipping regressions?"
+      observePrompt:
+        "How sensitive should your regression detection be? What's worse: false positives blocking good changes or false negatives shipping regressions?",
     },
     {
       id: "pipeline-design",
@@ -460,18 +502,37 @@ Evaluation must be reproducible. Track dataset version with name, version date, 
         "Design pipeline configuration with triggers: on PR (fast), nightly (full), on-demand",
         "Define stages: fast check (5 min, critical examples), full evaluation (20 min, all examples), human review (as needed)",
         "Specify alerting conditions for quality drops, error rate spikes, or cost overruns",
-        "Define deployment gates: what quality scores must pass to allow deployment?"
+        "Define deployment gates: what quality scores must pass to allow deployment?",
       ],
-      observePrompt: "How do you balance thoroughness vs. speed? What would make developers trust and use this pipeline versus ignore it?"
-    }
+      observePrompt:
+        "How do you balance thoroughness vs. speed? What would make developers trust and use this pipeline versus ignore it?",
+    },
   ]}
   successCriteria={[
-    { id: "test-coverage", text: "Created 20 diverse test cases covering multiple difficulty levels and question types" },
-    { id: "judge-implementation", text: "Built a multi-aspect LLM judge with clear evaluation criteria and rubrics" },
-    { id: "calibration-plan", text: "Defined a concrete calibration plan with metrics and target thresholds" },
-    { id: "regression-detection", text: "Implemented regression detection using both statistical tests and absolute thresholds" },
-    { id: "pipeline-config", text: "Designed a complete pipeline with triggers, stages, and gates appropriate for real-world use" },
-    { id: "cost-awareness", text: "Estimated costs and identified strategies to control expenses" }
+    {
+      id: "test-coverage",
+      text: "Created 20 diverse test cases covering multiple difficulty levels and question types",
+    },
+    {
+      id: "judge-implementation",
+      text: "Built a multi-aspect LLM judge with clear evaluation criteria and rubrics",
+    },
+    {
+      id: "calibration-plan",
+      text: "Defined a concrete calibration plan with metrics and target thresholds",
+    },
+    {
+      id: "regression-detection",
+      text: "Implemented regression detection using both statistical tests and absolute thresholds",
+    },
+    {
+      id: "pipeline-config",
+      text: "Designed a complete pipeline with triggers, stages, and gates appropriate for real-world use",
+    },
+    {
+      id: "cost-awareness",
+      text: "Estimated costs and identified strategies to control expenses",
+    },
   ]}
 />
 

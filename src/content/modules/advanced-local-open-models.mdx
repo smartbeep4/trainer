@@ -31,7 +31,11 @@ This shift is fundamental. For the first time, serious AI capabilities are avail
 ## The Open Model Landscape
 
 <Definition term="Open Weights">
-A model release where the trained parameters (weights) are publicly downloadable, allowing inference and fine-tuning, but where training code, training data, and full methodology may not be disclosed. Most "open" models like Llama and Mistral are technically open weights rather than fully open source.
+  A model release where the trained parameters (weights) are publicly
+  downloadable, allowing inference and fine-tuning, but where training code,
+  training data, and full methodology may not be disclosed. Most "open" models
+  like Llama and Mistral are technically open weights rather than fully open
+  source.
 </Definition>
 
 For years, the most capable language models were proprietary and API-only. GPT-3, then GPT-4, set the standard but you could only access them through OpenAI's API. Then Meta released Llama.
@@ -44,34 +48,27 @@ Since then, the floodgates opened. Mistral released competitive 7B and 8x7B mode
 
 ### Major Model Families
 
-The Meta Llama Family forms the foundation of the open model ecosystem. Llama 2 from July 2023 includes 7B, 13B, and 70B parameter versions with strong general capability, extended 4K token context, chat-tuned versions, and a commercial-friendly license. Llama 3 from April 2024 includes 8B, 70B, and 405B versions with significantly improved performance, competitive with GPT-3.5 and GPT-4 on many tasks, 8K context later extended to 128K, and multilingual improvements.
+The Meta Llama Family formed the foundation of the open model ecosystem. Llama 2 (July 2023) included 7B, 13B, and 70B versions with a permissive commercial license that accelerated the ecosystem. Llama 3 (April 2024) brought 8B, 70B, and 405B versions with major capability jumps, extended context, and strong performance that was competitive with GPT-3.5 / early GPT-4 class models on many tasks.
 
-Mistral AI Models come from a French startup focused on efficient, capable open models. Mistral 7B offers exceptional performance for its size, outperforming Llama 2 13B on many benchmarks with a 32K context window and sliding window attention for efficiency. Mixtral 8x7B uses Mixture of Experts architecture with 47B total parameters but only 13B active per token, approaching GPT-3.5 quality with efficient inference despite the large total size.
+Subsequent releases (Llama 3.1 and later generations) continued to push the frontier for open weights. Mistral released efficient high-performing models (Mistral 7B, Mixtral 8x7B). Microsoft’s Phi series demonstrated strong reasoning from small models trained on high-quality synthetic data. Alibaba’s Qwen family (including Qwen2.5) excelled at multilingual and coding tasks.
 
-Microsoft Phi Family represents Small Language Models with surprising capabilities. Phi-2 at 2.7B parameters shows strong reasoning in a tiny package. Phi-3 at 3.8B, 7B, and 14B parameters further improves efficiency. These models are trained on textbook quality synthetic data and are excellent for resource-constrained deployment.
-
-Qwen from Alibaba offers strong multilingual and coding capabilities with multiple sizes from 0.5B to 72B. The Qwen2.5 series has improved coding, strong Chinese language performance, and math and reasoning specialized versions.
+The examples below reflect the state of the ecosystem around 2024–2025; the space continued to evolve quickly with new releases from these labs and others.
 
 ```mermaid
 graph TD
-    A[Open Model Ecosystem] --> B[Meta Llama]
+    A[Open Model Ecosystem ~2024-2025] --> B[Meta Llama]
     A --> C[Mistral AI]
     A --> D[Microsoft Phi]
     A --> E[Alibaba Qwen]
 
-    B --> B1[Llama 3 8B]
-    B --> B2[Llama 3 70B]
-    B --> B3[Llama 3 405B]
+    B --> B1[Llama 3 8B/70B/405B]
+    B --> B2[Later Llama generations]
 
-    C --> C1[Mistral 7B]
-    C --> C2[Mixtral 8x7B]
-    C --> C3[Mistral Large]
+    C --> C1[Mistral 7B / Mixtral 8x7B]
 
-    D --> D1[Phi-2 2.7B]
-    D --> D2[Phi-3 3.8B-14B]
+    D --> D1[Phi-2 / Phi-3 series]
 
-    E --> E1[Qwen 2.5 Series]
-    E --> E2[Qwen Coder]
+    E --> E1[Qwen 2.5 series]
 
     style A fill:#3b82f6,color:#fff
     style B fill:#22c55e,color:#fff
@@ -86,9 +83,9 @@ Small models from 1B to 3B parameters run on phones and edge devices. They handl
 
 Medium models from 7B to 13B parameters run on consumer GPUs with 8-16GB VRAM. They offer good general capability with decent coding, writing, and reasoning, practical for many applications. Examples include Mistral 7B, Llama 3 8B, and Phi-3.
 
-Large models from 30B to 70B parameters require high-end GPUs with 24GB+ VRAM or quantization. They offer strong performance across tasks, competitive with GPT-3.5, and good coding and reasoning. Examples include Llama 3 70B and Qwen 2.5 72B.
+Large models from 30B to 70B parameters require high-end GPUs with 24GB+ VRAM or quantization. They offer strong performance across tasks, competitive with GPT-3.5-class models, and good coding and reasoning. Examples from the 2024-2025 period included Llama 3 70B and Qwen 2.5 72B.
 
-Frontier models at 100B+ parameters require multiple GPUs or extreme quantization. They approach GPT-4 performance with state-of-art reasoning, practical only for serious deployments. Examples include Llama 3 405B and Mixtral Large.
+Larger open models (100B+) continued to close the gap with proprietary frontier models, though top proprietary systems (GPT-4 class, Claude, Gemini) generally retained a lead in raw capability at the time. The gap has narrowed further since.
 
 ### Open vs. Closed Trade-offs
 
@@ -101,7 +98,12 @@ Proprietary model advantages include no infrastructure with just API calls, best
 Proprietary model disadvantages include privacy concerns with data sent to third parties, cost at scale for high volume, API dependency where downtime affects you, limited control where you usually cannot modify or fine-tune, rate limits affecting throughput, and vendor lock-in where migration is costly.
 
 <Info>
-An interesting trend: open models are closing the capability gap. In 2023, proprietary models were 6-12 months ahead. In 2024, Llama 3 70B competes with GPT-3.5 and approaches GPT-4 on many tasks. The answer to whether open models will catch up affects strategy. If open models reach good enough for your use case, local deployment becomes compelling.
+  An interesting trend: open models continued closing the capability gap. In
+  2023, proprietary models were significantly ahead. By 2024-2025, strong open
+  models like Llama 3 70B were competitive with GPT-3.5-class systems and
+  approaching GPT-4 on many tasks. The gap has narrowed further with subsequent
+  releases. The strategic question remains: for your workload, is "good enough"
+  open model performance worth the operational trade-offs of local deployment?
 </Info>
 
 ## Running Models Locally
@@ -221,7 +223,7 @@ The privacy calculation: API approach requires trusting the vendor's security pl
 
 ### Cost Analysis
 
-API pricing in 2024 is approximately $30-60 per million tokens for GPT-4, $0.50-1.50 for GPT-3.5, $15-75 for Claude Opus, and $0.25-1.25 for Claude Haiku.
+For illustration, API pricing around 2024 was in the ballpark of $30-60 per million tokens for GPT-4-class models, much lower for lighter models (e.g. GPT-3.5 or Claude Haiku). Prices and model availability have continued to change. Always check current provider pricing for your use case.
 
 Local cost structure includes hardware with GPU purchase or rental amortized, electricity as ongoing operational cost, and maintenance as engineering time.
 
@@ -230,7 +232,10 @@ For break-even analysis, assume a GPU server at $5,000 with 24GB VRAM, power at 
 If you are processing billions of tokens monthly, local models pay for themselves almost immediately. The hidden costs include engineering time for setup, ongoing maintenance and optimization, monitoring and alerting, and upgrade cycles.
 
 <Tip>
-Honest assessment: for low volume under 10 million tokens per month, APIs are almost certainly cheaper. For medium volume of 10 million to 1 billion tokens per month, it depends on complexity and expertise. For high volume over 1 billion tokens per month, local is likely much cheaper.
+  Honest assessment: for low volume under 10 million tokens per month, APIs are
+  almost certainly cheaper. For medium volume of 10 million to 1 billion tokens
+  per month, it depends on complexity and expertise. For high volume over 1
+  billion tokens per month, local is likely much cheaper.
 </Tip>
 
 ### Latency and Offline Capability
@@ -254,7 +259,12 @@ Pattern 3 uses fallback, trying local first since it is fast and cheap, then fal
 Pattern 4 uses local first-draft with API refinement, generating a draft quickly with local model then refining for quality with API.
 
 <Warning>
-Local models are a tool, not a religion. Use APIs when building an MVP and needing to ship fast, when you have low to medium volume under 100 million tokens per month, when you need absolute best quality at GPT-4 or Claude level, when you lack ML or infrastructure expertise, when you have no GPU infrastructure, when you want someone else to handle model updates, or when your use case is not privacy-sensitive.
+  Local models are a tool, not a religion. Use APIs when building an MVP and
+  needing to ship fast, when you have low to medium volume under 100 million
+  tokens per month, when you need absolute best quality at GPT-4 or Claude
+  level, when you lack ML or infrastructure expertise, when you have no GPU
+  infrastructure, when you want someone else to handle model updates, or when
+  your use case is not privacy-sensitive.
 </Warning>
 
 ## Optimization Techniques
@@ -347,68 +357,99 @@ Benefits include optimizing cost with local for bulk and API for edge cases, opt
     {
       id: "q1",
       type: "multiple-choice",
-      question: "What is the primary difference between 'open weights' and truly 'open source' AI models?",
+      question:
+        "What is the primary difference between 'open weights' and truly 'open source' AI models?",
       options: [
-        { id: "a", text: "Open weights models are always free, open source models require payment" },
-        { id: "b", text: "Open weights provides model parameters but may not include training code/data, while open source includes full reproducibility" },
+        {
+          id: "a",
+          text: "Open weights models are always free, open source models require payment",
+        },
+        {
+          id: "b",
+          text: "Open weights provides model parameters but may not include training code/data, while open source includes full reproducibility",
+        },
         { id: "c", text: "Open source models are newer and better performing" },
-        { id: "d", text: "There is no difference, the terms are synonymous" }
+        { id: "d", text: "There is no difference, the terms are synonymous" },
       ],
       correctAnswer: "b",
-      explanation: "Open weights means model parameters are downloadable and usable, but training code, training data, and full methodology may not be disclosed. True open source provides weights, training code, data documentation, and reproducible training pipelines. Most 'open' models like Llama and Mistral are technically open weights with permissive licenses, not fully open source by strict definitions."
+      explanation:
+        "Open weights means model parameters are downloadable and usable, but training code, training data, and full methodology may not be disclosed. True open source provides weights, training code, data documentation, and reproducible training pipelines. Most 'open' models like Llama and Mistral are technically open weights with permissive licenses, not fully open source by strict definitions.",
     },
     {
       id: "q2",
       type: "multiple-choice",
-      question: "For a Llama 3 8B model at full precision (FP16), approximately how much VRAM is required?",
+      question:
+        "For a Llama 3 8B model at full precision (FP16), approximately how much VRAM is required?",
       options: [
         { id: "a", text: "4 GB" },
         { id: "b", text: "8 GB" },
         { id: "c", text: "16 GB" },
-        { id: "d", text: "32 GB" }
+        { id: "d", text: "32 GB" },
       ],
       correctAnswer: "c",
-      explanation: "A rough calculation: 8 billion parameters times 2 bytes per parameter (FP16) times 1.2 overhead equals about 19.2 GB. In practice, about 16GB of VRAM is needed. This is why quantization is so important - Q4_K_M quantization reduces this to about 4.5GB, making the model runnable on consumer GPUs with 8GB VRAM."
+      explanation:
+        "A rough calculation: 8 billion parameters times 2 bytes per parameter (FP16) times 1.2 overhead equals about 19.2 GB. In practice, about 16GB of VRAM is needed. This is why quantization is so important - Q4_K_M quantization reduces this to about 4.5GB, making the model runnable on consumer GPUs with 8GB VRAM.",
     },
     {
       id: "q3",
       type: "multiple-choice",
-      question: "When does using local models typically become more cost-effective than API calls?",
+      question:
+        "When does using local models typically become more cost-effective than API calls?",
       options: [
         { id: "a", text: "Always, because open models are free" },
-        { id: "b", text: "When processing more than approximately 100M-1B tokens per month" },
+        {
+          id: "b",
+          text: "When processing more than approximately 100M-1B tokens per month",
+        },
         { id: "c", text: "Only for companies with dedicated ML teams" },
-        { id: "d", text: "Never, APIs are always cheaper when considering total cost" }
+        {
+          id: "d",
+          text: "Never, APIs are always cheaper when considering total cost",
+        },
       ],
       correctAnswer: "b",
-      explanation: "While open model weights are free, running them requires hardware, electricity, and engineering time. For low volumes (under 100M tokens/month), API costs are typically lower than infrastructure costs. At higher volumes (over 1B tokens/month), the per-token cost of APIs exceeds amortized hardware costs even including engineering time."
+      explanation:
+        "While open model weights are free, running them requires hardware, electricity, and engineering time. For low volumes (under 100M tokens/month), API costs are typically lower than infrastructure costs. At higher volumes (over 1B tokens/month), the per-token cost of APIs exceeds amortized hardware costs even including engineering time.",
     },
     {
       id: "q4",
       type: "multiple-choice",
-      question: "What is quantization's primary purpose in local model deployment?",
+      question:
+        "What is quantization's primary purpose in local model deployment?",
       options: [
-        { id: "a", text: "To make models run faster by removing unnecessary parameters" },
-        { id: "b", text: "To reduce memory requirements by lowering weight precision" },
-        { id: "c", text: "To improve model quality by training with less data" },
-        { id: "d", text: "To encrypt model weights for security" }
+        {
+          id: "a",
+          text: "To make models run faster by removing unnecessary parameters",
+        },
+        {
+          id: "b",
+          text: "To reduce memory requirements by lowering weight precision",
+        },
+        {
+          id: "c",
+          text: "To improve model quality by training with less data",
+        },
+        { id: "d", text: "To encrypt model weights for security" },
       ],
       correctAnswer: "b",
-      explanation: "Quantization reduces the precision of model weights (e.g., from 16-bit to 4-bit), dramatically reducing memory requirements. A 7B model that needs 14GB at FP16 can fit in about 4.5GB with Q4_K_M quantization. This comes with a trade-off: lower precision means slight quality degradation, but modern quantization methods minimize this loss."
+      explanation:
+        "Quantization reduces the precision of model weights (e.g., from 16-bit to 4-bit), dramatically reducing memory requirements. A 7B model that needs 14GB at FP16 can fit in about 4.5GB with Q4_K_M quantization. This comes with a trade-off: lower precision means slight quality degradation, but modern quantization methods minimize this loss.",
     },
     {
       id: "q5",
       type: "multiple-choice",
-      question: "Which tool would you choose for maximum performance optimization and control over quantization?",
+      question:
+        "Which tool would you choose for maximum performance optimization and control over quantization?",
       options: [
         { id: "a", text: "Ollama" },
         { id: "b", text: "LM Studio" },
         { id: "c", text: "llama.cpp" },
-        { id: "d", text: "ChatGPT" }
+        { id: "d", text: "ChatGPT" },
       ],
       correctAnswer: "c",
-      explanation: "llama.cpp is the foundational library that provides maximum control over inference parameters and quantization options. While Ollama (which is built on llama.cpp) offers easier setup, llama.cpp directly gives you access to bleeding-edge features, custom quantization, and support for exotic hardware when you need the ultimate control."
-    }
+      explanation:
+        "llama.cpp is the foundational library that provides maximum control over inference parameters and quantization options. While Ollama (which is built on llama.cpp) offers easier setup, llama.cpp directly gives you access to bleeding-edge features, custom quantization, and support for exotic hardware when you need the ultimate control.",
+    },
   ]}
   passingScore={70}
   allowRetry={true}
@@ -425,7 +466,7 @@ Benefits include optimizing cost with local for bulk and API for edge cases, opt
     "Install Ollama from ollama.com for your operating system (macOS, Linux, or Windows)",
     "Verify installation by running `ollama --version` in your terminal",
     "Ensure you have at least 8GB of available disk space for model downloads",
-    "Have Python 3.8+ installed for building the API integration script"
+    "Have Python 3.8+ installed for building the API integration script",
   ]}
   parts={[
     {
@@ -436,9 +477,10 @@ Benefits include optimizing cost with local for bulk and API for edge cases, opt
         "Install Ollama and verify it's running with `ollama serve` (or check it auto-started)",
         "Pull the Phi-3 model with `ollama pull phi3`",
         "Test it with a simple prompt: `ollama run phi3 'Explain quantum computing in simple terms'`",
-        "Note the response quality and generation speed"
+        "Note the response quality and generation speed",
       ],
-      observePrompt: "How does the model response compare to what you'd expect from GPT or Claude? How fast does it feel?"
+      observePrompt:
+        "How does the model response compare to what you'd expect from GPT or Claude? How fast does it feel?",
     },
     {
       id: "model-comparison-setup",
@@ -448,9 +490,10 @@ Benefits include optimizing cost with local for bulk and API for edge cases, opt
         "Pull Llama 3 with `ollama pull llama3`",
         "Pull Mistral with `ollama pull mistral`",
         "Note the download sizes for each model",
-        "Check your available disk space after downloads"
+        "Check your available disk space after downloads",
       ],
-      observePrompt: "What are the size differences between these models? How does download time correlate with model size?"
+      observePrompt:
+        "What are the size differences between these models? How does download time correlate with model size?",
     },
     {
       id: "create-test-suite",
@@ -460,9 +503,10 @@ Benefits include optimizing cost with local for bulk and API for edge cases, opt
         "Create 5 test prompts: 1) explanation task, 2) code generation, 3) comparison/reasoning, 4) translation, 5) creative writing",
         "Save these prompts in a file or list for consistent testing",
         "Run each prompt against all three models using `ollama run <model> '<prompt>'`",
-        "Save the outputs to compare (copy to a document or use shell redirection)"
+        "Save the outputs to compare (copy to a document or use shell redirection)",
       ],
-      observePrompt: "Which tasks show the biggest quality differences between models? Which model is most consistent?"
+      observePrompt:
+        "Which tasks show the biggest quality differences between models? Which model is most consistent?",
     },
     {
       id: "performance-analysis",
@@ -472,9 +516,10 @@ Benefits include optimizing cost with local for bulk and API for edge cases, opt
         "Build a Python script using the `ollama` library or direct HTTP requests to http://localhost:11434/api/generate",
         "Measure tokens per second for each model on the same prompt",
         "Track memory usage during inference (use system monitor or `nvidia-smi` if you have NVIDIA GPU)",
-        "Compare response quality: accuracy, coherence, and completeness"
+        "Compare response quality: accuracy, coherence, and completeness",
       ],
-      observePrompt: "Is there a clear winner or do different models excel at different tasks? What's the speed-quality trade-off?"
+      observePrompt:
+        "Is there a clear winner or do different models excel at different tasks? What's the speed-quality trade-off?",
     },
     {
       id: "document-findings",
@@ -484,18 +529,37 @@ Benefits include optimizing cost with local for bulk and API for edge cases, opt
         "Create a comparison table with columns: Model, Size, Speed (tokens/sec), Quality by Task, Memory Usage",
         "Document surprising findings (e.g., when smaller model outperforms larger one)",
         "Make a model selection recommendation for 3 hypothetical use cases: low-resource edge device, interactive coding assistant, high-quality content generation",
-        "Note what you learned about local model trade-offs"
+        "Note what you learned about local model trade-offs",
       ],
-      observePrompt: "Would you use local models in production? For what use cases would they be better than API-based models?"
-    }
+      observePrompt:
+        "Would you use local models in production? For what use cases would they be better than API-based models?",
+    },
   ]}
   successCriteria={[
-    { id: "ollama-installed", text: "Successfully installed Ollama and downloaded at least 3 different models" },
-    { id: "comparative-testing", text: "Tested all models with the same set of prompts and documented results" },
-    { id: "performance-metrics", text: "Measured quantitative metrics: tokens/second, memory usage, response time" },
-    { id: "quality-analysis", text: "Evaluated qualitative differences: which models excel at which tasks" },
-    { id: "api-integration", text: "Built a Python script that integrates with Ollama API and measures performance" },
-    { id: "documented-findings", text: "Created clear documentation of findings with actionable recommendations" }
+    {
+      id: "ollama-installed",
+      text: "Successfully installed Ollama and downloaded at least 3 different models",
+    },
+    {
+      id: "comparative-testing",
+      text: "Tested all models with the same set of prompts and documented results",
+    },
+    {
+      id: "performance-metrics",
+      text: "Measured quantitative metrics: tokens/second, memory usage, response time",
+    },
+    {
+      id: "quality-analysis",
+      text: "Evaluated qualitative differences: which models excel at which tasks",
+    },
+    {
+      id: "api-integration",
+      text: "Built a Python script that integrates with Ollama API and measures performance",
+    },
+    {
+      id: "documented-findings",
+      text: "Created clear documentation of findings with actionable recommendations",
+    },
   ]}
 />
 

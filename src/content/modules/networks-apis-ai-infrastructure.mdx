@@ -34,7 +34,10 @@ This isn't a temporary situation. Even as AI capabilities advance, the fundament
 When you call Claude or GPT-4, multiple steps happen behind the scenes. TCP connection establishment. TLS negotiation for security. HTTP protocol handling. Request serialization where your prompt becomes bytes. Network transit, potentially across continents. Server queuing because you're not the only one asking. Model inference, which is the actual AI part. Response serialization where tokens become bytes. Network transit back. Response parsing. The AI inference, the part that feels like the whole point, is often the fastest step. A model generates tokens in milliseconds. The network adds seconds.
 
 <Info title="The Latency Breakdown">
-A simple query might take 500ms total. A complex generation might take 30 seconds. And every retry multiplies these costs. This is why AI API design patterns differ from typical web APIs. You're not fetching a database row. You're initiating computation that might run for half a minute.
+  A simple query might take 500ms total. A complex generation might take 30
+  seconds. And every retry multiplies these costs. This is why AI API design
+  patterns differ from typical web APIs. You're not fetching a database row.
+  You're initiating computation that might run for half a minute.
 </Info>
 
 ### The Stateless Illusion
@@ -64,7 +67,10 @@ This is why optimization matters. Sending unnecessary context costs money. Ineff
 AI APIs use familiar REST patterns, but the semantics differ from typical CRUD operations. Traditional REST uses GET to retrieve existing data, POST to create new resources, PUT to update existing resources, and DELETE to remove resources. AI REST is almost all POST. You're not retrieving stored data. You're requesting computation. Each request creates something new.
 
 <Definition term="AI API Semantics">
-Unlike traditional REST APIs that manage stored resources, AI APIs request computation. POST /v1/chat/completions generates new content. POST /v1/embeddings transforms text to vectors. Each call produces unique output based on model inference.
+  Unlike traditional REST APIs that manage stored resources, AI APIs request
+  computation. POST /v1/chat/completions generates new content. POST
+  /v1/embeddings transforms text to vectors. Each call produces unique output
+  based on model inference.
 </Definition>
 
 ### The Standard Request Structure
@@ -80,7 +86,10 @@ Every AI API call needs to prove who you are. This happens through authenticatio
 The pattern typically looks like "Authorization: Bearer sk-..." where that Bearer prefix tells the server you're providing a token. The token itself is your secret. Treat it like a password.
 
 <Warning title="API Key Security">
-Never hardcode keys in your source code. Use environment variables. Rotate keys regularly, treating them like passwords. Use key scoping if the provider supports it, creating keys with minimal permissions. Monitor usage and watch for unexpected spikes that might indicate compromise.
+  Never hardcode keys in your source code. Use environment variables. Rotate
+  keys regularly, treating them like passwords. Use key scoping if the provider
+  supports it, creating keys with minimal permissions. Monitor usage and watch
+  for unexpected spikes that might indicate compromise.
 </Warning>
 
 ### Rate Limiting: Playing Nice
@@ -116,7 +125,10 @@ This isn't just UX polish. It's a fundamental shift in how applications interact
 The dominant streaming protocol for AI APIs is Server-Sent Events (SSE). The client opens a persistent connection with an Accept header of text/event-stream. The server sends events as they occur, with each data line being one event and blank lines separating events. Simple, text-based, easy to debug.
 
 <Definition term="Server-Sent Events (SSE)">
-A standard for servers to push data to clients over HTTP. Unlike WebSockets, SSE is one-directional (server to client) and works over standard HTTP, making it firewall-friendly and simple to implement. Perfect for AI responses where the server streams tokens as they're generated.
+  A standard for servers to push data to clients over HTTP. Unlike WebSockets,
+  SSE is one-directional (server to client) and works over standard HTTP, making
+  it firewall-friendly and simple to implement. Perfect for AI responses where
+  the server streams tokens as they're generated.
 </Definition>
 
 ### Implementing Streaming Clients
@@ -154,7 +166,9 @@ AI APIs fail in predictable ways. Know your errors.
 Network errors are nobody's problem. Connection timeout means you couldn't reach the server. Read timeout means you connected but the response took too long. Connection reset means something interrupted the connection.
 
 <Tip title="When to Retry">
-Always retry 429 (with backoff), 500, 502, 503, network timeouts. Never retry 400, 401, 403, 404 since these require code fixes, not retries. Maybe retry 529 since it might clear up or might not.
+  Always retry 429 (with backoff), 500, 502, 503, network timeouts. Never retry
+  400, 401, 403, 404 since these require code fixes, not retries. Maybe retry
+  529 since it might clear up or might not.
 </Tip>
 
 ### Implementing Robust Retry Logic
@@ -198,7 +212,12 @@ Local latency breaks down into network round-trip (0-5ms for localhost or LAN), 
 Cloud has lower inference latency due to better hardware, but network and queuing add unpredictability. Local has predictable latency since it's all on your hardware.
 
 <Info title="Cost Modeling">
-Cloud costs are per-token, making them predictable per-request but potentially expensive at scale. Local costs are hardware investment plus electricity, which pays off with high volume. Break-even analysis helps: if you spend $500/month on Claude API and could serve those requests locally for $50/month in electricity with a $5000 hardware investment, you break even in about 11 months.
+  Cloud costs are per-token, making them predictable per-request but potentially
+  expensive at scale. Local costs are hardware investment plus electricity,
+  which pays off with high volume. Break-even analysis helps: if you spend
+  $500/month on Claude API and could serve those requests locally for $50/month
+  in electricity with a $5000 hardware investment, you break even in about 11
+  months.
 </Info>
 
 ### Privacy and Compliance
@@ -390,7 +409,7 @@ sequenceDiagram
     "Install Python 3.8+ if not already installed",
     "Install required libraries: pip install anthropic httpx",
     "Set your API key: export ANTHROPIC_API_KEY='your-key-here'",
-    "Create a new file called ai_client.py for your code"
+    "Create a new file called ai_client.py for your code",
   ]}
   parts={[
     {
@@ -402,9 +421,10 @@ sequenceDiagram
         "Implement a complete() method that makes API calls with automatic retries",
         "Add a _calculate_delay() method for exponential backoff with jitter",
         "Add a _should_retry() method that returns True for retryable errors (429, 500, 502, 503)",
-        "Track request count and total tokens used"
+        "Track request count and total tokens used",
       ],
-      observePrompt: "Does the client handle successful requests? Does it track token usage correctly?"
+      observePrompt:
+        "Does the client handle successful requests? Does it track token usage correctly?",
     },
     {
       id: "streaming-support",
@@ -415,9 +435,10 @@ sequenceDiagram
         "Use the client.messages.stream() context manager",
         "Print tokens with flush=True for immediate display",
         "Get the final message for accurate token counting",
-        "Test with: for chunk in client.stream('Write a haiku'): print(chunk, end='')"
+        "Test with: for chunk in client.stream('Write a haiku'): print(chunk, end='')",
       ],
-      observePrompt: "How does streaming feel different from non-streaming? Watch tokens appear one by one."
+      observePrompt:
+        "How does streaming feel different from non-streaming? Watch tokens appear one by one.",
     },
     {
       id: "circuit-breaker",
@@ -428,9 +449,10 @@ sequenceDiagram
         "Track failure count and last failure time",
         "Open the circuit after 5 consecutive failures",
         "After 30 seconds, allow one test request (HALF_OPEN)",
-        "Reset to CLOSED on success, back to OPEN on failure"
+        "Reset to CLOSED on success, back to OPEN on failure",
       ],
-      observePrompt: "How does the circuit breaker prevent overwhelming a failing service?"
+      observePrompt:
+        "How does the circuit breaker prevent overwhelming a failing service?",
     },
     {
       id: "metrics",
@@ -441,17 +463,26 @@ sequenceDiagram
         "Add a record_request() method that logs each request's outcome",
         "Add a summary() method that returns formatted statistics",
         "Wrap your complete() method to record timing and outcomes",
-        "Run several requests and review the metrics summary"
-      ]
-    }
+        "Run several requests and review the metrics summary",
+      ],
+    },
   ]}
   successCriteria={[
-    { id: "retry-logic", text: "Implemented automatic retry logic with exponential backoff" },
+    {
+      id: "retry-logic",
+      text: "Implemented automatic retry logic with exponential backoff",
+    },
     { id: "jitter", text: "Added jitter to prevent thundering herd problems" },
-    { id: "streaming", text: "Implemented streaming with progressive token display" },
-    { id: "circuit-breaker", text: "Added circuit breaker to prevent cascade failures" },
+    {
+      id: "streaming",
+      text: "Implemented streaming with progressive token display",
+    },
+    {
+      id: "circuit-breaker",
+      text: "Added circuit breaker to prevent cascade failures",
+    },
     { id: "metrics", text: "Implemented metrics collection for observability" },
-    { id: "tested", text: "Tested all components together successfully" }
+    { id: "tested", text: "Tested all components together successfully" },
   ]}
 />
 
@@ -467,68 +498,93 @@ sequenceDiagram
     {
       id: "q1",
       type: "multiple-choice",
-      question: "Why do AI APIs use POST for nearly all operations instead of GET?",
+      question:
+        "Why do AI APIs use POST for nearly all operations instead of GET?",
       options: [
         { id: "a", text: "POST requests are faster than GET requests" },
-        { id: "b", text: "AI operations create new content through computation rather than retrieving stored data" },
+        {
+          id: "b",
+          text: "AI operations create new content through computation rather than retrieving stored data",
+        },
         { id: "c", text: "GET requests don't support JSON" },
-        { id: "d", text: "POST is more secure than GET" }
+        { id: "d", text: "POST is more secure than GET" },
       ],
       correctAnswer: "b",
-      explanation: "AI API calls are fundamentally different from traditional CRUD operations. You're not retrieving existing data - you're requesting computation that generates new content. Each request produces a unique response based on the model's inference. POST semantically represents 'create' or 'process,' which accurately describes what AI endpoints do."
+      explanation:
+        "AI API calls are fundamentally different from traditional CRUD operations. You're not retrieving existing data - you're requesting computation that generates new content. Each request produces a unique response based on the model's inference. POST semantically represents 'create' or 'process,' which accurately describes what AI endpoints do.",
     },
     {
       id: "q2",
       type: "multiple-choice",
-      question: "What is the primary advantage of streaming responses for AI applications?",
+      question:
+        "What is the primary advantage of streaming responses for AI applications?",
       options: [
         { id: "a", text: "Streaming responses use less bandwidth" },
-        { id: "b", text: "Streaming allows users to see tokens as they're generated, providing immediate feedback" },
+        {
+          id: "b",
+          text: "Streaming allows users to see tokens as they're generated, providing immediate feedback",
+        },
         { id: "c", text: "Streaming responses are more accurate" },
-        { id: "d", text: "Streaming is required by all AI APIs" }
+        { id: "d", text: "Streaming is required by all AI APIs" },
       ],
       correctAnswer: "b",
-      explanation: "Streaming transforms user experience by showing progress immediately rather than making users wait for complete responses. Beyond UX, streaming enables practical benefits: early termination if the response is going wrong, real-time processing like text-to-speech, and better perceived performance."
+      explanation:
+        "Streaming transforms user experience by showing progress immediately rather than making users wait for complete responses. Beyond UX, streaming enables practical benefits: early termination if the response is going wrong, real-time processing like text-to-speech, and better perceived performance.",
     },
     {
       id: "q3",
       type: "multiple-choice",
-      question: "When implementing retry logic for AI APIs, why is 'jitter' added to exponential backoff?",
+      question:
+        "When implementing retry logic for AI APIs, why is 'jitter' added to exponential backoff?",
       options: [
         { id: "a", text: "To make the code more random and unpredictable" },
-        { id: "b", text: "To prevent synchronized retries from many clients hitting rate limits simultaneously" },
+        {
+          id: "b",
+          text: "To prevent synchronized retries from many clients hitting rate limits simultaneously",
+        },
         { id: "c", text: "To reduce the total number of retries needed" },
-        { id: "d", text: "Jitter is required by AI API specifications" }
+        { id: "d", text: "Jitter is required by AI API specifications" },
       ],
       correctAnswer: "b",
-      explanation: "Without jitter, if 100 clients all hit a rate limit at the same time and retry after exactly 2 seconds, they'll all hit the limit again simultaneously. This creates 'thundering herd' problems. Jitter adds random variation to retry timing, spreading out requests and reducing the chance of synchronized spikes that overwhelm the service."
+      explanation:
+        "Without jitter, if 100 clients all hit a rate limit at the same time and retry after exactly 2 seconds, they'll all hit the limit again simultaneously. This creates 'thundering herd' problems. Jitter adds random variation to retry timing, spreading out requests and reducing the chance of synchronized spikes that overwhelm the service.",
     },
     {
       id: "q4",
       type: "multiple-choice",
-      question: "Which factor most often makes local AI deployment mandatory rather than optional?",
+      question:
+        "Which factor most often makes local AI deployment mandatory rather than optional?",
       options: [
         { id: "a", text: "Cost savings potential" },
         { id: "b", text: "Lower latency requirements" },
-        { id: "c", text: "Privacy and compliance requirements that prohibit data leaving the network" },
-        { id: "d", text: "Better model quality" }
+        {
+          id: "c",
+          text: "Privacy and compliance requirements that prohibit data leaving the network",
+        },
+        { id: "d", text: "Better model quality" },
       ],
       correctAnswer: "c",
-      explanation: "While cost and latency can favor local deployment, these are usually optimization choices. Privacy and compliance requirements are often non-negotiable constraints. Healthcare (HIPAA), legal (attorney-client privilege), financial (regulatory requirements), and classified/defense workloads may legally require that data never leave controlled infrastructure."
+      explanation:
+        "While cost and latency can favor local deployment, these are usually optimization choices. Privacy and compliance requirements are often non-negotiable constraints. Healthcare (HIPAA), legal (attorney-client privilege), financial (regulatory requirements), and classified/defense workloads may legally require that data never leave controlled infrastructure.",
     },
     {
       id: "q5",
       type: "multiple-choice",
-      question: "What does a circuit breaker protect against in AI API integrations?",
+      question:
+        "What does a circuit breaker protect against in AI API integrations?",
       options: [
         { id: "a", text: "Electrical surges in the data center" },
-        { id: "b", text: "Cascade failures by stopping requests to a failing service" },
+        {
+          id: "b",
+          text: "Cascade failures by stopping requests to a failing service",
+        },
         { id: "c", text: "Authentication token expiration" },
-        { id: "d", text: "Response parsing errors" }
+        { id: "d", text: "Response parsing errors" },
       ],
       correctAnswer: "b",
-      explanation: "A circuit breaker prevents cascade failures by detecting when a service is struggling and stopping requests to it temporarily. After a threshold of failures, the circuit 'opens' and requests fail immediately without hitting the struggling service. This gives the service time to recover while preventing your application from being dragged down."
-    }
+      explanation:
+        "A circuit breaker prevents cascade failures by detecting when a service is struggling and stopping requests to it temporarily. After a threshold of failures, the circuit 'opens' and requests fail immediately without hitting the struggling service. This gives the service time to recover while preventing your application from being dragged down.",
+    },
   ]}
   passingScore={70}
   allowRetry={true}

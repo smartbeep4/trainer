@@ -36,7 +36,10 @@ This course exists because the conversation around AI has become unhelpfully pol
 All three camps are wrong, and they're wrong in instructive ways.
 
 <Info title="The Truth Is More Nuanced">
-Modern AI systems are genuine technological breakthroughs that can meaningfully enhance your work—if you understand them. They're also limited, unreliable, and frequently wrong in ways that require your expertise to navigate.
+  Modern AI systems are genuine technological breakthroughs that can
+  meaningfully enhance your work—if you understand them. They're also limited,
+  unreliable, and frequently wrong in ways that require your expertise to
+  navigate.
 </Info>
 
 This course teaches you that understanding.
@@ -54,10 +57,10 @@ By the end, you'll be the person on your team who actually understands this stuf
 This course is designed for working professionals. You don't need to complete it linearly or quickly. The best approach:
 
 <Tip title="Learning Strategy">
-- **Commit to consistency**: 3-4 hours per week beats 12-hour marathon sessions
-- **Do the exercises**: Reading about AI is not the same as using AI
-- **Question everything**: Including what this course tells you
-- **Build things**: The capstone matters, but so do small experiments along the way
+  - **Commit to consistency**: 3-4 hours per week beats 12-hour marathon
+  sessions - **Do the exercises**: Reading about AI is not the same as using AI
+  - **Question everything**: Including what this course tells you - **Build
+  things**: The capstone matters, but so do small experiments along the way
 </Tip>
 
 ---
@@ -93,7 +96,9 @@ Here's the uncomfortable truth for developers who haven't started using AI tools
 Let's be honest about what the research actually shows, because there's a lot of motivated reasoning on all sides.
 
 <Warning title="Be Skeptical of Claims">
-**Studies claiming 2x productivity gains** often measure specific, narrow tasks where AI excels (writing boilerplate, generating tests from examples). Real-world productivity is harder to measure.
+  **Studies claiming 2x productivity gains** often measure specific, narrow
+  tasks where AI excels (writing boilerplate, generating tests from examples).
+  Real-world productivity is harder to measure.
 </Warning>
 
 Developer surveys show genuinely mixed results. Some developers report significant time savings—hours per week recovered from mechanical coding tasks. Others report time lost to debugging AI-generated code that looked right but harbored subtle bugs, or correcting hallucinations that confidently referenced APIs that don't exist. The difference isn't random. It correlates with how well the developer understands AI's limitations.
@@ -120,7 +125,9 @@ But you wouldn't:
 The chainsaw doesn't understand trees or forests. It's an amplifier for human intent and skill. A skilled user with a chainsaw accomplishes remarkable things. An unskilled user creates disasters.
 
 <Definition term="Power Tool Mental Model">
-AI is a sophisticated power tool that amplifies human capability but requires skill to use effectively, doesn't understand what it's doing, and needs human judgment to direct it.
+  AI is a sophisticated power tool that amplifies human capability but requires
+  skill to use effectively, doesn't understand what it's doing, and needs human
+  judgment to direct it.
 </Definition>
 
 ### What AI Actually Excels At
@@ -158,9 +165,9 @@ Consistency is another challenge, and it bites in production. Run the same promp
 Here's a concept that will save you endless frustration:
 
 <Definition term="Capability-Reliability Gap">
-**Capability** is what AI can do on a good day with a good prompt.
-**Reliability** is what AI does consistently across varied conditions.
-The gap between these is huge—and this is where most AI disappointments come from.
+  **Capability** is what AI can do on a good day with a good prompt.
+  **Reliability** is what AI does consistently across varied conditions. The gap
+  between these is huge—and this is where most AI disappointments come from.
 </Definition>
 
 AI demos show capability. The carefully crafted prompt that produces perfect output. The ideal example that makes your jaw drop. The "wow" moment in the conference keynote. These are real—AI really can do those things, sometimes.
@@ -192,7 +199,8 @@ Now consider what happens when an AI generates a response. Your input gets conve
 That's it. There's no understanding phase—the model doesn't grasp what caching means or why you might need it. There's no reasoning through trade-offs—no consideration of your specific constraints. There's no evaluation—the model has no way to judge whether its output actually solves your problem. And there's no learning from this interaction—the next user gets the same model, unaffected by whether this response was helpful or harmful.
 
 <Warning title="Fundamental Limitation">
-This isn't a limitation of current AI that will be solved. It's what these systems fundamentally are.
+  This isn't a limitation of current AI that will be solved. It's what these
+  systems fundamentally are.
 </Warning>
 
 This sounds abstract, so let's make it concrete.
@@ -218,7 +226,9 @@ The key insight: when AI fails, it fails confidently. There's no mechanism for u
 ### Why Hallucinations Happen
 
 <Definition term="Hallucination">
-The AI field's term for confident false outputs. It happens because token prediction doesn't verify truth, training data contains falsehoods, the model optimizes for plausibility, and there's no mechanism for uncertainty.
+  The AI field's term for confident false outputs. It happens because token
+  prediction doesn't verify truth, training data contains falsehoods, the model
+  optimizes for plausibility, and there's no mechanism for uncertainty.
 </Definition>
 
 To understand why hallucinations are fundamental rather than fixable, imagine you're the AI. You've seen billions of examples of text, but you've never verified any of them. You've seen claims about history, but you weren't there. You've seen code examples, but you've never run them. You've seen API documentation, but you've never called those APIs.
@@ -238,7 +248,8 @@ It's almost impossible to interact with modern AI without feeling like you're ta
 But the feeling is an illusion. When Claude says "I think this approach would work better," there's no thinker thinking. When it says "I'm not sure about that," it's not experiencing uncertainty—it's predicting that hedging language is appropriate for this context. When it apologizes for making a mistake, it's not feeling contrition—it's matching patterns of how apologies look in training data.
 
 <Tip title="Practical Implication">
-Use AI like you'd use a search engine: as a tool that gives you outputs to evaluate, not a colleague who gives you advice to follow.
+  Use AI like you'd use a search engine: as a tool that gives you outputs to
+  evaluate, not a colleague who gives you advice to follow.
 </Tip>
 
 This matters practically in several ways.
@@ -281,7 +292,7 @@ The truth is that AI matches patterns to your words. The more precisely your wor
 
 Artificial General Intelligence—AI that can do anything humans can do—has been "coming soon" for 70 years. In the 1960s, leading researchers predicted human-level AI within a generation. In the 1980s, expert systems were supposed to capture and exceed human expertise. In the 2010s, deep learning was going to solve everything.
 
-Now you hear that GPT-5 or Claude 4 will achieve AGI. That current trajectory leads inexorably to human-level or superhuman intelligence. That we're in the final years of human uniqueness.
+Now you hear that the next model (GPT-5, Claude 4, or whatever comes after) will achieve AGI. That the current trajectory leads inexorably to human-level or superhuman intelligence. That we're in the final years of human uniqueness.
 
 Look at current systems carefully. They're impressive at specific tasks. They fail in predictable, systematic ways. They have no capacity for genuine learning, for updating their knowledge based on experience, for reasoning about novel situations. They're powerful pattern matchers, not general intelligences.
 
@@ -472,7 +483,7 @@ graph LR
   setupInstructions={[
     "Access an AI assistant (Claude at claude.ai, ChatGPT at chatgpt.com, or similar)",
     "Have a notepad or text editor ready to record observations",
-    "Choose a topic you're genuinely knowledgeable about for Part 1"
+    "Choose a topic you're genuinely knowledgeable about for Part 1",
   ]}
   parts={[
     {
@@ -483,9 +494,10 @@ graph LR
         "Choose a topic you know well (your programming language of expertise, a hobby, your professional field)",
         "Ask the AI a basic question you know the answer to",
         "Ask a nuanced question where details matter",
-        "Ask a question with a common misconception in your field"
+        "Ask a question with a common misconception in your field",
       ],
-      observePrompt: "Where is it accurate? Where does it get details wrong? How confident does it sound in both cases?"
+      observePrompt:
+        "Where is it accurate? Where does it get details wrong? How confident does it sound in both cases?",
     },
     {
       id: "probing-uncertainty",
@@ -494,9 +506,10 @@ graph LR
       instructions: [
         "Ask about something obscure that probably wasn't in training data",
         "Ask about recent events (after the model's training cutoff)",
-        "Ask something genuinely unknowable (e.g., 'What will the stock market do tomorrow?')"
+        "Ask something genuinely unknowable (e.g., 'What will the stock market do tomorrow?')",
       ],
-      observePrompt: "Does it acknowledge uncertainty? Does it hedge appropriately? Does it confabulate?"
+      observePrompt:
+        "Does it acknowledge uncertainty? Does it hedge appropriately? Does it confabulate?",
     },
     {
       id: "misleading-premises",
@@ -505,9 +518,10 @@ graph LR
       instructions: [
         "Ask 'Why did [historical figure] say [thing they never said]?'",
         "Ask 'How does [technology] work?' for technology that doesn't exist",
-        "Ask 'What's the best approach for [impossible task]?'"
+        "Ask 'What's the best approach for [impossible task]?'",
       ],
-      observePrompt: "Does the AI recognize and challenge the false premise? Or does it play along?"
+      observePrompt:
+        "Does the AI recognize and challenge the false premise? Or does it play along?",
     },
     {
       id: "reflection",
@@ -517,16 +531,31 @@ graph LR
         "Write a brief reflection on what surprised you most about AI behavior",
         "Document the patterns you noticed across different question types",
         "Consider how this changes how you'll use AI going forward",
-        "Note any questions you want answered by the end of this course"
-      ]
-    }
+        "Note any questions you want answered by the end of this course",
+      ],
+    },
   ]}
   successCriteria={[
-    { id: "conducted-tests", text: "Conducted all three types of tests (familiar, uncertainty, misleading)" },
-    { id: "documented-observations", text: "Documented specific observations for each part" },
-    { id: "found-error", text: "Found at least one instance of AI being confidently wrong" },
-    { id: "identified-pattern", text: "Identified at least one pattern in AI behavior" },
-    { id: "written-reflection", text: "Written a reflection with actionable insights" }
+    {
+      id: "conducted-tests",
+      text: "Conducted all three types of tests (familiar, uncertainty, misleading)",
+    },
+    {
+      id: "documented-observations",
+      text: "Documented specific observations for each part",
+    },
+    {
+      id: "found-error",
+      text: "Found at least one instance of AI being confidently wrong",
+    },
+    {
+      id: "identified-pattern",
+      text: "Identified at least one pattern in AI behavior",
+    },
+    {
+      id: "written-reflection",
+      text: "Written a reflection with actionable insights",
+    },
   ]}
 />
 
@@ -542,15 +571,23 @@ graph LR
     {
       id: "q1",
       type: "multiple-choice",
-      question: "What is the most accurate description of how large language models generate responses?",
+      question:
+        "What is the most accurate description of how large language models generate responses?",
       options: [
         { id: "a", text: "They search a database for pre-written answers" },
-        { id: "b", text: "They predict the most likely next tokens based on training patterns" },
+        {
+          id: "b",
+          text: "They predict the most likely next tokens based on training patterns",
+        },
         { id: "c", text: "They reason through problems like a human would" },
-        { id: "d", text: "They retrieve information from the internet in real-time" }
+        {
+          id: "d",
+          text: "They retrieve information from the internet in real-time",
+        },
       ],
       correctAnswer: "b",
-      explanation: "LLMs are fundamentally token predictors. They generate each token by predicting what is most likely to come next given everything before it. They don't search databases, reason in human-like ways, or access the internet during generation."
+      explanation:
+        "LLMs are fundamentally token predictors. They generate each token by predicting what is most likely to come next given everything before it. They don't search databases, reason in human-like ways, or access the internet during generation.",
     },
     {
       id: "q2",
@@ -559,24 +596,30 @@ graph LR
       options: [
         { id: "a", text: "AI as a replacement for human developers" },
         { id: "b", text: "AI as a magical oracle with perfect knowledge" },
-        { id: "c", text: "AI as a sophisticated power tool requiring skill to use effectively" },
-        { id: "d", text: "AI as a simple autocomplete feature" }
+        {
+          id: "c",
+          text: "AI as a sophisticated power tool requiring skill to use effectively",
+        },
+        { id: "d", text: "AI as a simple autocomplete feature" },
       ],
       correctAnswer: "c",
-      explanation: "The 'power tool' mental model accurately captures that AI can significantly amplify human capabilities (like a chainsaw amplifies cutting ability) but requires skill to use effectively, doesn't understand what it's doing, and needs human judgment to direct it."
+      explanation:
+        "The 'power tool' mental model accurately captures that AI can significantly amplify human capabilities (like a chainsaw amplifies cutting ability) but requires skill to use effectively, doesn't understand what it's doing, and needs human judgment to direct it.",
     },
     {
       id: "q3",
       type: "multiple-choice",
-      question: "When AI generates confident-sounding but incorrect information, this is called:",
+      question:
+        "When AI generates confident-sounding but incorrect information, this is called:",
       options: [
         { id: "a", text: "Hallucination" },
         { id: "b", text: "Overfitting" },
         { id: "c", text: "Underfitting" },
-        { id: "d", text: "Tokenization error" }
+        { id: "d", text: "Tokenization error" },
       ],
       correctAnswer: "a",
-      explanation: "'Hallucination' is the AI field's term for when models generate plausible-sounding but factually incorrect information. It happens because models predict likely tokens rather than verifying truth."
+      explanation:
+        "'Hallucination' is the AI field's term for when models generate plausible-sounding but factually incorrect information. It happens because models predict likely tokens rather than verifying truth.",
     },
     {
       id: "q4",
@@ -584,26 +627,35 @@ graph LR
       question: "What is the 'capability-reliability gap' in AI systems?",
       options: [
         { id: "a", text: "The difference between model size and performance" },
-        { id: "b", text: "The difference between what AI can do at best and what it does consistently" },
+        {
+          id: "b",
+          text: "The difference between what AI can do at best and what it does consistently",
+        },
         { id: "c", text: "The gap between training and inference" },
-        { id: "d", text: "The difference between open and closed models" }
+        { id: "d", text: "The difference between open and closed models" },
       ],
       correctAnswer: "b",
-      explanation: "The capability-reliability gap refers to the significant difference between what AI can achieve under ideal conditions (impressive demos, perfect prompts) versus what it delivers consistently across varied real-world conditions."
+      explanation:
+        "The capability-reliability gap refers to the significant difference between what AI can achieve under ideal conditions (impressive demos, perfect prompts) versus what it delivers consistently across varied real-world conditions.",
     },
     {
       id: "q5",
       type: "multiple-choice",
-      question: "Why does asking an AI 'Are you sure about that?' not reliably improve accuracy?",
+      question:
+        "Why does asking an AI 'Are you sure about that?' not reliably improve accuracy?",
       options: [
         { id: "a", text: "AIs are always sure about everything" },
-        { id: "b", text: "AIs cannot introspect on their actual confidence—they just predict likely response patterns" },
+        {
+          id: "b",
+          text: "AIs cannot introspect on their actual confidence—they just predict likely response patterns",
+        },
         { id: "c", text: "The question uses too many tokens" },
-        { id: "d", text: "AIs are programmed to never admit uncertainty" }
+        { id: "d", text: "AIs are programmed to never admit uncertainty" },
       ],
       correctAnswer: "b",
-      explanation: "AI systems can't genuinely introspect on their confidence. When asked 'Are you sure?', they predict what response is likely in that context—which might be hedging or might be doubling down, depending on training patterns."
-    }
+      explanation:
+        "AI systems can't genuinely introspect on their confidence. When asked 'Are you sure?', they predict what response is likely in that context—which might be hedging or might be doubling down, depending on training patterns.",
+    },
   ]}
   passingScore={70}
   allowRetry={true}

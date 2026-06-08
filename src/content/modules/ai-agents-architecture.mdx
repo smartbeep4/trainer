@@ -37,7 +37,10 @@ Consider the difference between these interactions.
 A chatbot interaction: "How do I create a new Git branch?" The AI responds: "To create a new Git branch, use: git checkout -b branch-name."
 
 <Definition term="AI Agent">
-An AI system that pursues goals over time, makes autonomous decisions about what actions to take, observes the results of those actions, and adjusts its behavior accordingly. Unlike chatbots that respond to individual prompts, agents execute multi-step plans to accomplish tasks.
+  An AI system that pursues goals over time, makes autonomous decisions about
+  what actions to take, observes the results of those actions, and adjusts its
+  behavior accordingly. Unlike chatbots that respond to individual prompts,
+  agents execute multi-step plans to accomplish tasks.
 </Definition>
 
 An agent interaction: "Review the codebase and create a PR that fixes the authentication bug." The agent reads code files, identifies the bug, writes a fix, runs tests, creates a branch, commits changes, opens a PR, and reports completion.
@@ -51,7 +54,10 @@ Agentic is not binary. It is a spectrum of increasing autonomy.
 Level 0 is a basic chatbot with single-turn question and answer, no persistence. Level 1 is conversational with multi-turn memory but user-driven flow. Level 2 is tool-augmented where the model can use tools when prompted. Level 3 is a reactive agent that takes actions in response to events. Level 4 is a goal-directed agent that pursues objectives across multiple steps. Level 5 is an autonomous agent that sets sub-goals, self-corrects, and handles long-horizon planning.
 
 <Info>
-Most production systems today operate at levels 2-4. Fully autonomous agents remain experimental and require significant human oversight. The sweet spot for most applications is tool-augmented or goal-directed agents with clear scope.
+  Most production systems today operate at levels 2-4. Fully autonomous agents
+  remain experimental and require significant human oversight. The sweet spot
+  for most applications is tool-augmented or goal-directed agents with clear
+  scope.
 </Info>
 
 ### What Makes a System Agentic
@@ -63,7 +69,9 @@ Goal-directed behavior means the system works toward objectives, not just respon
 Environmental interaction means the system perceives its environment by reading files and observing states, and acts on it by writing code, calling APIs, and modifying databases. It does not just generate text. It does things.
 
 <Tip>
-Autonomy is the defining characteristic. Given "fix this bug," the agent decides how to investigate, what to try, and when it is done. Each step does not require explicit user instruction.
+  Autonomy is the defining characteristic. Given "fix this bug," the agent
+  decides how to investigate, what to try, and when it is done. Each step does
+  not require explicit user instruction.
 </Tip>
 
 Feedback loops mean the system observes the results of its actions and adjusts accordingly. If a test fails after a code change, it reads the error and tries a different approach.
@@ -91,7 +99,9 @@ Agents unlock capabilities impossible for traditional software or simple chatbot
 Complex workflows involve tasks requiring dozens of steps with branching based on intermediate results. Adaptive behavior handles novel situations not explicitly programmed. Integration coordinates across multiple systems, APIs, and data sources. Continuous operation monitors, responds, and acts over extended periods.
 
 <Warning>
-Agents also introduce new challenges: unpredictability, safety concerns, debugging complexity, and the need for robust human oversight. These challenges require explicit architectural solutions.
+  Agents also introduce new challenges: unpredictability, safety concerns,
+  debugging complexity, and the need for robust human oversight. These
+  challenges require explicit architectural solutions.
 </Warning>
 
 ## Core Agent Architecture
@@ -103,7 +113,9 @@ At its core, every agent follows a simple loop: perceive, reason, act. This loop
 The loop structure is straightforward. While not done, the agent perceives the environment to gather observations, reasons about observations, goals, and history to form a plan, acts on the plan to produce a result, appends observations, plan, and result to history, and checks completion against the goal and result.
 
 <Definition term="Agent Loop">
-The fundamental cycle of agent operation: perceive the environment, reason about what to do next, execute an action, observe the result, and repeat until the goal is achieved or termination conditions are met.
+  The fundamental cycle of agent operation: perceive the environment, reason
+  about what to do next, execute an action, observe the result, and repeat until
+  the goal is achieved or termination conditions are met.
 </Definition>
 
 Perceive means the agent gathers information about its environment. This might include reading files, calling APIs, checking system state, or processing user input. Perception produces observations that inform reasoning.
@@ -123,7 +135,9 @@ The language model is the reasoning engine of an agent. It performs several crit
 Intent understanding parses high-level goals into actionable understanding. "Fix the authentication bug" requires understanding what authentication means in this context, what fix entails, and what success looks like.
 
 <Info>
-Planning is often the most critical capability. A skilled LLM can generate a multi-step plan before executing, improving success rates on complex tasks. The quality of planning directly affects agent effectiveness.
+  Planning is often the most critical capability. A skilled LLM can generate a
+  multi-step plan before executing, improving success rates on complex tasks.
+  The quality of planning directly affects agent effectiveness.
 </Info>
 
 Planning breaks complex goals into steps. Tool selection chooses which tool to use for each step. Result interpretation understands the output of actions. Error recovery decides how to proceed when things go wrong. Natural language interface communicates with users, explains actions, and asks clarifying questions.
@@ -135,7 +149,9 @@ The system prompt defines the agent's identity, capabilities, and constraints. A
 Identity and role establish what the agent is. "You are a senior software engineer AI assistant. Your task is to help users accomplish coding tasks by reading, analyzing, and modifying code."
 
 <Tip>
-The tools description should be detailed and precise. Each tool needs a clear name, description, and parameter specification. This helps the LLM select the right tool and use it correctly.
+  The tools description should be detailed and precise. Each tool needs a clear
+  name, description, and parameter specification. This helps the LLM select the
+  right tool and use it correctly.
 </Tip>
 
 Available capabilities list the tools the agent can use: read_file to read contents of a file, write_file to write content to a file, run_command to execute a shell command, search_codebase to search for matching code.
@@ -157,7 +173,9 @@ Tool registry maintains available tools, presented to the LLM for selection.
 Execution layer validates parameters when the LLM selects a tool, runs the tool, handles errors, and formats results.
 
 <Warning>
-The security layer is essential. Tools must be sandboxed with appropriate permissions. A file-reading tool might be restricted to certain directories. A command-execution tool might have a whitelist of allowed commands.
+  The security layer is essential. Tools must be sandboxed with appropriate
+  permissions. A file-reading tool might be restricted to certain directories. A
+  command-execution tool might have a whitelist of allowed commands.
 </Warning>
 
 ## Planning and Reasoning
@@ -169,7 +187,9 @@ Complex tasks require breaking down into manageable steps. Effective agents deco
 Top-down decomposition starts with the high-level goal and recursively breaks it into sub-goals.
 
 <Definition term="Task Decomposition">
-The process of breaking complex goals into smaller, manageable sub-goals and steps. Effective decomposition creates a hierarchical plan where each step is achievable with available tools and capabilities.
+  The process of breaking complex goals into smaller, manageable sub-goals and
+  steps. Effective decomposition creates a hierarchical plan where each step is
+  achievable with available tools and capabilities.
 </Definition>
 
 For implementing user authentication for an API, decomposition might proceed as follows. First, understand current API structure by reading the main app file, identifying existing routes and middleware, and finding database models. Second, design the authentication approach by deciding between JWT and session-based, planning required endpoints, and defining user model changes. Third, implement authentication by creating the user model schema, implementing registration and login endpoints, and adding authentication middleware. Fourth, test implementation by writing unit tests, running tests, and fixing any failures. Fifth, document changes by updating API documentation and adding usage examples.
@@ -183,7 +203,9 @@ Different planning strategies suit different situations.
 Upfront planning generates a complete plan before taking any action. Best for well-understood tasks with predictable steps. The agent generates a numbered plan, then begins execution.
 
 <Tip>
-Reactive planning works best for exploratory tasks or when outcomes are unpredictable. The agent plans one step at a time based on current state, adapting as it learns more about the problem.
+  Reactive planning works best for exploratory tasks or when outcomes are
+  unpredictable. The agent plans one step at a time based on current state,
+  adapting as it learns more about the problem.
 </Tip>
 
 Reactive planning plans one step at a time based on current state. Best for exploratory tasks or when outcomes are unpredictable. The agent runs tests, sees an error, investigates, checks configuration, and continues based on what it finds.
@@ -207,7 +229,9 @@ Agents inevitably encounter errors. Robust agents handle them gracefully.
 Error classification determines the type of error. Transient errors like network timeouts should retry with backoff. Input errors like invalid file paths should ask for clarification. Capability limits where the task is too complex should decompose further or escalate. Resource errors like out of memory should reduce scope or request resources. Logic errors where the approach is wrong should backtrack and try different approaches. Unrecoverable errors like permission denied should report and request human intervention.
 
 <Info>
-Making agent reasoning visible helps with debugging and building trust. Reasoning traces show the agent's thought process, making it easier to understand decisions and identify where things went wrong.
+  Making agent reasoning visible helps with debugging and building trust.
+  Reasoning traces show the agent's thought process, making it easier to
+  understand decisions and identify where things went wrong.
 </Info>
 
 ### Reasoning Traces
@@ -225,7 +249,10 @@ Without memory, every action would start from scratch. Agents need multiple type
 Context awareness tracks what has happened in the current session. Task progress tracks what has been tried and what worked. Knowledge accumulation records what has been learned about the codebase. Persistent state remembers information across sessions.
 
 <Definition term="Agent Memory">
-The systems that enable agents to maintain context, track progress, and learn from experience. Agent memory typically includes short-term memory (context window), working memory (structured task state), and long-term memory (persistent retrieval systems).
+  The systems that enable agents to maintain context, track progress, and learn
+  from experience. Agent memory typically includes short-term memory (context
+  window), working memory (structured task state), and long-term memory
+  (persistent retrieval systems).
 </Definition>
 
 ### Short-Term Memory: The Context Window
@@ -241,7 +268,10 @@ Context management presents challenges because context windows are limited. Even
 Beyond conversation history, agents benefit from structured working memory, a scratchpad for tracking state.
 
 <Tip>
-Structured working memory is injected into the prompt, helping the agent maintain focus and avoid repeating mistakes. It tracks current goal, sub-goals, current plan, completed steps, failed approaches, key findings, and open questions.
+  Structured working memory is injected into the prompt, helping the agent
+  maintain focus and avoid repeating mistakes. It tracks current goal,
+  sub-goals, current plan, completed steps, failed approaches, key findings, and
+  open questions.
 </Tip>
 
 Working memory tracks the current goal, sub-goals, current plan, completed steps, failed approaches, key findings, and open questions. This structured state is injected into the prompt to help the agent maintain focus.
@@ -261,7 +291,10 @@ A complete agent memory system combines all three types.
 The agent core connects to short-term memory (context window) containing messages, tool calls, and results. It connects to working memory (scratchpad) containing goals, plans, and findings. It connects to long-term memory (vector store) containing codebase, past tasks, and documentation.
 
 <Info>
-Context construction combines all memory sources when the agent reasons. System prompt is always included, followed by working memory state, relevant long-term memories retrieved for the current goal, recent history with recent actions and results, and current observation with latest state.
+  Context construction combines all memory sources when the agent reasons.
+  System prompt is always included, followed by working memory state, relevant
+  long-term memories retrieved for the current goal, recent history with recent
+  actions and results, and current observation with latest state.
 </Info>
 
 ### Memory Best Practices
@@ -289,13 +322,18 @@ Why did the agent take 50 steps for a simple task? Where did it go wrong? What w
 Tracing captures what happened and in what order. Traces capture the full execution path of an agent task: user goal, planning, step execution, tool calls, and completion.
 
 <Definition term="Agent Observability">
-The practice of making agent behavior transparent through tracing, logging, and metrics. Observability enables debugging agent failures, understanding agent decisions, and monitoring agent performance over time.
+  The practice of making agent behavior transparent through tracing, logging,
+  and metrics. Observability enables debugging agent failures, understanding
+  agent decisions, and monitoring agent performance over time.
 </Definition>
 
 A trace for a coding task might show: Trace: fix-auth-bug-2024-01-10-abc123 with user goal at 0ms, planning at 50ms with a 5-step plan generated, step 1 at 200ms reading auth.py with 245 lines read, step 2 at 800ms analyzing code with issue identified at line 87, step 3 at 1200ms writing fix with 3 lines modified, step 4 at 3500ms running tests with 15/15 passed, and completion at 3700ms with task completed successfully.
 
 <Tip>
-Key events to log include goal received, plan generated, tool invoked, tool result, LLM reasoning, errors encountered, and goal completed. Include relevant context like goal text, plan steps, tool parameters, success status, and duration.
+  Key events to log include goal received, plan generated, tool invoked, tool
+  result, LLM reasoning, errors encountered, and goal completed. Include
+  relevant context like goal text, plan steps, tool parameters, success status,
+  and duration.
 </Tip>
 
 Logging captures the details at each step: timestamp, level, message, and relevant context.
@@ -315,7 +353,10 @@ For production agents, invest in proper infrastructure.
 The agent application connects to tracer SDK, logger SDK, and metrics SDK. These connect to trace store, log store, and time series database. These connect to trace viewer, log search, and dashboards.
 
 <Info>
-Tools and services for agent observability include OpenTelemetry, Jaeger, and LangSmith for tracing; ELK Stack, Datadog, and Papertrail for logging; Prometheus, Grafana, and Datadog for metrics; and agent-specific tools like LangSmith and Phoenix from Arize.
+  Tools and services for agent observability include OpenTelemetry, Jaeger, and
+  LangSmith for tracing; ELK Stack, Datadog, and Papertrail for logging;
+  Prometheus, Grafana, and Datadog for metrics; and agent-specific tools like
+  LangSmith and Phoenix from Arize.
 </Info>
 
 ## Safety in Agentic Systems
@@ -329,7 +370,9 @@ Hallucination in a chatbot produces a wrong answer. In an agent, it produces a w
 Prompt injection in a chatbot changes the response. In an agent, it hijacks the agent to take malicious actions.
 
 <Warning>
-Agents require defense in depth: multiple layers of protection including sandboxing, permissions, rate limits, and human oversight. No single safety measure is sufficient.
+  Agents require defense in depth: multiple layers of protection including
+  sandboxing, permissions, rate limits, and human oversight. No single safety
+  measure is sufficient.
 </Warning>
 
 Data leakage in a chatbot leaks in conversation. In an agent, it leaks via file writes and API calls.
@@ -357,7 +400,9 @@ Permissions can be configured as always, never, with_confirmation, or conditiona
 Prevent runaway agents with explicit limits on max iterations, max tool calls, max tokens per task, max duration seconds, max file writes, and max commands. Track usage and check against limits for each resource. Also check elapsed time against the duration limit.
 
 <Tip>
-Build in multiple layers of protection: confirmation for destructive actions, automatic rollback capability, and human-in-the-loop for high-stakes actions like deploy, publish, send_email, modify_database, and api_mutation.
+  Build in multiple layers of protection: confirmation for destructive actions,
+  automatic rollback capability, and human-in-the-loop for high-stakes actions
+  like deploy, publish, send_email, modify_database, and api_mutation.
 </Tip>
 
 ### Security Principles for Agents
@@ -381,7 +426,10 @@ Agents add complexity. Use them when the benefits justify the costs.
 Good fit for agents includes multi-step tasks with unpredictable paths, tasks requiring tool coordination, long-running processes needing adaptation, and tasks where human effort is high and errors are recoverable.
 
 <Info>
-Poor fit for agents includes simple deterministic workflows (use regular code), tasks where every error is critical (use human oversight), high-frequency low-latency requirements (agents are slow), and tasks with clear fixed procedures (use automation).
+  Poor fit for agents includes simple deterministic workflows (use regular
+  code), tasks where every error is critical (use human oversight),
+  high-frequency low-latency requirements (agents are slow), and tasks with
+  clear fixed procedures (use automation).
 </Info>
 
 ### Simple vs. Complex Agent Designs
@@ -407,7 +455,8 @@ Observation over assumption has agents verify assumptions rather than assuming.
 Incremental over monolithic prefers many small actions over few large ones.
 
 <Tip>
-Reversible over irreversible favors actions that can be undone. Logged over unlogged means if it is not logged, it did not happen for debugging purposes.
+  Reversible over irreversible favors actions that can be undone. Logged over
+  unlogged means if it is not logged, it did not happen for debugging purposes.
 </Tip>
 
 ## Diagrams
@@ -561,7 +610,7 @@ graph TB
   setupInstructions={[
     "Install Python 3.8 or higher",
     "Set up access to an LLM API (Claude, OpenAI, or local model)",
-    "Create a test project directory with a sample Python file containing a small bug"
+    "Create a test project directory with a sample Python file containing a small bug",
   ]}
   parts={[
     {
@@ -573,9 +622,10 @@ graph TB
         "Create WriteFileTool that writes content to files with the same security restrictions plus additional checks for system files",
         "Create RunCommandTool that executes shell commands with a whitelist (ls, cat, grep, python, pytest, git) and blocked patterns (rm -rf, sudo, pipes, redirects)",
         "Add timeout protection to the RunCommandTool",
-        "Ensure each tool returns a structured result with success status, output, and optional error"
+        "Ensure each tool returns a structured result with success status, output, and optional error",
       ],
-      observePrompt: "How does restricting tools to specific directories and commands improve agent safety? What other restrictions might be useful?"
+      observePrompt:
+        "How does restricting tools to specific directories and commands improve agent safety? What other restrictions might be useful?",
     },
     {
       id: "build-agent-core",
@@ -588,9 +638,10 @@ graph TB
         "Implement the run method that logs when a goal is received",
         "Create the main loop that gets LLM responses, checks for completion markers, parses tool calls, executes tools, and adds results to the conversation",
         "Set a maximum iteration count to prevent infinite loops",
-        "Return status, iteration count, and trace when complete"
+        "Return status, iteration count, and trace when complete",
       ],
-      observePrompt: "What happens if the agent requests an unknown tool? How does the iteration limit prevent runaway execution?"
+      observePrompt:
+        "What happens if the agent requests an unknown tool? How does the iteration limit prevent runaway execution?",
     },
     {
       id: "create-system-prompt",
@@ -602,9 +653,10 @@ graph TB
         "Document the format for requesting tool calls",
         "Add behavioral rules: always read before modifying, make minimal changes, explain reasoning before actions",
         "Define how the agent should signal task completion",
-        "Test the prompt with several different goals to verify expected behavior"
+        "Test the prompt with several different goals to verify expected behavior",
       ],
-      observePrompt: "How do the instructions influence agent behavior? What happens if you make the instructions too vague or too specific?"
+      observePrompt:
+        "How do the instructions influence agent behavior? What happens if you make the instructions too vague or too specific?",
     },
     {
       id: "test-agent",
@@ -618,17 +670,33 @@ graph TB
         "Confirm the agent identified the correct bug",
         "Check that the changes made are appropriate and minimal",
         "Ensure the agent signaled completion properly",
-        "If issues occur, examine the trace to understand what went wrong"
+        "If issues occur, examine the trace to understand what went wrong",
       ],
-      observePrompt: "What does the agent do well? Where does it struggle? How could you improve the system prompt or tools based on observed behavior?"
-    }
+      observePrompt:
+        "What does the agent do well? Where does it struggle? How could you improve the system prompt or tools based on observed behavior?",
+    },
   ]}
   successCriteria={[
-    { id: "sandboxing", text: "Tools implement proper sandboxing and security checks" },
-    { id: "loop", text: "Agent loop correctly handles tool calls and responses" },
-    { id: "prompt", text: "System prompt produces structured, predictable agent behavior" },
-    { id: "observability", text: "Trace output enables understanding of agent decisions" },
-    { id: "completion", text: "Agent successfully completes a simple coding task" }
+    {
+      id: "sandboxing",
+      text: "Tools implement proper sandboxing and security checks",
+    },
+    {
+      id: "loop",
+      text: "Agent loop correctly handles tool calls and responses",
+    },
+    {
+      id: "prompt",
+      text: "System prompt produces structured, predictable agent behavior",
+    },
+    {
+      id: "observability",
+      text: "Trace output enables understanding of agent decisions",
+    },
+    {
+      id: "completion",
+      text: "Agent successfully completes a simple coding task",
+    },
   ]}
 />
 
@@ -638,48 +706,56 @@ graph TB
   client:load
   questions={[
     {
-      question: "What is the fundamental difference between a chatbot and an AI agent?",
+      question:
+        "What is the fundamental difference between a chatbot and an AI agent?",
       options: [
         "Agents use larger language models",
         "Agents pursue goals over multiple steps and take actions in their environment",
         "Agents have more training data",
-        "Agents can process images and audio"
+        "Agents can process images and audio",
       ],
       correctAnswer: 1,
-      explanation: "The key distinction is agency itself. Chatbots respond to prompts reactively - they answer questions but don't take initiative. Agents pursue goals over time, make decisions about what actions to take, observe results, and adapt their behavior. They interact with their environment to accomplish tasks, not just generate text responses."
+      explanation:
+        "The key distinction is agency itself. Chatbots respond to prompts reactively - they answer questions but don't take initiative. Agents pursue goals over time, make decisions about what actions to take, observe results, and adapt their behavior. They interact with their environment to accomplish tasks, not just generate text responses.",
     },
     {
-      question: "Why do agents need multiple types of memory (short-term, working, long-term)?",
+      question:
+        "Why do agents need multiple types of memory (short-term, working, long-term)?",
       options: [
         "To make them more expensive to run",
         "Short-term memory handles immediate context, working memory tracks task state, and long-term memory provides persistent knowledge",
         "It's a marketing feature",
-        "To slow down processing"
+        "To slow down processing",
       ],
       correctAnswer: 1,
-      explanation: "Each memory type serves a distinct purpose. Short-term memory (context window) holds immediate conversation and recent actions. Working memory (scratchpad) tracks structured task state - current goal, plan, findings, failed approaches. Long-term memory (retrieval systems) stores persistent knowledge that exceeds context limits. Together, they enable agents to maintain context, learn from attempts, and leverage accumulated knowledge."
+      explanation:
+        "Each memory type serves a distinct purpose. Short-term memory (context window) holds immediate conversation and recent actions. Working memory (scratchpad) tracks structured task state - current goal, plan, findings, failed approaches. Long-term memory (retrieval systems) stores persistent knowledge that exceeds context limits. Together, they enable agents to maintain context, learn from attempts, and leverage accumulated knowledge.",
     },
     {
-      question: "What is the most critical safety principle for production agents?",
+      question:
+        "What is the most critical safety principle for production agents?",
       options: [
         "Use the largest possible model",
         "Give agents maximum permissions for flexibility",
         "Defense in depth: multiple layers of protection including sandboxing, permissions, rate limits, and human oversight",
-        "Trust the LLM's judgment completely"
+        "Trust the LLM's judgment completely",
       ],
       correctAnswer: 2,
-      explanation: "Production agents require defense in depth. No single safety measure is sufficient. Sandboxing restricts what actions can affect. Permissions control what's allowed. Rate limits prevent runaway resource consumption. Human oversight catches what automated systems miss. Each layer catches failures that slip through others."
+      explanation:
+        "Production agents require defense in depth. No single safety measure is sufficient. Sandboxing restricts what actions can affect. Permissions control what's allowed. Rate limits prevent runaway resource consumption. Human oversight catches what automated systems miss. Each layer catches failures that slip through others.",
     },
     {
-      question: "When should you use a simple agent design versus a complex multi-agent system?",
+      question:
+        "When should you use a simple agent design versus a complex multi-agent system?",
       options: [
         "Always use complex systems for better results",
         "Start with the simplest design that could work; add complexity only when simpler approaches fail",
         "Complex systems are always faster",
-        "Simple agents can't use tools"
+        "Simple agents can't use tools",
       ],
       correctAnswer: 1,
-      explanation: "Complexity has costs: harder debugging, higher latency, more failure modes, greater resource usage. Simple agents are easier to understand, debug, and maintain. Start simple: can a basic tool-using LLM accomplish the task? Only add planning, reflection, or multi-agent coordination when simpler approaches demonstrably fail."
+      explanation:
+        "Complexity has costs: harder debugging, higher latency, more failure modes, greater resource usage. Simple agents are easier to understand, debug, and maintain. Start simple: can a basic tool-using LLM accomplish the task? Only add planning, reflection, or multi-agent coordination when simpler approaches demonstrably fail.",
     },
     {
       question: "What are the three pillars of agent observability?",
@@ -687,11 +763,12 @@ graph TB
         "Speed, accuracy, and cost",
         "Tracing, logging, and metrics",
         "Planning, execution, and evaluation",
-        "Input, processing, and output"
+        "Input, processing, and output",
       ],
       correctAnswer: 1,
-      explanation: "Agent observability relies on three pillars. Tracing captures what happened and in what order - the full execution path. Logging captures details at each step with timestamps and context. Metrics show aggregate patterns over time - success rates, steps per task, duration. Together, these enable debugging failures, understanding decisions, and monitoring performance."
-    }
+      explanation:
+        "Agent observability relies on three pillars. Tracing captures what happened and in what order - the full execution path. Logging captures details at each step with timestamps and context. Metrics show aggregate patterns over time - success rates, steps per task, duration. Together, these enable debugging failures, understanding decisions, and monitoring performance.",
+    },
   ]}
 />
 

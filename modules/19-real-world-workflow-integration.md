@@ -568,7 +568,7 @@ File: {filepath}
 ```"""
 
     response = client.messages.create(
-        model="claude-sonnet-4-20250514",
+        model="claude-3-5-sonnet-latest",
         max_tokens=2000,
         messages=[{"role": "user", "content": prompt}]
     )
@@ -1069,7 +1069,7 @@ def get_assistant():
         ]
 
         response = client.messages.create(
-            model="claude-sonnet-4-20250514",
+            model="claude-3-5-sonnet-latest",
             max_tokens=4096,
             system=SYSTEM_PROMPT,
             messages=messages
@@ -1628,7 +1628,7 @@ import os
 from anthropic import Anthropic
 
 # Configuration
-MODEL = "claude-sonnet-4-20250514"
+MODEL = "claude-3-5-sonnet-latest"
 client = Anthropic()
 
 # Load context (customize for your workflow)

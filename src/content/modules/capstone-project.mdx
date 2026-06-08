@@ -36,7 +36,10 @@ The capstone forces you to make trade-offs because you cannot implement everythi
 This is as close as a course can get to real-world software engineering with AI.
 
 <Definition term="Capstone Project">
-A culminating project that synthesizes learning from an entire course into a substantial deliverable. In this course, the capstone is a complete AI application that demonstrates understanding of AI fundamentals, prompting, agents, safety, and production deployment.
+  A culminating project that synthesizes learning from an entire course into a
+  substantial deliverable. In this course, the capstone is a complete AI
+  application that demonstrates understanding of AI fundamentals, prompting,
+  agents, safety, and production deployment.
 </Definition>
 
 ## What You Will Build
@@ -97,7 +100,11 @@ Your project will be evaluated on Technical Implementation at 40% assessing whet
 Note that "perfect" is not the goal. "Production-ready for a V1" is the goal. You will have rough edges. What matters is that you demonstrate understanding, make reasonable decisions, and ship something that works.
 
 <Info>
-The estimated time is 4-8 hours, self-paced. The recommended approach involves multiple sessions rather than one marathon. Checkpoints include Planning at 1 hour, Implementation at 2-5 hours, and Documentation at 1-2 hours. Start early because you will encounter unexpected challenges. That is part of the learning.
+  The estimated time is 4-8 hours, self-paced. The recommended approach involves
+  multiple sessions rather than one marathon. Checkpoints include Planning at 1
+  hour, Implementation at 2-5 hours, and Documentation at 1-2 hours. Start early
+  because you will encounter unexpected challenges. That is part of the
+  learning.
 </Info>
 
 ## Planning Phase
@@ -141,7 +148,10 @@ Identify what could go wrong and plan mitigations upfront.
 Common risks include API costs exceeding budget with mitigation using smaller models for development, vector database setup being more complex than expected with backup plan using Chroma locally, retrieval quality being poor with mitigation testing early and adjusting chunking, time running short with mitigation cutting stretch goals to focus on core, and unfamiliar technology slowing progress with mitigation timeboxing learning and switching if stuck.
 
 <Tip>
-Before proceeding to implementation, verify you have clear success criteria, sketched architecture, defined scope, milestones with time estimates, identified and mitigated risks, and allocated 4-8 hours total including documentation. If you cannot check all boxes, spend more time planning.
+  Before proceeding to implementation, verify you have clear success criteria,
+  sketched architecture, defined scope, milestones with time estimates,
+  identified and mitigated risks, and allocated 4-8 hours total including
+  documentation. If you cannot check all boxes, spend more time planning.
 </Tip>
 
 ## Implementation Strategy
@@ -207,7 +217,10 @@ Never commit API keys. Use environment variables loaded from a .env file and inc
 Manage API costs by using smaller models during development, caching results when possible, limiting iterations and tokens, and tracking spending with API dashboards. Budget $5-10 for the project. If you exceed that, you are likely inefficient or have a scope problem.
 
 <Warning>
-AI systems fail in many ways. Handle errors gracefully including API rate limits and timeouts, network failures, malformed input, missing files or resources, vector database connection issues, and out-of-memory errors with large documents.
+  AI systems fail in many ways. Handle errors gracefully including API rate
+  limits and timeouts, network failures, malformed input, missing files or
+  resources, vector database connection issues, and out-of-memory errors with
+  large documents.
 </Warning>
 
 ### Common Pitfalls and How to Avoid Them
@@ -302,68 +315,99 @@ Address your next steps including how you will continue learning about AI, what 
     {
       id: "q1",
       type: "multiple-choice",
-      question: "What is the primary purpose of the capstone project in this course?",
+      question:
+        "What is the primary purpose of the capstone project in this course?",
       options: [
-        { id: "a", text: "To learn new AI concepts that were not covered in earlier modules" },
-        { id: "b", text: "To synthesize all course learning into a complete, working AI application" },
+        {
+          id: "a",
+          text: "To learn new AI concepts that were not covered in earlier modules",
+        },
+        {
+          id: "b",
+          text: "To synthesize all course learning into a complete, working AI application",
+        },
         { id: "c", text: "To build the most complex possible AI system" },
-        { id: "d", text: "To compare different AI frameworks" }
+        { id: "d", text: "To compare different AI frameworks" },
       ],
       correctAnswer: "b",
-      explanation: "The capstone project is designed to synthesize all learning from the course into a substantial, production-quality AI application. It is not about learning new concepts or maximizing complexity, but about demonstrating mastery by applying what you have learned to build something real."
+      explanation:
+        "The capstone project is designed to synthesize all learning from the course into a substantial, production-quality AI application. It is not about learning new concepts or maximizing complexity, but about demonstrating mastery by applying what you have learned to build something real.",
     },
     {
       id: "q2",
       type: "multiple-choice",
-      question: "Why is planning important before starting capstone implementation?",
+      question:
+        "Why is planning important before starting capstone implementation?",
       options: [
-        { id: "a", text: "To satisfy a course requirement for a planning document" },
-        { id: "b", text: "To avoid scope creep, architectural dead-ends, and missing critical features" },
-        { id: "c", text: "To maximize the number of features in the final project" },
-        { id: "d", text: "To ensure the project takes the full allocated time" }
+        {
+          id: "a",
+          text: "To satisfy a course requirement for a planning document",
+        },
+        {
+          id: "b",
+          text: "To avoid scope creep, architectural dead-ends, and missing critical features",
+        },
+        {
+          id: "c",
+          text: "To maximize the number of features in the final project",
+        },
+        {
+          id: "d",
+          text: "To ensure the project takes the full allocated time",
+        },
       ],
       correctAnswer: "b",
-      explanation: "Planning prevents common problems like scope creep where the project grows beyond what is achievable, architectural dead-ends where you realize your approach does not work after implementing it, and missing critical features. Good planning provides clear scope, solid foundation, predictable progress, and fewer surprises."
+      explanation:
+        "Planning prevents common problems like scope creep where the project grows beyond what is achievable, architectural dead-ends where you realize your approach does not work after implementing it, and missing critical features. Good planning provides clear scope, solid foundation, predictable progress, and fewer surprises.",
     },
     {
       id: "q3",
       type: "multiple-choice",
-      question: "What does 'vertical slices over horizontal layers' mean in implementation strategy?",
+      question:
+        "What does 'vertical slices over horizontal layers' mean in implementation strategy?",
       options: [
         { id: "a", text: "Build all infrastructure first, then add features" },
         { id: "b", text: "Focus on visual presentation before functionality" },
-        { id: "c", text: "Build one complete feature end-to-end before starting the next" },
-        { id: "d", text: "Layer your code with clear separation of concerns" }
+        {
+          id: "c",
+          text: "Build one complete feature end-to-end before starting the next",
+        },
+        { id: "d", text: "Layer your code with clear separation of concerns" },
       ],
       correctAnswer: "c",
-      explanation: "Vertical slices mean building one complete feature from input to output before starting the next feature. This approach lets you test end-to-end functionality early and ensures you always have something working. The alternative, building all infrastructure first (horizontal layers), risks having nothing complete if time runs out."
+      explanation:
+        "Vertical slices mean building one complete feature from input to output before starting the next feature. This approach lets you test end-to-end functionality early and ensures you always have something working. The alternative, building all infrastructure first (horizontal layers), risks having nothing complete if time runs out.",
     },
     {
       id: "q4",
       type: "multiple-choice",
-      question: "What should you do if you have been stuck on a technical problem for more than 30 minutes?",
+      question:
+        "What should you do if you have been stuck on a technical problem for more than 30 minutes?",
       options: [
         { id: "a", text: "Keep trying the same approach until it works" },
         { id: "b", text: "Skip that feature entirely and move on" },
         { id: "c", text: "Try a different, simpler approach" },
-        { id: "d", text: "Start the entire project over" }
+        { id: "d", text: "Start the entire project over" },
       ],
       correctAnswer: "c",
-      explanation: "If stuck for more than 30 minutes on one approach, the approach might be wrong. Try something simpler. The goal is to demonstrate understanding, not to solve every problem in the most elegant way. Simpler solutions that work are better than elegant solutions that do not."
+      explanation:
+        "If stuck for more than 30 minutes on one approach, the approach might be wrong. Try something simpler. The goal is to demonstrate understanding, not to solve every problem in the most elegant way. Simpler solutions that work are better than elegant solutions that do not.",
     },
     {
       id: "q5",
       type: "multiple-choice",
-      question: "In the evaluation rubric, what percentage does 'Safety and Responsibility' account for?",
+      question:
+        "In the evaluation rubric, what percentage does 'Safety and Responsibility' account for?",
       options: [
         { id: "a", text: "10%" },
         { id: "b", text: "15%" },
         { id: "c", text: "20%" },
-        { id: "d", text: "25%" }
+        { id: "d", text: "25%" },
       ],
       correctAnswer: "b",
-      explanation: "Safety and Responsibility accounts for 15% of the evaluation, covering safety measures, input validation, and appropriate disclosure. While not the largest component, it is explicitly evaluated to ensure you have addressed risks appropriately in your AI application."
-    }
+      explanation:
+        "Safety and Responsibility accounts for 15% of the evaluation, covering safety measures, input validation, and appropriate disclosure. While not the largest component, it is explicitly evaluated to ensure you have addressed risks appropriately in your AI application.",
+    },
   ]}
   passingScore={70}
   allowRetry={true}
@@ -381,7 +425,7 @@ Address your next steps including how you will continue learning about AI, what 
     "Set up a Git repository for version control from the start",
     "Create a virtual environment for Python dependencies (or equivalent for your language)",
     "Configure environment variables for API keys using a .env file (never commit keys)",
-    "Set aside uninterrupted blocks of time - this works better across multiple sessions than one marathon"
+    "Set aside uninterrupted blocks of time - this works better across multiple sessions than one marathon",
   ]}
   parts={[
     {
@@ -394,9 +438,10 @@ Address your next steps including how you will continue learning about AI, what 
         "Sketch system architecture: major components, data flow, technologies you'll use",
         "Set scope explicitly: what's IN (must-have), what's OUT (explicitly excluded), what's STRETCH (if time permits)",
         "Create milestones with time estimates, breaking the project into 4-6 checkpoints",
-        "Identify risks and plan mitigations: API costs, unfamiliar tech, time constraints"
+        "Identify risks and plan mitigations: API costs, unfamiliar tech, time constraints",
       ],
-      observePrompt: "Does your scope feel achievable in 4-8 hours? If you're not sure what 'done' looks like, spend more time here."
+      observePrompt:
+        "Does your scope feel achievable in 4-8 hours? If you're not sure what 'done' looks like, spend more time here.",
     },
     {
       id: "first-iteration",
@@ -407,9 +452,10 @@ Address your next steps including how you will continue learning about AI, what 
         "For Research Assistant: load one document, embed it, query it, get a response with citation",
         "For Code Review: analyze one file for one issue type and return structured feedback",
         "Verify this minimal flow works before adding features",
-        "Commit your working code"
+        "Commit your working code",
       ],
-      observePrompt: "Does this minimal version prove the concept works? If not, troubleshoot before continuing."
+      observePrompt:
+        "Does this minimal version prove the concept works? If not, troubleshoot before continuing.",
     },
     {
       id: "iterate-and-expand",
@@ -420,9 +466,10 @@ Address your next steps including how you will continue learning about AI, what 
         "Prioritize features by value: what adds the most to your core concept?",
         "Handle errors gracefully: API failures, rate limits, invalid inputs, network issues",
         "Add at least 5 test cases for critical functionality",
-        "Commit after each working feature addition"
+        "Commit after each working feature addition",
       ],
-      observePrompt: "Are you adding features that matter or features that seem cool? Focus on the 20% that delivers 80% of value."
+      observePrompt:
+        "Are you adding features that matter or features that seem cool? Focus on the 20% that delivers 80% of value.",
     },
     {
       id: "documentation",
@@ -432,9 +479,10 @@ Address your next steps including how you will continue learning about AI, what 
         "Write a clear README: what is this, how to run it, what it does, what it doesn't do",
         "Create architecture document: system overview, component diagram, key design decisions, AI integration details",
         "Include a .env.example file showing required environment variables (without actual keys)",
-        "Document known limitations honestly"
+        "Document known limitations honestly",
       ],
-      observePrompt: "Could someone else run your project from your README without asking you questions?"
+      observePrompt:
+        "Could someone else run your project from your README without asking you questions?",
     },
     {
       id: "demo-and-reflection",
@@ -443,20 +491,45 @@ Address your next steps including how you will continue learning about AI, what 
       instructions: [
         "Record a 5-10 minute demo video: intro (30s), setup demo (1-2 min), core features (3-5 min), technical highlights (1-2 min), limitations (1 min)",
         "Write 500-1000 word reflection: what you learned (technical and process), challenges you faced and how you overcame them, what you'd do differently, next steps",
-        "Review your checklist: all tests pass, no API keys committed, documentation complete"
+        "Review your checklist: all tests pass, no API keys committed, documentation complete",
       ],
-      observePrompt: "What surprised you most during this project? What will you do differently in your next AI project?"
-    }
+      observePrompt:
+        "What surprised you most during this project? What will you do differently in your next AI project?",
+    },
   ]}
   successCriteria={[
-    { id: "working-application", text: "Built a functional application that demonstrates your project's core value proposition" },
-    { id: "proper-architecture", text: "Made sound architectural decisions and can explain your trade-offs" },
-    { id: "error-handling", text: "Handled common failure modes gracefully with appropriate error messages" },
-    { id: "testing", text: "Wrote tests covering critical functionality with at least 5 test cases" },
-    { id: "documentation", text: "Created clear documentation that enables others to understand and run your project" },
-    { id: "demo-quality", text: "Produced a demo video that effectively showcases your work" },
-    { id: "reflection-depth", text: "Wrote a thoughtful reflection demonstrating learning and growth mindset" },
-    { id: "professional-quality", text: "Delivered production-ready V1 quality: works reliably, handles errors, is maintainable" }
+    {
+      id: "working-application",
+      text: "Built a functional application that demonstrates your project's core value proposition",
+    },
+    {
+      id: "proper-architecture",
+      text: "Made sound architectural decisions and can explain your trade-offs",
+    },
+    {
+      id: "error-handling",
+      text: "Handled common failure modes gracefully with appropriate error messages",
+    },
+    {
+      id: "testing",
+      text: "Wrote tests covering critical functionality with at least 5 test cases",
+    },
+    {
+      id: "documentation",
+      text: "Created clear documentation that enables others to understand and run your project",
+    },
+    {
+      id: "demo-quality",
+      text: "Produced a demo video that effectively showcases your work",
+    },
+    {
+      id: "reflection-depth",
+      text: "Wrote a thoughtful reflection demonstrating learning and growth mindset",
+    },
+    {
+      id: "professional-quality",
+      text: "Delivered production-ready V1 quality: works reliably, handles errors, is maintainable",
+    },
   ]}
 />
 

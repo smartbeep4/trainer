@@ -44,7 +44,11 @@ The results were striking. Better quality meant state-of-the-art translation on 
 Within months, transformers started dominating NLP. Within two years, BERT in 2018 and GPT-2 in 2019 showed that pre-trained transformers could be fine-tuned for almost any language task. By 2020, GPT-3 demonstrated few-shot learning at scale. By 2022, ChatGPT brought transformers to mainstream awareness.
 
 <Definition term="Transformer">
-A neural network architecture based entirely on attention mechanisms, introduced in the 2017 paper "Attention Is All You Need." Transformers process sequences by letting every position directly attend to every other position, solving the parallelization and long-range dependency problems that limited RNNs. This architecture underlies all modern large language models.
+  A neural network architecture based entirely on attention mechanisms,
+  introduced in the 2017 paper "Attention Is All You Need." Transformers process
+  sequences by letting every position directly attend to every other position,
+  solving the parallelization and long-range dependency problems that limited
+  RNNs. This architecture underlies all modern large language models.
 </Definition>
 
 ### What Problem Did Transformers Solve?
@@ -82,7 +86,10 @@ Self-attention implements this through three learned transformations of each inp
 Query represents "What am I looking for?" Key represents "What information do I contain?" Value represents "What information should I pass along?"
 
 <Info title="The Database Analogy">
-Think of Query, Key, and Value like a database lookup system. Query is your search term. Key is the index you search against. Value is the actual data you retrieve. The dot product between Query and Key determines relevance, and that relevance weights how much of each Value contributes to the output.
+  Think of Query, Key, and Value like a database lookup system. Query is your
+  search term. Key is the index you search against. Value is the actual data you
+  retrieve. The dot product between Query and Key determines relevance, and that
+  relevance weights how much of each Value contributes to the output.
 </Info>
 
 For each position in the sequence, first transform inputs by applying learned weight matrices to create Q, K, V vectors. Q equals X times W_Q, K equals X times W_K, and V equals X times W_V.
@@ -116,7 +123,11 @@ With learned weight matrices that project to 2D for simplicity, we create Q, K, 
 Through this process, the output representation of "cat" now incorporates information from both "cat" and "sat", weighted by their relevance. If the attention weight from "cat" to itself is 0.52 and to "sat" is 0.48, then the output mixes roughly half of each token's value vector.
 
 <Tip title="Why Self-Attention Works">
-Self-attention succeeds because relevance is learned, not fixed. The Q, K, V transformations are learned parameters. The model discovers what makes words relevant to each other through training. This content-based addressing means "cat" can attend strongly to "sat" or weakly to it based on learned semantics, not just position.
+  Self-attention succeeds because relevance is learned, not fixed. The Q, K, V
+  transformations are learned parameters. The model discovers what makes words
+  relevant to each other through training. This content-based addressing means
+  "cat" can attend strongly to "sat" or weakly to it based on learned semantics,
+  not just position.
 </Tip>
 
 ### What Self-Attention Cannot Do (Yet)
@@ -166,7 +177,10 @@ Head 4 focused on causal reasoning might connect "guarantee" to "because" and "b
 Each head forms a different understanding of the sentence. The model learns to route different aspects of meaning through different heads.
 
 <Definition term="Multi-Head Attention">
-Running multiple attention mechanisms in parallel, each with separate learned Q, K, V transformations. Different heads learn to capture different types of relationships (syntactic, semantic, positional). Outputs are concatenated and combined, providing multiple perspectives on the input data.
+  Running multiple attention mechanisms in parallel, each with separate learned
+  Q, K, V transformations. Different heads learn to capture different types of
+  relationships (syntactic, semantic, positional). Outputs are concatenated and
+  combined, providing multiple perspectives on the input data.
 </Definition>
 
 ### Empirical Observations
@@ -218,7 +232,10 @@ After attention mixes information across positions, each position independently 
 The feed-forward layer typically expands to higher dimension then projects back. Input dimension is d_model, for example 512. Hidden dimension is 4 times d_model, for example 2048. Output dimension is d_model again.
 
 <Warning title="Where the Parameters Live">
-Most parameters in a transformer are in the feed-forward networks, not the attention mechanism. For GPT-3 with 175 billion parameters, the attention layers contain relatively few parameters compared to the massive feed-forward networks. Attention gathers information; feed-forward processes it.
+  Most parameters in a transformer are in the feed-forward networks, not the
+  attention mechanism. For GPT-3 with 175 billion parameters, the attention
+  layers contain relatively few parameters compared to the massive feed-forward
+  networks. Attention gathers information; feed-forward processes it.
 </Warning>
 
 ### Stacking Blocks
@@ -303,7 +320,11 @@ The bidirectional nature helps understanding because for classifying sentiment, 
 The structure is a stack of decoder blocks with causal masked self-attention. The training objective is autoregressive language modeling: predict the next token given all previous tokens.
 
 <Info title="Causal Masking">
-Causal masking ensures that position n can only attend to positions 0 through n-1. This is implemented via an attention mask that zeros out future positions. Token 0 sees only itself. Token 1 sees tokens 0 and 1. Token 2 sees tokens 0, 1, and 2. And so on. This enables autoregressive generation where each token is generated based only on previous context.
+  Causal masking ensures that position n can only attend to positions 0 through
+  n-1. This is implemented via an attention mask that zeros out future
+  positions. Token 0 sees only itself. Token 1 sees tokens 0 and 1. Token 2 sees
+  tokens 0, 1, and 2. And so on. This enables autoregressive generation where
+  each token is generated based only on previous context.
 </Info>
 
 The key insight is that decoder-only models can handle virtually any task via prompting. Instead of fine-tuning task-specific models, you prompt a general-purpose generator. For classification: `"Sentence: {text}. Sentiment: positive/negative/neutral. Answer:"` and generate `"positive"`. For translation: `"English: The cat. French:"` and generate `"Le chat"`. For QA: `"Context: {...}. Question: {...}. Answer:"` and generate the answer.
@@ -332,16 +353,21 @@ This was revolutionary because it suggested a clear path forward: build bigger m
 
 Three factors scale together.
 
-Model size measured in parameters grew from GPT-2 at 1.5 billion to GPT-3 at 175 billion to GPT-4 estimated at 1.7 trillion across multiple models.
+Model size (parameters or effective capacity) grew from GPT-2 at 1.5 billion to GPT-3 at 175 billion, with GPT-4-era systems estimated in the trillions when including mixture-of-experts structures or total trained parameters.
 
-Data size measured in training tokens grew from GPT-2 at about 10 billion tokens to GPT-3 at 300 billion tokens to GPT-4 estimated at over 10 trillion tokens.
+Data size grew from GPT-2 (~10 billion tokens) to GPT-3 (300 billion) to GPT-4-class runs estimated at trillions of tokens (frequently augmented with synthetic data in later training).
 
-Compute measured in FLOPs grew from GPT-2 at about 10^21 to GPT-3 at about 3 times 10^23 to GPT-4 estimated at about 10^25.
+Compute (FLOPs) grew from ~10^21 for GPT-2 to ~3×10^23 for GPT-3 to estimates around 10^25 or higher for GPT-4-class training.
 
 These must scale together. A huge model with tiny data overfits. Massive data with a small model undertrains. The optimal ratio is roughly tokens equal to 20 times parameters.
 
 <Definition term="Emergent Abilities">
-Capabilities that appear suddenly at scale without being explicitly trained for. Examples include few-shot learning (learning from examples in the prompt), multi-digit arithmetic, multi-step reasoning, and instruction following. These abilities emerge somewhere between 10 billion and 100+ billion parameters, suggesting that scale unlocks qualitatively new capabilities.
+  Capabilities that appear suddenly at scale without being explicitly trained
+  for. Examples include few-shot learning (learning from examples in the
+  prompt), multi-digit arithmetic, multi-step reasoning, and instruction
+  following. These abilities emerge somewhere between 10 billion and 100+
+  billion parameters, suggesting that scale unlocks qualitatively new
+  capabilities.
 </Definition>
 
 ### Emergent Abilities
@@ -374,7 +400,7 @@ The truth is likely mixed: some abilities emerge smoothly but appear sudden due 
 
 Scaling faces practical limits.
 
-Compute costs for training GPT-4 were estimated at over $100 million. Scaling further could reach billions.
+Training costs for GPT-4-class systems were estimated at well over $100 million (with later frontier runs often reported in the hundreds of millions or more when including experimentation and full infrastructure). Scaling further has remained extraordinarily expensive.
 
 Data quality is limited because the internet contains roughly 10 trillion tokens of text. We are approaching the limit of available text data. Future scaling requires better data curation or synthetic data.
 
@@ -549,7 +575,7 @@ graph LR
   setupInstructions={[
     "Install required libraries: pip install torch transformers matplotlib seaborn numpy",
     "Download a small model (GPT-2) which will happen automatically on first use",
-    "Have a Python environment or Jupyter notebook ready for experimentation"
+    "Have a Python environment or Jupyter notebook ready for experimentation",
   ]}
   parts={[
     {
@@ -561,9 +587,10 @@ graph LR
         "Process the sentence: 'The animal didn't cross the street because it was too tired.'",
         "Extract attention weights from different layers and heads",
         "Create heatmaps showing attention patterns",
-        "Focus on how 'it' attends to other words - does any head connect 'it' to 'animal'?"
+        "Focus on how 'it' attends to other words - does any head connect 'it' to 'animal'?",
       ],
-      observePrompt: "Which heads show clear patterns (diagonal, vertical lines, semantic connections)? Document 3 distinct attention patterns you observe."
+      observePrompt:
+        "Which heads show clear patterns (diagonal, vertical lines, semantic connections)? Document 3 distinct attention patterns you observe.",
     },
     {
       id: "layer-analysis",
@@ -574,9 +601,10 @@ graph LR
         "Process a single word like 'Transformer'",
         "Extract the hidden state at each layer (embedding + 12 transformer layers)",
         "Compute cosine similarity between consecutive layers",
-        "Plot how representation changes through the network"
+        "Plot how representation changes through the network",
       ],
-      observePrompt: "Do representations change more in early or late layers? Where are the biggest transformations happening?"
+      observePrompt:
+        "Do representations change more in early or late layers? Where are the biggest transformations happening?",
     },
     {
       id: "sentence-comparison",
@@ -586,9 +614,10 @@ graph LR
         "Process three different sentence types: simple ('The cat sat.'), complex with clauses ('Although it rained, we went.'), nested ('She said that he thought that they knew.')",
         "Compute average attention across all heads for each sentence",
         "Compare patterns - do complex sentences show different attention distributions?",
-        "Look for how punctuation and function words affect attention"
+        "Look for how punctuation and function words affect attention",
       ],
-      observePrompt: "How do attention patterns differ for simple vs complex sentences? What gets the most attention overall?"
+      observePrompt:
+        "How do attention patterns differ for simple vs complex sentences? What gets the most attention overall?",
     },
     {
       id: "reflection",
@@ -598,16 +627,31 @@ graph LR
         "Review your documented observations from all three parts",
         "Write a brief reflection connecting attention patterns to LLM behavior you have experienced",
         "Consider: How might attention patterns explain context window limitations?",
-        "Consider: How might head specialization relate to the model understanding different types of relationships?"
-      ]
-    }
+        "Consider: How might head specialization relate to the model understanding different types of relationships?",
+      ],
+    },
   ]}
   successCriteria={[
-    { id: "attention-visualized", text: "Created attention heatmaps for at least 3 different heads" },
-    { id: "patterns-identified", text: "Identified and documented distinct attention patterns" },
-    { id: "layers-analyzed", text: "Traced token transformation through layers with similarity metrics" },
-    { id: "sentences-compared", text: "Compared attention across different sentence structures" },
-    { id: "reflection-written", text: "Connected observations to practical LLM behavior" }
+    {
+      id: "attention-visualized",
+      text: "Created attention heatmaps for at least 3 different heads",
+    },
+    {
+      id: "patterns-identified",
+      text: "Identified and documented distinct attention patterns",
+    },
+    {
+      id: "layers-analyzed",
+      text: "Traced token transformation through layers with similarity metrics",
+    },
+    {
+      id: "sentences-compared",
+      text: "Compared attention across different sentence structures",
+    },
+    {
+      id: "reflection-written",
+      text: "Connected observations to practical LLM behavior",
+    },
   ]}
 />
 
@@ -623,68 +667,105 @@ graph LR
     {
       id: "q1",
       type: "multiple-choice",
-      question: "What is the primary advantage of self-attention over RNNs for sequence processing?",
+      question:
+        "What is the primary advantage of self-attention over RNNs for sequence processing?",
       options: [
         { id: "a", text: "Self-attention uses less memory" },
-        { id: "b", text: "Self-attention can process all positions in parallel and capture long-range dependencies directly" },
+        {
+          id: "b",
+          text: "Self-attention can process all positions in parallel and capture long-range dependencies directly",
+        },
         { id: "c", text: "Self-attention requires fewer parameters" },
-        { id: "d", text: "Self-attention is more interpretable" }
+        { id: "d", text: "Self-attention is more interpretable" },
       ],
       correctAnswer: "b",
-      explanation: "The key innovation of self-attention is that every position can attend to every other position simultaneously, enabling parallel processing (unlike sequential RNNs) and direct connections between distant positions (no degradation through many steps). This solved the two main bottlenecks of RNNs: slow training due to sequential processing, and vanishing gradients over long sequences."
+      explanation:
+        "The key innovation of self-attention is that every position can attend to every other position simultaneously, enabling parallel processing (unlike sequential RNNs) and direct connections between distant positions (no degradation through many steps). This solved the two main bottlenecks of RNNs: slow training due to sequential processing, and vanishing gradients over long sequences.",
     },
     {
       id: "q2",
       type: "multiple-choice",
-      question: "In the attention mechanism, what roles do Query (Q), Key (K), and Value (V) play?",
+      question:
+        "In the attention mechanism, what roles do Query (Q), Key (K), and Value (V) play?",
       options: [
-        { id: "a", text: "Q is the output, K is the input, V is the hidden state" },
-        { id: "b", text: "Q represents what to look for, K represents what information each position contains, V represents the information to pass along" },
+        {
+          id: "a",
+          text: "Q is the output, K is the input, V is the hidden state",
+        },
+        {
+          id: "b",
+          text: "Q represents what to look for, K represents what information each position contains, V represents the information to pass along",
+        },
         { id: "c", text: "Q, K, V are three different attention patterns" },
-        { id: "d", text: "They are interchangeable learned embeddings" }
+        { id: "d", text: "They are interchangeable learned embeddings" },
       ],
       correctAnswer: "b",
-      explanation: "The Q/K/V framework is a learned content-based addressing system. Query represents 'what am I looking for?' Key represents 'what information do I contain?' and their dot product determines relevance (attention scores). Value represents 'what information should I pass along?' and is weighted by the attention scores. Think of it like a database: Query is your search term, Key is the index, Value is the data you retrieve."
+      explanation:
+        "The Q/K/V framework is a learned content-based addressing system. Query represents 'what am I looking for?' Key represents 'what information do I contain?' and their dot product determines relevance (attention scores). Value represents 'what information should I pass along?' and is weighted by the attention scores. Think of it like a database: Query is your search term, Key is the index, Value is the data you retrieve.",
     },
     {
       id: "q3",
       type: "multiple-choice",
-      question: "Why do transformers use multiple attention heads instead of a single attention mechanism?",
+      question:
+        "Why do transformers use multiple attention heads instead of a single attention mechanism?",
       options: [
         { id: "a", text: "To reduce computation time" },
         { id: "b", text: "To enable parallel processing across GPUs" },
-        { id: "c", text: "To learn different types of relationships (syntactic, semantic, positional) simultaneously" },
-        { id: "d", text: "To increase model size for better performance" }
+        {
+          id: "c",
+          text: "To learn different types of relationships (syntactic, semantic, positional) simultaneously",
+        },
+        { id: "d", text: "To increase model size for better performance" },
       ],
       correctAnswer: "c",
-      explanation: "Multiple heads allow the model to learn diverse patterns of attention simultaneously. One head might focus on syntactic relationships (subject-verb), another on semantic similarity, another on positional patterns. This representational diversity improves performance. It is not about parallelization (a single large head could be equally parallel) or size (total parameters are similar) - it is about learning multiple perspectives on the data."
+      explanation:
+        "Multiple heads allow the model to learn diverse patterns of attention simultaneously. One head might focus on syntactic relationships (subject-verb), another on semantic similarity, another on positional patterns. This representational diversity improves performance. It is not about parallelization (a single large head could be equally parallel) or size (total parameters are similar) - it is about learning multiple perspectives on the data.",
     },
     {
       id: "q4",
       type: "multiple-choice",
-      question: "What problem does positional encoding solve, and why is it necessary?",
+      question:
+        "What problem does positional encoding solve, and why is it necessary?",
       options: [
         { id: "a", text: "It speeds up training by marking important tokens" },
-        { id: "b", text: "Self-attention has no inherent notion of token position, so positional encoding injects order information" },
-        { id: "c", text: "It reduces memory usage by compressing position information" },
-        { id: "d", text: "It enables attention to work with longer sequences" }
+        {
+          id: "b",
+          text: "Self-attention has no inherent notion of token position, so positional encoding injects order information",
+        },
+        {
+          id: "c",
+          text: "It reduces memory usage by compressing position information",
+        },
+        { id: "d", text: "It enables attention to work with longer sequences" },
       ],
       correctAnswer: "b",
-      explanation: "Self-attention computes relationships based purely on content similarity (Q dot K), with no awareness of position. 'Cat sat mat' and 'mat sat cat' would produce identical attention patterns without positional encoding. Since word order matters in language, we must inject position information. Positional encodings (sinusoidal or learned) are added to embeddings, allowing attention to become position-aware."
+      explanation:
+        "Self-attention computes relationships based purely on content similarity (Q dot K), with no awareness of position. 'Cat sat mat' and 'mat sat cat' would produce identical attention patterns without positional encoding. Since word order matters in language, we must inject position information. Positional encodings (sinusoidal or learned) are added to embeddings, allowing attention to become position-aware.",
     },
     {
       id: "q5",
       type: "multiple-choice",
-      question: "What is the main reason decoder-only architectures (like GPT) have become dominant over encoder-decoder architectures for large language models?",
+      question:
+        "What is the main reason decoder-only architectures (like GPT) have become dominant over encoder-decoder architectures for large language models?",
       options: [
-        { id: "a", text: "Decoder-only models are smaller and faster to train" },
-        { id: "b", text: "Decoder-only models can handle any task via prompting, providing a unified interface" },
+        {
+          id: "a",
+          text: "Decoder-only models are smaller and faster to train",
+        },
+        {
+          id: "b",
+          text: "Decoder-only models can handle any task via prompting, providing a unified interface",
+        },
         { id: "c", text: "Decoder-only models are always more accurate" },
-        { id: "d", text: "Encoder-decoder models cannot scale beyond 10 billion parameters" }
+        {
+          id: "d",
+          text: "Encoder-decoder models cannot scale beyond 10 billion parameters",
+        },
       ],
       correctAnswer: "b",
-      explanation: "Decoder-only models trained on next-token prediction can handle virtually any task by prompting: generation naturally, but also classification, translation, QA, etc. by framing them as generation tasks. This unified interface eliminates the need for task-specific architectures and fine-tuning. While encoder-decoder models excel at specific tasks, the flexibility and simplicity of decoder-only models made them the foundation for general-purpose LLMs."
-    }
+      explanation:
+        "Decoder-only models trained on next-token prediction can handle virtually any task by prompting: generation naturally, but also classification, translation, QA, etc. by framing them as generation tasks. This unified interface eliminates the need for task-specific architectures and fine-tuning. While encoder-decoder models excel at specific tasks, the flexibility and simplicity of decoder-only models made them the foundation for general-purpose LLMs.",
+    },
   ]}
   passingScore={70}
   allowRetry={true}

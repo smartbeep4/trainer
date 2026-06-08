@@ -35,7 +35,9 @@ The productive middle ground treats AI as a tool in your toolkit. Use it where i
 ## AI in Your Daily Work
 
 <Definition term="Workflow Integration">
-The process of incorporating AI tools into existing development processes in ways that enhance productivity without disrupting established practices or introducing excessive verification overhead.
+  The process of incorporating AI tools into existing development processes in
+  ways that enhance productivity without disrupting established practices or
+  introducing excessive verification overhead.
 </Definition>
 
 AI integrates most naturally at specific points in the development workflow. Code generation, debugging, refactoring, code review, testing, documentation, bug investigation, and migration tasks all represent high-value integration points where AI assistance provides genuine leverage.
@@ -93,7 +95,10 @@ Invest in prompting skill. The same task can take 30 seconds or 30 minutes depen
 Know when to stop. If you have prompted three times and still have not gotten useful output, do it manually. AI should accelerate work, not become a puzzle to solve.
 
 <Info>
-For most developers, 80% of AI value comes from 20% of use cases: autocomplete and inline suggestions, explaining code, generating boilerplate, rubber duck debugging, and translation between formats. Master these before pursuing more exotic use cases.
+  For most developers, 80% of AI value comes from 20% of use cases: autocomplete
+  and inline suggestions, explaining code, generating boilerplate, rubber duck
+  debugging, and translation between formats. Master these before pursuing more
+  exotic use cases.
 </Info>
 
 ## Code Generation Workflows
@@ -157,7 +162,9 @@ Explain each change you make.
 ```
 
 <Tip>
-Asking AI to explain each change serves two purposes: it helps you verify the changes are correct, and it teaches you the patterns so you can apply them yourself in the future.
+  Asking AI to explain each change serves two purposes: it helps you verify the
+  changes are correct, and it teaches you the patterns so you can apply them
+  yourself in the future.
 </Tip>
 
 ### Migration Assistance
@@ -187,7 +194,11 @@ flowchart LR
 The code generation pipeline establishes consistent steps: task definition specifying exactly what you need, context gathering to provide AI with necessary information, prompt construction building on templates for common tasks, AI generation potentially producing multiple versions for complex tasks, quality check reviewing for patterns and correctness, integration into your codebase often revealing new issues, and testing to verify functionality.
 
 <Warning>
-Code generation does not work well for complex business logic where AI does not know your domain, security-critical code where subtle vulnerabilities can emerge, performance-critical code where AI optimizes for appearance rather than speed, and highly contextual code depending on runtime state or external systems.
+  Code generation does not work well for complex business logic where AI does
+  not know your domain, security-critical code where subtle vulnerabilities can
+  emerge, performance-critical code where AI optimizes for appearance rather
+  than speed, and highly contextual code depending on runtime state or external
+  systems.
 </Warning>
 
 ## Code Review Automation
@@ -266,7 +277,9 @@ For existing documentation, verify accuracy by comparing claims against actual i
 The real challenge is keeping documentation current. Pre-commit hooks can check if changed files have corresponding documentation and generate update suggestions. CI documentation checks compare documentation against code and fail if they diverge too much. Scheduled regeneration weekly creates PRs for review. Documentation as code keeps documentation in the same files as code through docstrings and JSDoc so changes are natural.
 
 <Tip>
-Documentation templates ensure consistency. Create templates for different documentation types (components, APIs, functions) that specify required sections and formats, then use AI to fill them in consistently.
+  Documentation templates ensure consistency. Create templates for different
+  documentation types (components, APIs, functions) that specify required
+  sections and formats, then use AI to fill them in consistently.
 </Tip>
 
 ## Testing with AI
@@ -277,7 +290,7 @@ AI can generate tests, but the value varies by test type. Unit tests for pure fu
 
 For pure functions, AI generates excellent tests when given clear instructions about coverage requirements:
 
-```
+````
 Generate comprehensive unit tests for this function.
 
 Function:
@@ -297,9 +310,10 @@ def calculate_discount(price: float, customer_type: str, quantity: int) -> float
     total_discount = min(base_discount + quantity_discount, 0.25)
 
     return round(price * (1 - total_discount), 2)
-```
+````
 
 Generate tests covering:
+
 1. Each customer type
 2. Quantity discount tiers (0, 10, 50, 100+)
 3. Edge cases (zero price, negative values if possible)
@@ -307,7 +321,8 @@ Generate tests covering:
 5. Rounding behavior
 
 Use pytest with clear test names describing the scenario.
-```
+
+````
 
 ### Edge Case Discovery
 
@@ -356,7 +371,7 @@ When helping with code:
 
 Be concise. We're experienced developers who want help, not tutorials.
 """
-```
+````
 
 ### Shared Prompt Libraries
 
@@ -446,15 +461,23 @@ Make tools easy for your team to use through CLI tools, IDE integration through 
     {
       id: "q1",
       type: "multiple-choice",
-      question: "You are building an AI-assisted code review pipeline. Where in the review process should AI review run?",
+      question:
+        "You are building an AI-assisted code review pipeline. Where in the review process should AI review run?",
       options: [
-        { id: "a", text: "After human review, to catch anything the human missed" },
-        { id: "b", text: "Before human review, so humans can focus on high-level concerns" },
+        {
+          id: "a",
+          text: "After human review, to catch anything the human missed",
+        },
+        {
+          id: "b",
+          text: "Before human review, so humans can focus on high-level concerns",
+        },
         { id: "c", text: "Instead of human review for small changes" },
-        { id: "d", text: "In parallel with human review to save time" }
+        { id: "d", text: "In parallel with human review to save time" },
       ],
       correctAnswer: "b",
-      explanation: "AI review should run before human review. This lets AI catch mechanical issues (style, common bugs, security patterns) so human reviewers can focus on what AI cannot assess: business logic correctness, architectural fit, and maintainability decisions. Running AI after human review wastes the human's time on things AI could have caught."
+      explanation:
+        "AI review should run before human review. This lets AI catch mechanical issues (style, common bugs, security patterns) so human reviewers can focus on what AI cannot assess: business logic correctness, architectural fit, and maintainability decisions. Running AI after human review wastes the human's time on things AI could have caught.",
     },
     {
       id: "q2",
@@ -462,52 +485,80 @@ Make tools easy for your team to use through CLI tools, IDE integration through 
       question: "When is AI code generation LEAST appropriate?",
       options: [
         { id: "a", text: "Generating boilerplate for a new API endpoint" },
-        { id: "b", text: "Implementing a core algorithm that determines pricing for customers" },
+        {
+          id: "b",
+          text: "Implementing a core algorithm that determines pricing for customers",
+        },
         { id: "c", text: "Creating test cases for a utility function" },
-        { id: "d", text: "Converting code from one framework to another" }
+        { id: "d", text: "Converting code from one framework to another" },
       ],
       correctAnswer: "b",
-      explanation: "AI code generation is least appropriate for critical business logic. Pricing algorithms directly affect revenue and customer trust. AI does not understand your business domain and may generate subtly incorrect logic. For such critical code, humans must design and implement the logic, using AI only for peripheral tasks like test generation."
+      explanation:
+        "AI code generation is least appropriate for critical business logic. Pricing algorithms directly affect revenue and customer trust. AI does not understand your business domain and may generate subtly incorrect logic. For such critical code, humans must design and implement the logic, using AI only for peripheral tasks like test generation.",
     },
     {
       id: "q3",
       type: "multiple-choice",
-      question: "Your team creates a shared prompt library. What is the most important characteristic for prompts in this library?",
+      question:
+        "Your team creates a shared prompt library. What is the most important characteristic for prompts in this library?",
       options: [
         { id: "a", text: "They should be as long and detailed as possible" },
-        { id: "b", text: "They should encode team-specific conventions and context" },
+        {
+          id: "b",
+          text: "They should encode team-specific conventions and context",
+        },
         { id: "c", text: "They should work with multiple AI providers" },
-        { id: "d", text: "They should be written by the most senior developer" }
+        {
+          id: "d",
+          text: "They should be written by the most senior developer",
+        },
       ],
       correctAnswer: "b",
-      explanation: "Shared prompts provide value by encoding team-specific knowledge that generic prompts lack: your coding conventions, architecture decisions, common patterns, and project constraints. This context makes AI output immediately useful rather than requiring manual adaptation."
+      explanation:
+        "Shared prompts provide value by encoding team-specific knowledge that generic prompts lack: your coding conventions, architecture decisions, common patterns, and project constraints. This context makes AI output immediately useful rather than requiring manual adaptation.",
     },
     {
       id: "q4",
       type: "multiple-choice",
-      question: "You notice your AI documentation generator frequently produces inaccurate descriptions of function behavior. What is the best approach to fix this?",
+      question:
+        "You notice your AI documentation generator frequently produces inaccurate descriptions of function behavior. What is the best approach to fix this?",
       options: [
         { id: "a", text: "Switch to a more capable AI model" },
         { id: "b", text: "Include example inputs and outputs in the prompt" },
         { id: "c", text: "Generate documentation less frequently" },
-        { id: "d", text: "Add a disclaimer that documentation may be inaccurate" }
+        {
+          id: "d",
+          text: "Add a disclaimer that documentation may be inaccurate",
+        },
       ],
       correctAnswer: "b",
-      explanation: "When AI generates inaccurate descriptions, the issue is usually insufficient context, not model capability. Including example inputs and outputs shows the AI what the function actually does rather than relying on it to infer behavior from code alone."
+      explanation:
+        "When AI generates inaccurate descriptions, the issue is usually insufficient context, not model capability. Including example inputs and outputs shows the AI what the function actually does rather than relying on it to infer behavior from code alone.",
     },
     {
       id: "q5",
       type: "multiple-choice",
-      question: "What is the primary benefit of having AI catch mechanical issues in code review before human review?",
+      question:
+        "What is the primary benefit of having AI catch mechanical issues in code review before human review?",
       options: [
-        { id: "a", text: "It eliminates the need for human reviewers entirely" },
-        { id: "b", text: "It allows human reviewers to focus on logic, architecture, and business requirements" },
-        { id: "c", text: "It makes the code review process faster for everyone" },
-        { id: "d", text: "It ensures perfect code quality" }
+        {
+          id: "a",
+          text: "It eliminates the need for human reviewers entirely",
+        },
+        {
+          id: "b",
+          text: "It allows human reviewers to focus on logic, architecture, and business requirements",
+        },
+        {
+          id: "c",
+          text: "It makes the code review process faster for everyone",
+        },
+        { id: "d", text: "It ensures perfect code quality" },
       ],
       correctAnswer: "b",
-      explanation: "The primary benefit of AI catching mechanical issues is freeing human reviewers to focus on what AI cannot assess well: business logic correctness, architectural fit, maintainability decisions, and whether the code actually solves the right problem. This division of labor uses both AI and human capabilities optimally."
-    }
+      explanation:
+        "The primary benefit of AI catching mechanical issues is freeing human reviewers to focus on what AI cannot assess well: business logic correctness, architectural fit, maintainability decisions, and whether the code actually solves the right problem. This division of labor uses both AI and human capabilities optimally.",
+    },
   ]}
   passingScore={70}
   allowRetry={true}
@@ -524,7 +575,7 @@ Make tools easy for your team to use through CLI tools, IDE integration through 
     "Choose a recurring task from your actual work (the one you do most often)",
     "Set up a new Python project with virtual environment",
     "Install required packages: anthropic or openai, click or argparse for CLI",
-    "Gather any conventions/documentation files that provide context for your task"
+    "Gather any conventions/documentation files that provide context for your task",
   ]}
   parts={[
     {
@@ -536,9 +587,10 @@ Make tools easy for your team to use through CLI tools, IDE integration through 
         "Document current process: What are the manual steps? How long does it take? What's tedious about it?",
         "Identify pain points: What takes the most time? What's error-prone? What's boring?",
         "Estimate frequency: How often do you do this task? (daily, weekly, monthly)",
-        "Calculate potential time savings: If AI could handle 60-80% of it, how much time would you save?"
+        "Calculate potential time savings: If AI could handle 60-80% of it, how much time would you save?",
       ],
-      observePrompt: "Is this task really the highest-value one to automate based on frequency and pain? Or are you choosing what seems coolest?"
+      observePrompt:
+        "Is this task really the highest-value one to automate based on frequency and pain? Or are you choosing what seems coolest?",
     },
     {
       id: "design-integration",
@@ -549,9 +601,10 @@ Make tools easy for your team to use through CLI tools, IDE integration through 
         "Define input format: What will user provide? (file path, code snippet, requirements)",
         "Define output format: What should AI generate? (structured data, code, documentation)",
         "Design verification approach: How will user verify AI output is correct?",
-        "Create fallback plan: Under what conditions should user abandon AI and do it manually? (3 failed attempts, output is nonsense, etc.)"
+        "Create fallback plan: Under what conditions should user abandon AI and do it manually? (3 failed attempts, output is nonsense, etc.)",
       ],
-      observePrompt: "Have you made it easy for AI to succeed by providing clear context? Have you made it easy for users to verify output?"
+      observePrompt:
+        "Have you made it easy for AI to succeed by providing clear context? Have you made it easy for users to verify output?",
     },
     {
       id: "implement-mvp",
@@ -562,9 +615,10 @@ Make tools easy for your team to use through CLI tools, IDE integration through 
         "Build prompt construction: Combine system context + user input into effective prompt",
         "Add API integration: Call LLM with proper error handling and retries",
         "Create CLI interface: Simple command like `python tool.py generate --file path/to/code`",
-        "Add output formatting: Present results clearly, include TODO markers where human work needed"
+        "Add output formatting: Present results clearly, include TODO markers where human work needed",
       ],
-      observePrompt: "Can you use your own tool successfully? Is it genuinely faster than doing the task manually?"
+      observePrompt:
+        "Can you use your own tool successfully? Is it genuinely faster than doing the task manually?",
     },
     {
       id: "test-and-refine",
@@ -575,9 +629,10 @@ Make tools easy for your team to use through CLI tools, IDE integration through 
         "Test with edge case: Does it handle unusual inputs gracefully?",
         "Test where AI might struggle: Does it fail gracefully or produce nonsense?",
         "Track what works and what doesn't: Document which prompt changes improved quality",
-        "Refine prompts based on results: Iterate 2-3 times to improve output quality"
+        "Refine prompts based on results: Iterate 2-3 times to improve output quality",
       ],
-      observePrompt: "What percentage of outputs are immediately usable? What pattern causes the most failures?"
+      observePrompt:
+        "What percentage of outputs are immediately usable? What pattern causes the most failures?",
     },
     {
       id: "document-and-share",
@@ -588,18 +643,37 @@ Make tools easy for your team to use through CLI tools, IDE integration through 
         "Document the verification process: How should users check AI output?",
         "Document the fallback plan: When to abandon AI and do it manually",
         "Optional: Share with a teammate, observe them use it, iterate based on feedback",
-        "Commit to actually using this tool in your work for the next week"
+        "Commit to actually using this tool in your work for the next week",
       ],
-      observePrompt: "Would someone else on your team find this tool useful? What would make them actually use it versus just saying 'cool'?"
-    }
+      observePrompt:
+        "Would someone else on your team find this tool useful? What would make them actually use it versus just saying 'cool'?",
+    },
   ]}
   successCriteria={[
-    { id: "real-task", text: "Chose a task you actually do frequently in your real work" },
-    { id: "clear-design", text: "Designed integration with clear context requirements, I/O formats, and verification approach" },
-    { id: "working-tool", text: "Built functional CLI tool that loads context, calls AI API, and formats output" },
-    { id: "tested-refined", text: "Tested on multiple examples including edge cases and refined prompts based on results" },
-    { id: "proper-documentation", text: "Created documentation that would enable teammates to use the tool" },
-    { id: "actually-useful", text: "Tool genuinely saves time compared to manual approach (60%+ of cases)" }
+    {
+      id: "real-task",
+      text: "Chose a task you actually do frequently in your real work",
+    },
+    {
+      id: "clear-design",
+      text: "Designed integration with clear context requirements, I/O formats, and verification approach",
+    },
+    {
+      id: "working-tool",
+      text: "Built functional CLI tool that loads context, calls AI API, and formats output",
+    },
+    {
+      id: "tested-refined",
+      text: "Tested on multiple examples including edge cases and refined prompts based on results",
+    },
+    {
+      id: "proper-documentation",
+      text: "Created documentation that would enable teammates to use the tool",
+    },
+    {
+      id: "actually-useful",
+      text: "Tool genuinely saves time compared to manual approach (60%+ of cases)",
+    },
   ]}
 />
 

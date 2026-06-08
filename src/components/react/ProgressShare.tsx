@@ -79,15 +79,9 @@ export default function ProgressShare({ variant }: ProgressShareProps) {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      // Fallback for older browsers
-      const textArea = document.createElement("textarea");
-      textArea.value = shareUrl;
-      document.body.appendChild(textArea);
-      textArea.select();
-      document.execCommand("copy");
-      document.body.removeChild(textArea);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      // Clipboard API failed (very rare in modern browsers). Avoid deprecated execCommand.
+      // Fall back to a non-destructive message so the user can still copy manually.
+      alert("Copy failed. Please select and copy the URL manually.");
     }
   };
 

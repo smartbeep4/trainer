@@ -119,7 +119,9 @@ batch_of_texts  = (32, 100, 768) # 32 sentences in a batch
 ```
 
 <Definition term="Tensor">
-A tensor is a multi-dimensional array. A 1D tensor is a vector, 2D is a matrix, and higher dimensions are just... more arrays of arrays. The "shape" tells you how many dimensions and how big each one is.
+  A tensor is a multi-dimensional array. A 1D tensor is a vector, 2D is a
+  matrix, and higher dimensions are just... more arrays of arrays. The "shape"
+  tells you how many dimensions and how big each one is.
 </Definition>
 
 ### Why Shape Matters So Much
@@ -211,7 +213,10 @@ Think of it like GPS coordinates. A position like (47.6062, -122.3321) doesn't h
 Embeddings work similarly. The individual dimensions don't mean much, but the pattern across all 768 dimensions encodes semantic information. Words that are used in similar contexts end up with similar patterns.
 
 <Info title="High-Dimensional Space Intuition">
-You can't visualize 768 dimensions, but here's a useful mental model: imagine a vast space where every concept has a location. Similar concepts cluster together - animals in one region, vehicles in another, emotions in a third. The embedding is just the coordinates in this semantic space.
+  You can't visualize 768 dimensions, but here's a useful mental model: imagine
+  a vast space where every concept has a location. Similar concepts cluster
+  together - animals in one region, vehicles in another, emotions in a third.
+  The embedding is just the coordinates in this semantic space.
 </Info>
 
 ### How Embeddings Are Created
@@ -282,7 +287,9 @@ sim = cosine_similarity(embed("cat"), embed("democracy"))  # ~0.15
 For text embeddings, cosine similarity is usually preferred. Why? Because it measures direction, not magnitude. Two documents about the same topic should be similar whether they're tweets or dissertations - their vectors point the same direction, even if one is "longer" because it has more content.
 
 <Tip title="When to Use Which">
-Use cosine similarity for text and semantic search - you care about direction, not magnitude. Use Euclidean distance when magnitude matters, like comparing product feature vectors where larger values mean more of something.
+  Use cosine similarity for text and semantic search - you care about direction,
+  not magnitude. Use Euclidean distance when magnitude matters, like comparing
+  product feature vectors where larger values mean more of something.
 </Tip>
 
 ### Building Semantic Search
@@ -452,7 +459,9 @@ def get_embedding(text):
 For repeated queries, this transforms expensive computation into a cheap hash table lookup. In production systems, this cache might live in Redis or Memcached, shared across multiple servers.
 
 <Warning title="Cache Invalidation">
-Caching embeddings is powerful but comes with the classic cache invalidation problem. If you update your embedding model, all cached vectors become stale. Version your caches or have a clear invalidation strategy.
+  Caching embeddings is powerful but comes with the classic cache invalidation
+  problem. If you update your embedding model, all cached vectors become stale.
+  Version your caches or have a clear invalidation strategy.
 </Warning>
 
 ### KV Caching in Transformers
@@ -639,7 +648,10 @@ results = (
 The alpha parameter controls the balance. For technical queries with specific terms, lean toward keywords. For conceptual queries, lean toward vectors. Many applications experiment to find the right balance for their users.
 
 <Info title="When You Don't Need a Vector Database">
-For fewer than 10,000 vectors, brute-force search with numpy is often fast enough. For 10,000-100,000 vectors, pgvector or simple FAISS indexes work well. Vector databases shine at larger scale or when you need advanced features like real-time updates and filtering.
+  For fewer than 10,000 vectors, brute-force search with numpy is often fast
+  enough. For 10,000-100,000 vectors, pgvector or simple FAISS indexes work
+  well. Vector databases shine at larger scale or when you need advanced
+  features like real-time updates and filtering.
 </Info>
 
 ---
@@ -880,7 +892,7 @@ flowchart TB
     "Create a new Python virtual environment: python -m venv venv && source venv/bin/activate",
     "Install dependencies: pip install sentence-transformers numpy scikit-learn",
     "Optional for visualization: pip install matplotlib",
-    "Create a new file: semantic_search.py"
+    "Create a new file: semantic_search.py",
   ]}
   parts={[
     {
@@ -892,9 +904,10 @@ flowchart TB
         "Create a list of 10-15 sample documents about topics you know well",
         "Generate embeddings for all documents: embeddings = model.encode(documents)",
         "Examine the embedding shape and a sample embedding's values",
-        "Note: The model downloads on first use (~90MB)"
+        "Note: The model downloads on first use (~90MB)",
       ],
-      observePrompt: "What is the dimensionality of these embeddings? What do the raw numbers look like?"
+      observePrompt:
+        "What is the dimensionality of these embeddings? What do the raw numbers look like?",
     },
     {
       id: "computing-similarity",
@@ -905,9 +918,10 @@ flowchart TB
         "Compute similarity between pairs of similar documents",
         "Compute similarity between pairs of dissimilar documents",
         "Try the semantic arithmetic example: embed('king') - embed('man') + embed('woman')",
-        "Find the closest word to the result vector"
+        "Find the closest word to the result vector",
       ],
-      observePrompt: "Do similar documents have higher similarity scores? Does semantic arithmetic work as expected?"
+      observePrompt:
+        "Do similar documents have higher similarity scores? Does semantic arithmetic work as expected?",
     },
     {
       id: "building-search",
@@ -918,9 +932,10 @@ flowchart TB
         "Test with queries that use different words than your documents",
         "Test with queries that have no direct match in your documents",
         "Compare results: exact keyword match vs semantic search",
-        "Experiment with queries in different phrasings"
+        "Experiment with queries in different phrasings",
       ],
-      observePrompt: "When does semantic search outperform keyword search? When might it fail?"
+      observePrompt:
+        "When does semantic search outperform keyword search? When might it fail?",
     },
     {
       id: "reflection",
@@ -930,17 +945,35 @@ flowchart TB
         "Document three queries where semantic search found relevant results that keywords would miss",
         "Document any queries where semantic search returned unexpected results",
         "Consider how you would use this in a real application",
-        "Note questions you have about scaling this approach"
-      ]
-    }
+        "Note questions you have about scaling this approach",
+      ],
+    },
   ]}
   successCriteria={[
-    { id: "loaded-model", text: "Successfully loaded the embedding model and generated document embeddings" },
-    { id: "computed-similarity", text: "Computed cosine similarity between document pairs" },
-    { id: "semantic-arithmetic", text: "Tested semantic arithmetic (king - man + woman) and examined results" },
-    { id: "built-search", text: "Built a working semantic search function that returns ranked results" },
-    { id: "found-semantic-matches", text: "Found at least one query where semantic search outperformed keyword matching" },
-    { id: "documented-findings", text: "Documented observations about embedding behavior" }
+    {
+      id: "loaded-model",
+      text: "Successfully loaded the embedding model and generated document embeddings",
+    },
+    {
+      id: "computed-similarity",
+      text: "Computed cosine similarity between document pairs",
+    },
+    {
+      id: "semantic-arithmetic",
+      text: "Tested semantic arithmetic (king - man + woman) and examined results",
+    },
+    {
+      id: "built-search",
+      text: "Built a working semantic search function that returns ranked results",
+    },
+    {
+      id: "found-semantic-matches",
+      text: "Found at least one query where semantic search outperformed keyword matching",
+    },
+    {
+      id: "documented-findings",
+      text: "Documented observations about embedding behavior",
+    },
   ]}
 />
 
@@ -1028,55 +1061,81 @@ def get_embedding(text):
     {
       id: "q1",
       type: "multiple-choice",
-      question: "Why are embeddings considered revolutionary for search and retrieval?",
+      question:
+        "Why are embeddings considered revolutionary for search and retrieval?",
       options: [
         { id: "a", text: "They compress documents to use less storage space" },
-        { id: "b", text: "They enable finding similar content by meaning rather than exact keyword matches" },
+        {
+          id: "b",
+          text: "They enable finding similar content by meaning rather than exact keyword matches",
+        },
         { id: "c", text: "They make search faster by using hash tables" },
-        { id: "d", text: "They allow searching without an index" }
+        { id: "d", text: "They allow searching without an index" },
       ],
       correctAnswer: "b",
-      explanation: "Embeddings represent text as points in a high-dimensional space where semantic similarity corresponds to geometric proximity. This enables finding documents by meaning - 'login problems' can match 'authentication issues' even though they share no keywords. Before embeddings, search relied on exact or fuzzy keyword matching, missing conceptually related content that used different words. This capability powers semantic search, RAG systems, and recommendation engines throughout modern AI applications."
+      explanation:
+        "Embeddings represent text as points in a high-dimensional space where semantic similarity corresponds to geometric proximity. This enables finding documents by meaning - 'login problems' can match 'authentication issues' even though they share no keywords. Before embeddings, search relied on exact or fuzzy keyword matching, missing conceptually related content that used different words. This capability powers semantic search, RAG systems, and recommendation engines throughout modern AI applications.",
     },
     {
       id: "q2",
       type: "multiple-choice",
-      question: "When would you prefer cosine similarity over Euclidean distance for comparing embeddings?",
+      question:
+        "When would you prefer cosine similarity over Euclidean distance for comparing embeddings?",
       options: [
-        { id: "a", text: "When comparing product feature vectors where magnitude matters" },
-        { id: "b", text: "When comparing text embeddings where you care about semantic direction, not magnitude" },
+        {
+          id: "a",
+          text: "When comparing product feature vectors where magnitude matters",
+        },
+        {
+          id: "b",
+          text: "When comparing text embeddings where you care about semantic direction, not magnitude",
+        },
         { id: "c", text: "When you need faster computation" },
-        { id: "d", text: "When working with binary vectors" }
+        { id: "d", text: "When working with binary vectors" },
       ],
       correctAnswer: "b",
-      explanation: "Cosine similarity measures the angle between vectors, ignoring their magnitude. For text embeddings, this is typically what you want: two documents about the same topic should be considered similar regardless of length. A short tweet and a long article about machine learning should point in similar semantic directions. Euclidean distance would consider them far apart just because one vector is 'longer.' However, when magnitude carries meaning (like product feature scores where higher = better), Euclidean distance might be more appropriate."
+      explanation:
+        "Cosine similarity measures the angle between vectors, ignoring their magnitude. For text embeddings, this is typically what you want: two documents about the same topic should be considered similar regardless of length. A short tweet and a long article about machine learning should point in similar semantic directions. Euclidean distance would consider them far apart just because one vector is 'longer.' However, when magnitude carries meaning (like product feature scores where higher = better), Euclidean distance might be more appropriate.",
     },
     {
       id: "q3",
       type: "multiple-choice",
-      question: "What is the primary benefit of KV caching in transformer models?",
+      question:
+        "What is the primary benefit of KV caching in transformer models?",
       options: [
         { id: "a", text: "It reduces the model's memory footprint" },
         { id: "b", text: "It enables the model to access external databases" },
-        { id: "c", text: "It avoids recomputing attention states for previous tokens during generation" },
-        { id: "d", text: "It compresses the vocabulary size" }
+        {
+          id: "c",
+          text: "It avoids recomputing attention states for previous tokens during generation",
+        },
+        { id: "d", text: "It compresses the vocabulary size" },
       ],
       correctAnswer: "c",
-      explanation: "During text generation, transformers need information from all previous tokens to generate each new token. Without KV caching, this means recomputing the attention mechanism over the entire sequence for every new token - O(n^2) work total. KV caching stores the 'key' and 'value' matrices from previous tokens, so each new token only needs to compute its own contribution - reducing to O(n) total. This is why KV cache size (which grows with sequence length) often determines the practical context window limit."
+      explanation:
+        "During text generation, transformers need information from all previous tokens to generate each new token. Without KV caching, this means recomputing the attention mechanism over the entire sequence for every new token - O(n^2) work total. KV caching stores the 'key' and 'value' matrices from previous tokens, so each new token only needs to compute its own contribution - reducing to O(n) total. This is why KV cache size (which grows with sequence length) often determines the practical context window limit.",
     },
     {
       id: "q4",
       type: "multiple-choice",
-      question: "When should you consider using a dedicated vector database instead of a simple brute-force search?",
+      question:
+        "When should you consider using a dedicated vector database instead of a simple brute-force search?",
       options: [
-        { id: "a", text: "When you have fewer than 1,000 vectors and need exact results" },
-        { id: "b", text: "When you have more than 100,000 vectors and can accept approximate results for speed" },
+        {
+          id: "a",
+          text: "When you have fewer than 1,000 vectors and need exact results",
+        },
+        {
+          id: "b",
+          text: "When you have more than 100,000 vectors and can accept approximate results for speed",
+        },
         { id: "c", text: "When you only need to search once and never update" },
-        { id: "d", text: "When your vectors have fewer than 10 dimensions" }
+        { id: "d", text: "When your vectors have fewer than 10 dimensions" },
       ],
       correctAnswer: "b",
-      explanation: "Brute-force search (computing similarity against every vector) is O(n) and works fine for small collections. Below 10,000 vectors, it's often fast enough. But at 100,000+ vectors, computing 100,000 dot products per query becomes slow. Vector databases use algorithms like HNSW that provide O(log n) approximate search - potentially missing the absolute best match but finding excellent results orders of magnitude faster. The trade-off (approximate vs exact) is worth it at scale. They also provide features like metadata filtering, real-time updates, and distributed search that simple brute-force lacks."
-    }
+      explanation:
+        "Brute-force search (computing similarity against every vector) is O(n) and works fine for small collections. Below 10,000 vectors, it's often fast enough. But at 100,000+ vectors, computing 100,000 dot products per query becomes slow. Vector databases use algorithms like HNSW that provide O(log n) approximate search - potentially missing the absolute best match but finding excellent results orders of magnitude faster. The trade-off (approximate vs exact) is worth it at scale. They also provide features like metadata filtering, real-time updates, and distributed search that simple brute-force lacks.",
+    },
   ]}
   passingScore={70}
   allowRetry={true}

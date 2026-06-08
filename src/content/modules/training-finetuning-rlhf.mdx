@@ -46,7 +46,11 @@ The goal of supervised fine-tuning is to teach the model to follow instructions 
 After pre-training, the model can complete text but does not naturally follow instructions like "Write a poem about coffee" or "Explain quantum computing simply." Supervised fine-tuning trains the model on thousands of high-quality examples of instructions paired with ideal responses.
 
 <Definition term="Supervised Fine-Tuning">
-The process of training a pre-trained model on curated instruction-response pairs, typically 10,000-100,000 examples. This teaches the model to recognize instruction formats, generate appropriate responses, and adopt a helpful conversational tone. Much cheaper than pre-training and focused on format and style.
+  The process of training a pre-trained model on curated instruction-response
+  pairs, typically 10,000-100,000 examples. This teaches the model to recognize
+  instruction formats, generate appropriate responses, and adopt a helpful
+  conversational tone. Much cheaper than pre-training and focused on format and
+  style.
 </Definition>
 
 ### Stage 3: Alignment (RLHF and Beyond)
@@ -84,7 +88,10 @@ This seemingly simple objective teaches the model remarkable things.
 Language structure emerges from examples like "The cat [sits/sat] on the mat" where the model learns verb conjugation. Factual knowledge comes from patterns like "The Eiffel Tower is located in [Paris]" where the model learns facts from co-occurrence. Reasoning patterns emerge from logical structures like "If X is true, then Y must be [true/false]" where the model learns inference patterns. Code patterns come from examples like function definitions where the model learns code completion.
 
 <Info title="The Unreasonable Effectiveness of Prediction">
-Predicting the next token seems trivially simple, but to predict well across all of human knowledge, a model must learn grammar, facts, logic, style, and reasoning. The task is simple; achieving high accuracy is not. This is why next-token prediction scales so remarkably well with more data and parameters.
+  Predicting the next token seems trivially simple, but to predict well across
+  all of human knowledge, a model must learn grammar, facts, logic, style, and
+  reasoning. The task is simple; achieving high accuracy is not. This is why
+  next-token prediction scales so remarkably well with more data and parameters.
 </Info>
 
 ### Training Data Composition
@@ -101,7 +108,7 @@ Pre-training is extraordinarily expensive.
 
 GPT-3 in 2020 had 175 billion parameters, was trained on 300 billion tokens of training data, required an estimated 3,640 petaflop-days of compute, and had an estimated cost of $4-12 million.
 
-Modern models in 2024 and beyond have hundreds of billions to trillions of parameters, trillions of tokens, tens of thousands of GPUs for months of training, and estimated costs of $50-100 million or more.
+Frontier models around 2024-2025 had hundreds of billions to trillions of parameters (or effective parameters via MoE), were trained on trillions of tokens, used massive GPU clusters for months, and had training costs estimated in the tens to hundreds of millions of dollars (with some reports higher when including all infrastructure).
 
 This computational barrier means most organizations do not pre-train their own models. Instead, they use existing foundation models and customize them through fine-tuning.
 
@@ -142,7 +149,12 @@ Distillation from stronger models uses GPT-4 to generate responses for fine-tuni
 Curated from existing data uses sources like Stack Overflow Q&A for coding, Reddit ELI5 for explanations, and customer service logs for support. This requires careful filtering and formatting.
 
 <Warning title="The Risk of Catastrophic Forgetting">
-When you fine-tune on a narrow dataset, the model can forget its general capabilities. A model fine-tuned aggressively on customer support might become excellent at support tickets but struggle with questions outside that domain, potentially losing creative writing ability or coding skills. Mitigation strategies include using diverse examples, lower learning rates, fewer epochs, and parameter-efficient methods.
+  When you fine-tune on a narrow dataset, the model can forget its general
+  capabilities. A model fine-tuned aggressively on customer support might become
+  excellent at support tickets but struggle with questions outside that domain,
+  potentially losing creative writing ability or coding skills. Mitigation
+  strategies include using diverse examples, lower learning rates, fewer epochs,
+  and parameter-efficient methods.
 </Warning>
 
 ### Types of Fine-Tuning
@@ -170,7 +182,11 @@ The question is whether we can adapt models without updating all parameters.
 LoRA, introduced by Microsoft researchers, is the most popular parameter-efficient fine-tuning technique.
 
 <Definition term="LoRA (Low-Rank Adaptation)">
-A parameter-efficient fine-tuning technique that freezes original model weights and adds small, trainable low-rank matrices. Instead of updating the full weight matrix W, LoRA adds a decomposition W' = W + BA where B and A are small matrices. This achieves 99%+ reduction in trainable parameters while maintaining performance comparable to full fine-tuning.
+  A parameter-efficient fine-tuning technique that freezes original model
+  weights and adds small, trainable low-rank matrices. Instead of updating the
+  full weight matrix W, LoRA adds a decomposition W' = W + BA where B and A are
+  small matrices. This achieves 99%+ reduction in trainable parameters while
+  maintaining performance comparable to full fine-tuning.
 </Definition>
 
 The key insight is that model updates during fine-tuning are low-rank, meaning they can be represented with fewer dimensions than the full parameter space.
@@ -216,7 +232,11 @@ Stage 1 is supervised fine-tuning, which we covered previously. This provides a 
 Stage 2 is reward model training. The goal is to train a model to predict human preferences. The process generates multiple responses to prompts using the SFT model, has humans rank or compare these responses, and trains a reward model to predict human rankings.
 
 <Info title="How Reward Models Work">
-The reward model has the same base architecture as the language model but replaces the generation head with a scalar output (reward score). It is trained on thousands of human comparisons. For each prompt, if humans prefer Response A over Response B, the reward model learns to assign a higher score to A. This becomes an automated evaluator of quality.
+  The reward model has the same base architecture as the language model but
+  replaces the generation head with a scalar output (reward score). It is
+  trained on thousands of human comparisons. For each prompt, if humans prefer
+  Response A over Response B, the reward model learns to assign a higher score
+  to A. This becomes an automated evaluator of quality.
 </Info>
 
 Stage 3 is reinforcement learning. The goal is to optimize the language model to maximize reward. The process generates a response to a prompt, feeds the response to the reward model to get a score, uses reinforcement learning (typically PPO) to adjust model weights, and iterates thousands of times.
@@ -256,7 +276,12 @@ Standard RLHF requires humans to evaluate thousands of responses. This creates i
 Constitutional AI addresses these issues by giving the model a constitution, which is a set of principles to follow.
 
 <Definition term="Constitutional AI">
-An alignment approach developed by Anthropic that gives models explicit principles to follow, such as "Choose the response that is most helpful, honest, and harmless." The model critiques and revises its own outputs based on these principles, and AI feedback (rather than human feedback) is used to train the reward model. This reduces reliance on human labelers and makes alignment more transparent and scalable.
+  An alignment approach developed by Anthropic that gives models explicit
+  principles to follow, such as "Choose the response that is most helpful,
+  honest, and harmless." The model critiques and revises its own outputs based
+  on these principles, and AI feedback (rather than human feedback) is used to
+  train the reward model. This reduces reliance on human labelers and makes
+  alignment more transparent and scalable.
 </Definition>
 
 The CAI process has two stages. Stage 1 involves self-critique and revision through supervised learning. The model generates an initial response to a prompt, critiques its own response based on constitutional principles, revises the response to better align with principles, and is trained on these self-revised responses.
@@ -312,7 +337,12 @@ Prefer prompting with limited data when you do not have thousands of high-qualit
 Prefer prompting with resource constraints when you have limited GPU access or budget, cannot maintain fine-tuned models, or are using API-based models.
 
 <Tip title="The Prompting-to-Fine-Tuning Pipeline">
-Start simple and increase complexity only when needed. First try basic prompting. If that is not good enough, try advanced prompting like few-shot and chain-of-thought. If still insufficient, collect examples and try in-context learning. Only if that fails, consider LoRA fine-tuning. Many problems can be solved with clever prompting and do not need fine-tuning at all.
+  Start simple and increase complexity only when needed. First try basic
+  prompting. If that is not good enough, try advanced prompting like few-shot
+  and chain-of-thought. If still insufficient, collect examples and try
+  in-context learning. Only if that fails, consider LoRA fine-tuning. Many
+  problems can be solved with clever prompting and do not need fine-tuning at
+  all.
 </Tip>
 
 ### Cost Comparison
@@ -454,7 +484,7 @@ graph LR
   setupInstructions={[
     "No special setup required - this is a design exercise",
     "Have access to pricing information for OpenAI, Anthropic, or cloud GPU providers",
-    "Prepare to document your strategy in writing"
+    "Prepare to document your strategy in writing",
   ]}
   parts={[
     {
@@ -464,8 +494,8 @@ graph LR
       instructions: [
         "You work for a legal tech company needing an AI assistant that can analyze contract clauses, identify potential risks, explain legal terms in plain language, maintain a professional cautious tone, and cite relevant laws when applicable",
         "Current approach uses GPT-4 with extensive prompting, costing $25,000/month for 500K queries",
-        "Review the requirements and consider what approach might work best"
-      ]
+        "Review the requirements and consider what approach might work best",
+      ],
     },
     {
       id: "strategy",
@@ -475,9 +505,10 @@ graph LR
         "Decide: Should you fine-tune or continue with prompting? List 3 factors supporting your decision",
         "If fine-tuning, choose an approach: Full fine-tuning of a large model, LoRA fine-tuning of a large model, or Full fine-tuning of a smaller model",
         "Document what data you would need: types of examples, approximate quantity, sourcing method, and quality standards",
-        "Consider how you would handle the specialized legal domain"
+        "Consider how you would handle the specialized legal domain",
       ],
-      observePrompt: "What are the key factors driving your decision? What risks are you most concerned about?"
+      observePrompt:
+        "What are the key factors driving your decision? What risks are you most concerned about?",
     },
     {
       id: "training-plan",
@@ -486,8 +517,8 @@ graph LR
       instructions: [
         "Data Collection (Weeks 1-4): Where will you get training examples? How will you create instruction-response pairs? How will you ensure quality?",
         "Fine-Tuning Setup (Week 5): Which base model and why? What fine-tuning method? What hyperparameters (learning rate, epochs, batch size)? What infrastructure (GPU requirements)?",
-        "Evaluation Plan (Week 6): What scenarios will you test? How will you measure success? What will you compare against?"
-      ]
+        "Evaluation Plan (Week 6): What scenarios will you test? How will you measure success? What will you compare against?",
+      ],
     },
     {
       id: "risk-assessment",
@@ -497,8 +528,8 @@ graph LR
         "Catastrophic forgetting: How might your model lose general capabilities? How will you prevent this?",
         "Hallucination: Legal advice must be accurate. How will you address hallucinated citations?",
         "Bias: Legal decisions are sensitive. What biases might appear?",
-        "Maintenance: Laws change. How will you keep the model current?"
-      ]
+        "Maintenance: Laws change. How will you keep the model current?",
+      ],
     },
     {
       id: "cost-benefit",
@@ -508,17 +539,29 @@ graph LR
         "Current state: $25,000/month GPT-4 + 20 hours/month maintaining prompts = $27,000/month total",
         "Estimate your approach: Training data creation cost (one-time), Training compute cost (one-time), Monthly inference cost, Maintenance time per month",
         "Calculate break-even point in months",
-        "Make final recommendation: Would you proceed with fine-tuning? Why or why not?"
-      ]
-    }
+        "Make final recommendation: Would you proceed with fine-tuning? Why or why not?",
+      ],
+    },
   ]}
   successCriteria={[
-    { id: "decision-justified", text: "Made and justified fine-tuning vs prompting decision" },
-    { id: "approach-selected", text: "Selected specific fine-tuning approach with reasoning" },
+    {
+      id: "decision-justified",
+      text: "Made and justified fine-tuning vs prompting decision",
+    },
+    {
+      id: "approach-selected",
+      text: "Selected specific fine-tuning approach with reasoning",
+    },
     { id: "data-plan", text: "Created detailed data collection plan" },
-    { id: "training-specified", text: "Specified training configuration and infrastructure" },
+    {
+      id: "training-specified",
+      text: "Specified training configuration and infrastructure",
+    },
     { id: "risks-identified", text: "Identified and addressed key risks" },
-    { id: "costs-calculated", text: "Calculated break-even and made recommendation" }
+    {
+      id: "costs-calculated",
+      text: "Calculated break-even and made recommendation",
+    },
   ]}
 />
 
@@ -534,15 +577,29 @@ graph LR
     {
       id: "q1",
       type: "multiple-choice",
-      question: "Which statement best describes the relationship between pre-training, fine-tuning, and RLHF?",
+      question:
+        "Which statement best describes the relationship between pre-training, fine-tuning, and RLHF?",
       options: [
-        { id: "a", text: "They are alternative approaches - you choose one based on your needs" },
-        { id: "b", text: "They are sequential stages that build upon each other" },
-        { id: "c", text: "Fine-tuning and RLHF are the same thing with different names" },
-        { id: "d", text: "Pre-training is optional if you have good fine-tuning data" }
+        {
+          id: "a",
+          text: "They are alternative approaches - you choose one based on your needs",
+        },
+        {
+          id: "b",
+          text: "They are sequential stages that build upon each other",
+        },
+        {
+          id: "c",
+          text: "Fine-tuning and RLHF are the same thing with different names",
+        },
+        {
+          id: "d",
+          text: "Pre-training is optional if you have good fine-tuning data",
+        },
       ],
       correctAnswer: "b",
-      explanation: "They are sequential stages that build upon each other. Pre-training creates the foundation model with language understanding. Fine-tuning teaches it to follow instructions and use appropriate formats. RLHF aligns it with human preferences and values. Each stage requires the previous one."
+      explanation:
+        "They are sequential stages that build upon each other. Pre-training creates the foundation model with language understanding. Fine-tuning teaches it to follow instructions and use appropriate formats. RLHF aligns it with human preferences and values. Each stage requires the previous one.",
     },
     {
       id: "q2",
@@ -550,12 +607,16 @@ graph LR
       question: "What is the primary advantage of LoRA over full fine-tuning?",
       options: [
         { id: "a", text: "LoRA always produces more accurate models" },
-        { id: "b", text: "LoRA trains significantly fewer parameters, reducing compute and memory requirements" },
+        {
+          id: "b",
+          text: "LoRA trains significantly fewer parameters, reducing compute and memory requirements",
+        },
         { id: "c", text: "LoRA does not require any training data" },
-        { id: "d", text: "LoRA can only be used for small models" }
+        { id: "d", text: "LoRA can only be used for small models" },
       ],
       correctAnswer: "b",
-      explanation: "LoRA trains significantly fewer parameters (often less than 1% of the model), reducing compute requirements and memory usage while achieving comparable performance to full fine-tuning. It does not inherently produce more accurate models, still requires training data, and actually excels most with large models."
+      explanation:
+        "LoRA trains significantly fewer parameters (often less than 1% of the model), reducing compute requirements and memory usage while achieving comparable performance to full fine-tuning. It does not inherently produce more accurate models, still requires training data, and actually excels most with large models.",
     },
     {
       id: "q3",
@@ -564,38 +625,60 @@ graph LR
       options: [
         { id: "a", text: "Generate better responses than the language model" },
         { id: "b", text: "Predict the next token in sequences" },
-        { id: "c", text: "Predict human preferences between different responses" },
-        { id: "d", text: "Detect toxic or harmful content" }
+        {
+          id: "c",
+          text: "Predict human preferences between different responses",
+        },
+        { id: "d", text: "Detect toxic or harmful content" },
       ],
       correctAnswer: "c",
-      explanation: "The reward model is trained to predict human preferences between different responses. It learns to score responses based on thousands of human comparisons, becoming an automated evaluator of quality. It does not generate text, does not predict next tokens like pre-training, and while it may learn to downrank harmful content, that is not its primary purpose."
+      explanation:
+        "The reward model is trained to predict human preferences between different responses. It learns to score responses based on thousands of human comparisons, becoming an automated evaluator of quality. It does not generate text, does not predict next tokens like pre-training, and while it may learn to downrank harmful content, that is not its primary purpose.",
     },
     {
       id: "q4",
       type: "multiple-choice",
       question: "In which scenario would fine-tuning be LEAST appropriate?",
       options: [
-        { id: "a", text: "You need responses in a consistent, specific format for 10M queries/month" },
-        { id: "b", text: "You are experimenting with different approaches and requirements change weekly" },
-        { id: "c", text: "You have 50,000 labeled examples in a specialized medical domain" },
-        { id: "d", text: "You need to reduce per-query costs for a high-volume application" }
+        {
+          id: "a",
+          text: "You need responses in a consistent, specific format for 10M queries/month",
+        },
+        {
+          id: "b",
+          text: "You are experimenting with different approaches and requirements change weekly",
+        },
+        {
+          id: "c",
+          text: "You have 50,000 labeled examples in a specialized medical domain",
+        },
+        {
+          id: "d",
+          text: "You need to reduce per-query costs for a high-volume application",
+        },
       ],
       correctAnswer: "b",
-      explanation: "When requirements change frequently and you are still experimenting, prompting is more appropriate than fine-tuning. Fine-tuning requires weeks of work and is difficult to iterate quickly. The other scenarios (consistent format at scale, specialized domain with data, cost optimization for high volume) are good candidates for fine-tuning."
+      explanation:
+        "When requirements change frequently and you are still experimenting, prompting is more appropriate than fine-tuning. Fine-tuning requires weeks of work and is difficult to iterate quickly. The other scenarios (consistent format at scale, specialized domain with data, cost optimization for high volume) are good candidates for fine-tuning.",
     },
     {
       id: "q5",
       type: "multiple-choice",
-      question: "What problem does Constitutional AI primarily address compared to standard RLHF?",
+      question:
+        "What problem does Constitutional AI primarily address compared to standard RLHF?",
       options: [
         { id: "a", text: "It makes models more capable at complex tasks" },
-        { id: "b", text: "It reduces reliance on human labelers and makes alignment principles explicit" },
+        {
+          id: "b",
+          text: "It reduces reliance on human labelers and makes alignment principles explicit",
+        },
         { id: "c", text: "It eliminates the need for pre-training" },
-        { id: "d", text: "It makes training faster and cheaper" }
+        { id: "d", text: "It makes training faster and cheaper" },
       ],
       correctAnswer: "b",
-      explanation: "Constitutional AI addresses the scalability and transparency limitations of standard RLHF by using explicit principles and AI feedback instead of relying heavily on human labelers for every decision. It does not affect model capability directly, does not change pre-training requirements, and while it may be more scalable, faster/cheaper training is not its primary goal."
-    }
+      explanation:
+        "Constitutional AI addresses the scalability and transparency limitations of standard RLHF by using explicit principles and AI feedback instead of relying heavily on human labelers for every decision. It does not affect model capability directly, does not change pre-training requirements, and while it may be more scalable, faster/cheaper training is not its primary goal.",
+    },
   ]}
   passingScore={70}
   allowRetry={true}

@@ -85,7 +85,7 @@ the previous one.
 - Variations: zero-shot, few-shot CoT
 - Limitations and failure modes
 
-#### Section 3: Reasoning Models (o1, etc.) (20 min)
+#### Section 3: Reasoning Models and Test-Time Compute (pioneered by o1 and successors) (20 min)
 
 - Test-time compute scaling
 - Hidden reasoning traces

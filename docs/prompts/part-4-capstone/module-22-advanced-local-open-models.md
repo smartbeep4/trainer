@@ -132,7 +132,7 @@ optimization, maintenance burden, expertise requirements.
 
 ### 1. Open Model Timeline
 
-Timeline: LLaMA 1 (Feb 2023) -> Llama 2 (Jul 2023, commercial license) -> Mistral 7B (Sep 2023) -> Mixtral 8x7B (Dec 2023) -> Phi-2 (Jan 2024) -> Llama 3 (Apr 2024) -> Mistral Large (Jul 2024) -> Qwen 2.5 (Sep 2024).
+Timeline (historical through 2024-2025 for context): LLaMA 1 (Feb 2023) -> Llama 2 (Jul 2023, commercial license) -> Mistral 7B (Sep 2023) -> Mixtral 8x7B (Dec 2023) -> Phi-2 (Jan 2024) -> Llama 3 (Apr 2024) -> Mistral Large (Jul 2024) -> Qwen 2.5 (Sep 2024). The ecosystem continued advancing with later Llama generations, new Mistral/Qwen releases, etc.
 
 ### 2. Local vs Cloud Decision Tree
 

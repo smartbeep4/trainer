@@ -38,7 +38,10 @@ The second wave came in 2023-2024 with multimodal understanding. GPT-4V, Claude 
 Today, we stand at the convergence of these waves. Models generate images, understand images, and increasingly bridge between modalities fluidly. Understanding how these systems work is essential for any developer building modern AI applications.
 
 <Info>
-Multimodal AI refers to systems that can process or generate content in multiple formats, such as text, images, audio, or video. Rather than being specialists in one domain, these models develop cross-modal understanding that often exceeds the capabilities of single-modal systems.
+  Multimodal AI refers to systems that can process or generate content in
+  multiple formats, such as text, images, audio, or video. Rather than being
+  specialists in one domain, these models develop cross-modal understanding that
+  often exceeds the capabilities of single-modal systems.
 </Info>
 
 ### Why Images and Audio Matter
@@ -62,7 +65,9 @@ Why is multimodal AI harder than text-only AI? Several fundamental challenges ma
 Different data structures present the first hurdle. Text is sequential, with words appearing in order. Images are 2D grids of pixels. Audio is 1D waveforms over time. Video adds temporal dimension to images. Each modality requires different processing approaches, and connecting them demands architectural innovation.
 
 <Definition term="Modality">
-In AI contexts, a modality refers to a type of data or sensory input, such as text, images, audio, or video. Each modality has distinct characteristics that require specialized processing techniques.
+  In AI contexts, a modality refers to a type of data or sensory input, such as
+  text, images, audio, or video. Each modality has distinct characteristics that
+  require specialized processing techniques.
 </Definition>
 
 Information density varies dramatically across modalities. A 1000-word essay contains roughly 1000 tokens. A single 1024x1024 image contains over 1 million pixels. Naive approaches that try to process every pixel as if it were a token simply do not scale. This density mismatch drove the development of compression techniques like autoencoders and patch-based processing.
@@ -84,7 +89,9 @@ The fundamental insight behind diffusion models is surprisingly simple: if you c
 Most generative models try to learn the data distribution directly. How likely is this particular arrangement of pixels to be a real image? Diffusion models learn the opposite: how to undo corruption. Given an image that has been partially obscured by noise, the model learns to predict what the cleaner version looks like.
 
 <Definition term="Diffusion Model">
-A generative model that learns to reverse a gradual noise-adding process. By training to denoise images at various corruption levels, the model can generate new images by starting from pure noise and iteratively removing it.
+  A generative model that learns to reverse a gradual noise-adding process. By
+  training to denoise images at various corruption levels, the model can
+  generate new images by starting from pure noise and iteratively removing it.
 </Definition>
 
 This approach has several advantages. The training objective is simple and stable. Each step makes small, well-defined progress. And the iterative nature allows the model to refine its output progressively, first establishing global structure and then adding fine details.
@@ -98,7 +105,9 @@ The rate at which noise accumulates is controlled by a noise schedule. This sche
 A crucial mathematical property makes training efficient: we can compute the noisy version at any timestep directly from the original image without simulating all intermediate steps. If we want to know what the image looks like at timestep 500, we can jump directly there using a closed-form equation. This property enables efficient random sampling during training.
 
 <Tip>
-The forward process destroys information in a controlled, predictable way. Because we know exactly how noise was added, we can train a neural network to predict and remove it, recovering the original signal.
+  The forward process destroys information in a controlled, predictable way.
+  Because we know exactly how noise was added, we can train a neural network to
+  predict and remove it, recovering the original signal.
 </Tip>
 
 ### The Reverse Process: Learning to Denoise
@@ -120,7 +129,9 @@ The U-Net has an encoder path that progressively reduces spatial resolution whil
 The decoder path reverses the encoder, progressively increasing resolution while decreasing channel depth. Crucially, skip connections connect each encoder layer directly to its corresponding decoder layer. These connections preserve fine details that would otherwise be lost through the compression and expansion.
 
 <Info>
-The U-Net was originally developed for biomedical image segmentation in 2015. Its ability to preserve fine details while also capturing global context made it ideal for the denoising task at the heart of diffusion models.
+  The U-Net was originally developed for biomedical image segmentation in 2015.
+  Its ability to preserve fine details while also capturing global context made
+  it ideal for the denoising task at the heart of diffusion models.
 </Info>
 
 The network also receives the timestep as input. This tells the model how noisy the current image is, allowing it to adjust its behavior. At high noise levels, the model focuses on establishing global structure. At low noise levels, it focuses on refining fine details. Sinusoidal embeddings, similar to positional encodings in transformers, encode the timestep into a continuous vector that is injected into the network.
@@ -148,7 +159,9 @@ Diffusion models can generate images, but controlling what they generate require
 CLIP, which stands for Contrastive Language-Image Pre-training, learns a shared embedding space for text and images. Developed by OpenAI, it provides the bridge between language and visual concepts that text-to-image models require.
 
 <Definition term="CLIP">
-A neural network trained on 400 million image-caption pairs to learn aligned representations of text and images. Given any text and image, CLIP can compute how semantically related they are by comparing their embeddings.
+  A neural network trained on 400 million image-caption pairs to learn aligned
+  representations of text and images. Given any text and image, CLIP can compute
+  how semantically related they are by comparing their embeddings.
 </Definition>
 
 The training data for CLIP consisted of 400 million image-caption pairs scraped from the internet. The architecture includes an image encoder, typically a Vision Transformer, that converts images to vectors, and a text encoder, a transformer that converts text to vectors. Both encoders produce embeddings in the same dimensional space.
@@ -166,7 +179,10 @@ Running diffusion in pixel space is computationally expensive. A 512x512 RGB ima
 The approach uses a two-stage training process. First, train an autoencoder that compresses images. The encoder takes a 512x512 image and compresses it to a 64x64 latent representation, a 64-fold reduction in size. The decoder reconstructs the image from this compressed form. This autoencoder is trained separately and frozen before diffusion training begins.
 
 <Tip>
-Latent diffusion operates on compressed representations, making it dramatically more efficient. This is why Stable Diffusion can run on consumer GPUs while achieving quality comparable to models that would require supercomputers in pixel space.
+  Latent diffusion operates on compressed representations, making it
+  dramatically more efficient. This is why Stable Diffusion can run on consumer
+  GPUs while achieving quality comparable to models that would require
+  supercomputers in pixel space.
 </Tip>
 
 Second, train the diffusion model in this compressed latent space. The forward process adds noise to latents, not pixels. The reverse process denoises latents. Because we are working with 64x64 instead of 512x512, operations are roughly 100 times faster.
@@ -190,7 +206,10 @@ Raw conditional diffusion often produces images that match the prompt weakly. Cl
 The technique works by running the denoiser twice at each step. Once with the text conditioning, producing a conditional noise prediction. Once without conditioning, producing an unconditional noise prediction. The final prediction is the unconditional prediction plus an amplified difference between conditional and unconditional predictions.
 
 <Warning>
-Higher guidance scale improves prompt adherence but reduces diversity and can cause visual artifacts. The typical range is 7-15, with 7-10 for photorealistic images and 10-15 for stylized content. Going above 20 often produces distorted results.
+  Higher guidance scale improves prompt adherence but reduces diversity and can
+  cause visual artifacts. The typical range is 7-15, with 7-10 for
+  photorealistic images and 10-15 for stylized content. Going above 20 often
+  produces distorted results.
 </Warning>
 
 The guidance scale controls how strongly the conditioning affects the output. Higher values push the output more strongly toward matching the prompt, but with trade-offs. Very high guidance can cause oversaturation, weird artifacts, or reduced diversity. The sweet spot depends on the application and artistic intent.
@@ -202,7 +221,11 @@ Current text-to-image models excel at many tasks. They produce photorealistic sc
 But significant limitations remain. Text rendering is unreliable; models struggle to generate legible text within images. Counting is imprecise; asking for "three cats" might produce two or four. Spatial relationships are often wrong; "cat on top of dog" may be reversed. Human anatomy, especially hands, frequently appears distorted with wrong numbers of fingers or impossible poses.
 
 <Info>
-These limitations stem from how diffusion models process information. They excel at capturing statistical patterns in images but lack explicit understanding of physics, geometry, or symbolic content like text. Each generation of models improves on these weaknesses, but fundamental challenges remain.
+  These limitations stem from how diffusion models process information. They
+  excel at capturing statistical patterns in images but lack explicit
+  understanding of physics, geometry, or symbolic content like text. Each
+  generation of models improves on these weaknesses, but fundamental challenges
+  remain.
 </Info>
 
 Consistency across images is another challenge. Generating the same character in different scenes or poses is difficult. Each generation produces variations that may not match. This limits applications like illustration series or character design where consistency matters.
@@ -218,7 +241,10 @@ The key insight is surprisingly simple: if we can project image features into th
 This approach leverages a powerful capability. Language models already understand complex reasoning, follow instructions, and generate coherent text. They do not need to learn these skills from scratch. They only need to learn how to interpret visual input, which is a much smaller learning task.
 
 <Definition term="Vision-Language Model (VLM)">
-A model that combines visual understanding with language capabilities, typically by projecting image features into the embedding space of a large language model. VLMs can describe images, answer questions about visual content, and reason about what they see.
+  A model that combines visual understanding with language capabilities,
+  typically by projecting image features into the embedding space of a large
+  language model. VLMs can describe images, answer questions about visual
+  content, and reason about what they see.
 </Definition>
 
 ### How Vision-Language Models Process Images
@@ -232,7 +258,10 @@ A projection layer maps these vision features to the language model's embedding 
 The vision tokens are interleaved with text tokens to form the input sequence. The language model then attends to both types of tokens, allowing it to integrate visual and textual information as it generates its response.
 
 <Tip>
-The projection layer is the crucial bridge between vision and language. Despite its simplicity, often just a linear layer or small MLP, it enables sophisticated visual understanding by connecting pre-trained vision and language components.
+  The projection layer is the crucial bridge between vision and language.
+  Despite its simplicity, often just a linear layer or small MLP, it enables
+  sophisticated visual understanding by connecting pre-trained vision and
+  language components.
 </Tip>
 
 ### Capabilities of Modern VLMs
@@ -252,7 +281,9 @@ GUI interaction opens possibilities for AI agents. VLMs can understand screensho
 Video understanding extends image capabilities to temporal sequences. By processing videos as sequences of frames, VLMs can describe events, track objects, and answer questions that require temporal reasoning.
 
 <Info>
-The rapid improvement of VLMs is driven by data diversity and scale. As training datasets grow to include more types of images, documents, and visual content, models develop increasingly sophisticated understanding.
+  The rapid improvement of VLMs is driven by data diversity and scale. As
+  training datasets grow to include more types of images, documents, and visual
+  content, models develop increasingly sophisticated understanding.
 </Info>
 
 ### Limitations of Current VLMs
@@ -282,7 +313,10 @@ Spectrogram diffusion converts audio to time-frequency representations, essentia
 Token-based approaches encode audio into discrete tokens, similar to text, then use autoregressive or diffusion models on these token sequences. This approach powers systems like MusicGen and has shown strong results for both music and speech.
 
 <Definition term="Spectrogram">
-A visual representation of audio that shows frequency content over time. The x-axis represents time, the y-axis represents frequency, and color intensity represents amplitude. Spectrograms allow audio to be processed using image-based techniques.
+  A visual representation of audio that shows frequency content over time. The
+  x-axis represents time, the y-axis represents frequency, and color intensity
+  represents amplitude. Spectrograms allow audio to be processed using
+  image-based techniques.
 </Definition>
 
 ### Music Generation
@@ -292,7 +326,9 @@ Several systems now generate music from text prompts with impressive quality.
 These systems can control genre and style, responding to prompts like "jazz piano with upright bass." They capture mood specifications like "energetic and uplifting." They handle instrumentation requests and structural elements like verse-chorus patterns.
 
 <Warning>
-Music generation raises significant copyright concerns. Many systems were trained on copyrighted music, leading to ongoing legal questions about the ownership and licensing of AI-generated music. These issues remain unresolved.
+  Music generation raises significant copyright concerns. Many systems were
+  trained on copyrighted music, leading to ongoing legal questions about the
+  ownership and licensing of AI-generated music. These issues remain unresolved.
 </Warning>
 
 Current limitations include long-form coherence, where songs may lack structural development over time, and precise control, where specifying exact melodies or harmonies is difficult. The relationship between text prompts and musical output is less precise than text-to-image generation.
@@ -308,7 +344,9 @@ Systems like Sora have demonstrated minute-long videos with consistent character
 Yet limitations remain. Physics violations occur, with objects passing through each other or moving in impossible ways. Temporal inconsistencies accumulate over longer durations. Fine-grained interactions between objects or characters often appear wrong. And video generation remains extremely compute-intensive.
 
 <Info>
-The trajectory suggests video generation will become increasingly capable. Just as image generation progressed from blurry outputs to photorealism in a few years, video is following a similar path of rapid improvement.
+  The trajectory suggests video generation will become increasingly capable.
+  Just as image generation progressed from blurry outputs to photorealism in a
+  few years, video is following a similar path of rapid improvement.
 </Info>
 
 ### The Convergence Trend
@@ -330,7 +368,9 @@ Content creation benefits enormously from generative models. Marketing assets, s
 Product applications include visual search, where users find products by uploading images rather than typing descriptions. Automatic alt-text generation improves accessibility at scale. Document processing extracts structured data from unstructured visual inputs. Quality inspection in manufacturing uses vision models to detect defects.
 
 <Tip>
-For most applications, consider combining AI generation with human review. AI can generate options quickly, but human judgment ensures quality, appropriateness, and alignment with specific goals.
+  For most applications, consider combining AI generation with human review. AI
+  can generate options quickly, but human judgment ensures quality,
+  appropriateness, and alignment with specific goals.
 </Tip>
 
 User interfaces can leverage multimodal understanding. Conversational interfaces that accept images create more natural interactions. Voice assistants with visual context can help users with tasks involving physical objects. Accessibility tools transform visual information into other modalities.
@@ -350,7 +390,10 @@ For audio and video, the landscape is evolving rapidly. Music generation has sev
 Multimodal AI raises significant ethical questions that require active attention.
 
 <Warning>
-The ability to generate realistic images, video, and audio creates substantial risks for misinformation and fraud. Detection tools lag behind generation capabilities, making it increasingly difficult to distinguish authentic from synthetic media.
+  The ability to generate realistic images, video, and audio creates substantial
+  risks for misinformation and fraud. Detection tools lag behind generation
+  capabilities, making it increasingly difficult to distinguish authentic from
+  synthetic media.
 </Warning>
 
 Deepfakes and misinformation are immediate concerns. Generated images and videos can spread false information at scale. While detection tools exist, they are imperfect, and the authenticity of visual media can no longer be assumed.
@@ -561,7 +604,7 @@ graph TB
   setupInstructions={[
     "Get access to an image generation system (DALL-E, Stable Diffusion, Midjourney, or similar)",
     "Open a document or notebook for recording observations and generated images",
-    "Prepare to generate at least 12 images across different categories"
+    "Prepare to generate at least 12 images across different categories",
   ]}
   parts={[
     {
@@ -574,9 +617,10 @@ graph TB
         "Generate an image for: 'a golden retriever puppy playing in autumn leaves'",
         "Generate an image for: 'a golden retriever puppy playing in autumn leaves, professional photography, shallow depth of field, golden hour lighting'",
         "Record how each level of specificity affects quality, consistency, and composition",
-        "Note which details (subject, style, lighting, technical terms) had the most impact"
+        "Note which details (subject, style, lighting, technical terms) had the most impact",
       ],
-      observePrompt: "How does adding detail change the output? Is there a point where additional details stop improving results or create confusion?"
+      observePrompt:
+        "How does adding detail change the output? Is there a point where additional details stop improving results or create confusion?",
     },
     {
       id: "known-limitations",
@@ -589,9 +633,10 @@ graph TB
         "Test anatomy with: 'A hand holding a pencil, writing in a notebook'",
         "Document which prompts succeed and which fail",
         "Note how the model interprets or misinterprets each instruction",
-        "Try variations if initial attempts fail to see if you can work around limitations"
+        "Try variations if initial attempts fail to see if you can work around limitations",
       ],
-      observePrompt: "Which limitations seem fundamental versus solvable with better prompting? Why do you think these specific challenges exist?"
+      observePrompt:
+        "Which limitations seem fundamental versus solvable with better prompting? Why do you think these specific challenges exist?",
     },
     {
       id: "style-control",
@@ -603,9 +648,10 @@ graph TB
         "Try with: 'as a cyberpunk neon-lit scene'",
         "Try with: 'as a technical architectural blueprint'",
         "Note how well the model captures each style",
-        "Observe whether style modifiers affect structural accuracy or composition"
+        "Observe whether style modifiers affect structural accuracy or composition",
       ],
-      observePrompt: "Which styles are captured most accurately? Does adding style affect other aspects like accuracy or detail level?"
+      observePrompt:
+        "Which styles are captured most accurately? Does adding style affect other aspects like accuracy or detail level?",
     },
     {
       id: "analysis",
@@ -616,17 +662,33 @@ graph TB
         "Document prompt engineering insights: What strategies were most effective for getting desired results?",
         "Consider practical applications: What would you recommend these tools for? What would you caution against?",
         "Record ethical observations: Did you notice any biases or content limitations in the outputs?",
-        "Summarize what surprised you most about the model's capabilities or limitations"
+        "Summarize what surprised you most about the model's capabilities or limitations",
       ],
-      observePrompt: "How would you explain these capabilities and limitations to a client or stakeholder considering using image generation in their product?"
-    }
+      observePrompt:
+        "How would you explain these capabilities and limitations to a client or stakeholder considering using image generation in their product?",
+    },
   ]}
   successCriteria={[
-    { id: "generation-volume", text: "Generated at least 12 images across different prompt categories" },
-    { id: "documentation", text: "Documented both successful and unsuccessful generation attempts" },
-    { id: "limitations", text: "Identified at least 3 specific model limitations through testing" },
-    { id: "strategies", text: "Found at least 2 effective prompt engineering strategies" },
-    { id: "applications", text: "Connected observations to real-world application considerations" }
+    {
+      id: "generation-volume",
+      text: "Generated at least 12 images across different prompt categories",
+    },
+    {
+      id: "documentation",
+      text: "Documented both successful and unsuccessful generation attempts",
+    },
+    {
+      id: "limitations",
+      text: "Identified at least 3 specific model limitations through testing",
+    },
+    {
+      id: "strategies",
+      text: "Found at least 2 effective prompt engineering strategies",
+    },
+    {
+      id: "applications",
+      text: "Connected observations to real-world application considerations",
+    },
   ]}
 />
 
@@ -636,15 +698,17 @@ graph TB
   client:load
   questions={[
     {
-      question: "What is the core principle behind diffusion models for image generation?",
+      question:
+        "What is the core principle behind diffusion models for image generation?",
       options: [
         "They learn to directly sample from the data distribution",
         "They learn to reverse a gradual noise addition process",
         "They use adversarial training between generator and discriminator",
-        "They compress images into discrete tokens for generation"
+        "They compress images into discrete tokens for generation",
       ],
       correctAnswer: 1,
-      explanation: "Diffusion models work by first defining a forward process that gradually adds noise to images until they become pure noise, then learning the reverse process to denoise. During generation, the model starts from pure noise and iteratively removes it to produce a clean image."
+      explanation:
+        "Diffusion models work by first defining a forward process that gradually adds noise to images until they become pure noise, then learning the reverse process to denoise. During generation, the model starts from pure noise and iteratively removes it to produce a clean image.",
     },
     {
       question: "How does CLIP enable text-to-image generation?",
@@ -652,32 +716,37 @@ graph TB
         "CLIP directly generates images from text",
         "CLIP learns a shared embedding space where text and images with similar meanings are close together",
         "CLIP translates text into pixel values",
-        "CLIP provides a loss function that measures image quality"
+        "CLIP provides a loss function that measures image quality",
       ],
       correctAnswer: 1,
-      explanation: "CLIP uses contrastive learning to train encoders that produce embeddings in the same vector space for both text and images. Matching text-image pairs have similar embeddings, allowing diffusion models to use CLIP text embeddings as conditioning to guide image generation toward content that matches the text description."
+      explanation:
+        "CLIP uses contrastive learning to train encoders that produce embeddings in the same vector space for both text and images. Matching text-image pairs have similar embeddings, allowing diffusion models to use CLIP text embeddings as conditioning to guide image generation toward content that matches the text description.",
     },
     {
-      question: "What is the primary advantage of latent diffusion models over pixel-space diffusion?",
+      question:
+        "What is the primary advantage of latent diffusion models over pixel-space diffusion?",
       options: [
         "Higher image quality",
         "Better text conditioning",
         "Computational efficiency through operating on compressed representations",
-        "Simpler training objectives"
+        "Simpler training objectives",
       ],
       correctAnswer: 2,
-      explanation: "Latent diffusion models compress images using a VAE before running diffusion, reducing the data size dramatically (for example, from 512x512 to 64x64). This makes training and inference 10-100x faster while maintaining comparable quality."
+      explanation:
+        "Latent diffusion models compress images using a VAE before running diffusion, reducing the data size dramatically (for example, from 512x512 to 64x64). This makes training and inference 10-100x faster while maintaining comparable quality.",
     },
     {
-      question: "What challenge do vision-language models still struggle with most?",
+      question:
+        "What challenge do vision-language models still struggle with most?",
       options: [
         "Basic object recognition",
         "Generating natural language responses",
         "Precise spatial reasoning and counting",
-        "Processing images of different sizes"
+        "Processing images of different sizes",
       ],
       correctAnswer: 2,
-      explanation: "Current VLMs struggle with precise spatial reasoning ('What is to the left of X?') and accurate counting ('How many cats are there?'). They excel at recognition, captioning, and qualitative understanding, but quantitative and precise spatial tasks remain challenging."
+      explanation:
+        "Current VLMs struggle with precise spatial reasoning ('What is to the left of X?') and accurate counting ('How many cats are there?'). They excel at recognition, captioning, and qualitative understanding, but quantitative and precise spatial tasks remain challenging.",
     },
     {
       question: "What is classifier-free guidance in diffusion models?",
@@ -685,11 +754,12 @@ graph TB
         "A technique for classifying generated images into categories",
         "A method that amplifies conditioning by comparing conditional and unconditional predictions",
         "A way to train diffusion models without labeled data",
-        "An approach for filtering out low-quality generations"
+        "An approach for filtering out low-quality generations",
       ],
       correctAnswer: 1,
-      explanation: "Classifier-free guidance runs the denoiser twice (with and without text conditioning) and amplifies the difference between these predictions. This pushes the output more strongly toward matching the prompt, improving adherence at the cost of some diversity."
-    }
+      explanation:
+        "Classifier-free guidance runs the denoiser twice (with and without text conditioning) and amplifies the difference between these predictions. This pushes the output more strongly toward matching the prompt, improving adherence at the cost of some diversity.",
+    },
   ]}
 />
 
@@ -709,7 +779,7 @@ Practical deployment requires matching tools to tasks, understanding trade-offs 
 
 ## What's Next
 
-In the next module, we will explore reasoning models and the frontiers of AI capabilities. We will examine how models like o1 achieve complex reasoning through extended thinking, investigate chain-of-thought prompting and its limitations, and consider where AI capabilities are heading. Understanding reasoning is essential as AI systems take on increasingly complex tasks.
+In the next module, we will explore reasoning models and the frontiers of AI capabilities. We will examine how test-time compute approaches (pioneered by models such as OpenAI's o1 in 2024 and subsequent generations) achieve stronger performance on complex tasks through extended internal reasoning, investigate chain-of-thought and related prompting techniques, and consider where capabilities are heading. Understanding these developments is essential as AI systems take on increasingly complex tasks.
 
 ## References
 

@@ -8,7 +8,9 @@ const { title } = Astro.props;
 
 <div class="callout-info">
   <div class="flex items-start gap-3">
-    <div class="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-primary-100 text-primary-600 dark:bg-primary-900/30 dark:text-primary-400">
+    <div
+      class="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-primary-100 text-primary-600 dark:bg-primary-900/30 dark:text-primary-400"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
@@ -19,18 +21,25 @@ const { title } = Astro.props;
         stroke-linejoin="round"
         class="h-4 w-4"
       >
-        <circle cx="12" cy="12" r="10" />
-        <path d="M12 16v-4" />
-        <path d="M12 8h.01" />
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M12 16v-4"></path>
+        <path d="M12 8h.01"></path>
       </svg>
     </div>
     <div class="flex-1">
-      {title && (
-        <p class="font-semibold text-primary-700 dark:text-primary-300">
-          {title}
-        </p>
-      )}
-      <div class:list={["text-neutral-700 dark:text-neutral-300", { "mt-1": title }]}>
+      {
+        title && (
+          <p class="font-semibold text-primary-700 dark:text-primary-300">
+            {title}
+          </p>
+        )
+      }
+      <div
+        class:list={[
+          "text-neutral-700 dark:text-neutral-300",
+          { "mt-1": title },
+        ]}
+      >
         <slot />
       </div>
     </div>

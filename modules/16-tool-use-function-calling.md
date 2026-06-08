@@ -246,7 +246,7 @@ tools = [
 
 # Initial request
 response = client.messages.create(
-    model="claude-sonnet-4-20250514",
+    model="claude-3-5-sonnet-latest",
     max_tokens=1024,
     tools=tools,
     messages=[{"role": "user", "content": "What's the weather in Paris?"}]
@@ -277,7 +277,7 @@ if response.stop_reason == "tool_use":
 
     # Get final response
     final_response = client.messages.create(
-        model="claude-sonnet-4-20250514",
+        model="claude-3-5-sonnet-latest",
         max_tokens=1024,
         tools=tools,
         messages=messages
@@ -673,7 +673,7 @@ def execute_tool_loop(
 
         # Call the model
         response = client.messages.create(
-            model="claude-sonnet-4-20250514",
+            model="claude-3-5-sonnet-latest",
             max_tokens=4096,
             tools=tools,
             messages=messages
@@ -1795,7 +1795,7 @@ def run_agent(user_message: str, max_iterations: int = 5):
     for iteration in range(max_iterations):
         # Call the model
         response = client.messages.create(
-            model="claude-sonnet-4-20250514",
+            model="claude-3-5-sonnet-latest",
             max_tokens=1024,
             tools=TOOLS,
             messages=messages
@@ -1938,7 +1938,7 @@ def run_agent_enhanced(
     for iteration in range(max_iterations):
         try:
             response = client.messages.create(
-                model="claude-sonnet-4-20250514",
+                model="claude-3-5-sonnet-latest",
                 max_tokens=1024,
                 tools=TOOLS,
                 messages=messages

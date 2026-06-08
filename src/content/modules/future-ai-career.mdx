@@ -29,7 +29,9 @@ The goal is not to predict the future precisely. That is impossible in a field m
 ## Where AI is Heading
 
 <Definition term="AI Trajectory">
-The expected direction of AI capability development over time. While specific predictions are unreliable, understanding broad trends helps developers make strategic decisions about skill investment and project choices.
+  The expected direction of AI capability development over time. While specific
+  predictions are unreliable, understanding broad trends helps developers make
+  strategic decisions about skill investment and project choices.
 </Definition>
 
 Predicting technology futures is notoriously difficult. In 1943, IBM's chairman allegedly said there was a world market for maybe five computers. In 2007, Steve Ballmer predicted the iPhone would never gain significant market share.
@@ -42,7 +44,7 @@ These trends are already visible and likely to accelerate.
 
 Multimodal becomes standard. Current state has most models still primarily text-based with multimodal capabilities bolted on. Likely evolution brings native multimodal models that understand text, images, audio, and video equally well as the default. You will not think about image models versus text models but just use models that handle whatever input you provide. Impact on developers means designing interfaces assuming users can communicate through any modality where a user might upload a photo, ask a question about it, and get a video response.
 
-Reasoning models mature. Current state shows early reasoning models like o1 demonstrating promise but being slow and expensive. Likely evolution has reasoning capabilities becoming faster, cheaper, and more reliable with the gap between quick generation and deep reasoning narrowing. Impact on developers means better tools for complex multi-step tasks with bugs in agentic workflows decreasing as reasoning improves, though you will still need to verify outputs.
+Reasoning models mature. Early systems such as OpenAI's o1 (2024) demonstrated the power of test-time compute but were slow and expensive. Subsequent generations have made these capabilities faster, cheaper, and more reliable. The practical impact for developers is steadily improving tools for complex multi-step work — while human verification remains essential.
 
 Agents become practical. Current state has agents being experimental, working in demos but struggling in production. Likely evolution brings agent frameworks maturing with best practices emerging and tooling improving for debugging, monitoring, and controlling agents. Impact on developers means building agent-based systems routinely with the challenge shifting from can we make this work to how do we make this reliable and safe.
 
@@ -52,31 +54,31 @@ Specialized models proliferate. Current state has a few general-purpose models d
 
 ```mermaid
 graph TB
-    subgraph Now[Today - 2024/2025]
-        N1[Text-first models]
-        N2[Experimental agents]
-        N3[Manual RAG pipelines]
-        N4[Developer writes code]
+    subgraph Recent[2024–2025 State]
+        N1[Text-first + early multimodal]
+        N2[Experimental / early agents]
+        N3[Heavy RAG pipelines]
+        N4[Developer + AI pair programming]
     end
 
-    subgraph Near[Near-term - 1-2 years]
-        T1[Native multimodal]
-        T2[Practical agents]
-        T3[Context = 1M tokens]
-        T4[AI assists deeply]
+    subgraph Near[Near-term - 1-3 years from 2025]
+        T1[Native multimodal as default]
+        T2[More practical agentic systems]
+        T3[Very large context windows common]
+        T4[AI deeply integrated in workflows]
     end
 
-    subgraph Future[Future - 3-5 years]
-        F1[AI-native development]
-        F2[Continuous learning systems]
-        F3[Hybrid workflows]
-        F4[Embodied AI]
+    subgraph Future[Longer-term - 3-5+ years]
+        F1[AI-native development environments]
+        F2[Continuous / online learning systems]
+        F3[Well-designed hybrid human-AI teams]
+        F4[Embodied AI and robotics integration]
     end
 
-    Now --> Near
+    Recent --> Near
     Near --> Future
 
-    style Now fill:#3b82f6,color:#fff
+    style Recent fill:#3b82f6,color:#fff
     style Near fill:#22c55e,color:#fff
     style Future fill:#f59e0b,color:#fff
 ```
@@ -100,7 +102,12 @@ Likely hype includes AGI arriving in 1-2 years, AI fully replacing software deve
 Likely real includes continued incremental improvements in capabilities, AI handling more complex tasks with less human oversight, significant productivity gains for developers who use AI well, new job roles emerging around AI development and oversight, some job categories being substantially disrupted, and continued limitations and failure modes requiring human judgment.
 
 <Info>
-The future is not humans OR AI. It is humans AND AI, working together on tasks neither could handle alone. Your value as a developer will not be things AI cannot do. Your value will be understanding what problems matter, knowing when and how to apply AI, verifying and validating AI outputs, handling edge cases and failures, making ethical and strategic decisions, and combining AI capabilities in novel ways.
+  The future is not humans OR AI. It is humans AND AI, working together on tasks
+  neither could handle alone. Your value as a developer will not be things AI
+  cannot do. Your value will be understanding what problems matter, knowing when
+  and how to apply AI, verifying and validating AI outputs, handling edge cases
+  and failures, making ethical and strategic decisions, and combining AI
+  capabilities in novel ways.
 </Info>
 
 ## Skills for the AI Era
@@ -174,7 +181,14 @@ Communication and teaching involve explaining technical concepts to non-technica
 Ethical reasoning means thinking through the implications of technical decisions, considering who benefits and who might be harmed, and making value-aligned choices. AI systems encode values and someone needs to think carefully about what values those should be. Develop this by studying ethics and philosophy, considering stakeholder impacts, and engaging with diverse perspectives.
 
 <Tip>
-Given limited time, prioritize high-priority investments in core CS fundamentals that compound over time, hands-on AI practice through building things, communication and judgment that are uniquely human, and domain expertise in your field that AI amplifies. Medium-priority investments include specific AI tools and frameworks that are useful but change frequently. Low-priority investments include memorizing API documentation that AI handles, learning every new AI tool since many will not matter, and chasing every trend since most are hype.
+  Given limited time, prioritize high-priority investments in core CS
+  fundamentals that compound over time, hands-on AI practice through building
+  things, communication and judgment that are uniquely human, and domain
+  expertise in your field that AI amplifies. Medium-priority investments include
+  specific AI tools and frameworks that are useful but change frequently.
+  Low-priority investments include memorizing API documentation that AI handles,
+  learning every new AI tool since many will not matter, and chasing every trend
+  since most are hype.
 </Tip>
 
 ## Staying Current
@@ -247,7 +261,14 @@ Daily integration involves using AI tools in your regular work including AI-assi
 Deliberate experiments explore specific questions like how different chunking strategies affect retrieval, what prompt patterns reduce hallucinations, or how much model choice matters for a particular task. Value comes from developing deep understanding and informing future decisions.
 
 <Warning>
-Signs you are overwhelmed include anxiously checking for AI news constantly, feeling behind no matter how much you learn, collecting resources but never engaging deeply, paralysis from too many options, and burnout with decreasing enjoyment. Accept you cannot know everything. Learn just-in-time when you need it rather than everything in advance. Prune ruthlessly by unfollowing and unsubscribing from sources not serving your goals. Batch information consumption into dedicated times. Measure learning by output since what matters is what you can build, not what you have read.
+  Signs you are overwhelmed include anxiously checking for AI news constantly,
+  feeling behind no matter how much you learn, collecting resources but never
+  engaging deeply, paralysis from too many options, and burnout with decreasing
+  enjoyment. Accept you cannot know everything. Learn just-in-time when you need
+  it rather than everything in advance. Prune ruthlessly by unfollowing and
+  unsubscribing from sources not serving your goals. Batch information
+  consumption into dedicated times. Measure learning by output since what
+  matters is what you can build, not what you have read.
 </Warning>
 
 ## Community and Contribution
@@ -290,68 +311,96 @@ Build in public by sharing your journey with both successes and failures as you 
     {
       id: "q1",
       type: "multiple-choice",
-      question: "Which of the following is likely HYPE rather than a realistic near-term expectation?",
+      question:
+        "Which of the following is likely HYPE rather than a realistic near-term expectation?",
       options: [
-        { id: "a", text: "Agents becoming more practical and reliable in production" },
+        {
+          id: "a",
+          text: "Agents becoming more practical and reliable in production",
+        },
         { id: "b", text: "AGI arriving within 1-2 years" },
         { id: "c", text: "Context windows expanding to 1 million+ tokens" },
-        { id: "d", text: "Specialized models proliferating for specific domains" }
+        {
+          id: "d",
+          text: "Specialized models proliferating for specific domains",
+        },
       ],
       correctAnswer: "b",
-      explanation: "AGI arriving in 1-2 years is likely hype. While AI capabilities are advancing rapidly, AGI (Artificial General Intelligence with human-level reasoning across all domains) remains a distant and uncertain goal. The other options - practical agents, expanded context windows, and specialized models - are already visible trends likely to accelerate in the near term."
+      explanation:
+        "AGI arriving in 1-2 years is likely hype. While AI capabilities are advancing rapidly, AGI (Artificial General Intelligence with human-level reasoning across all domains) remains a distant and uncertain goal. The other options - practical agents, expanded context windows, and specialized models - are already visible trends likely to accelerate in the near term.",
     },
     {
       id: "q2",
       type: "multiple-choice",
-      question: "As AI handles more technical execution, which skill becomes MORE valuable, not less?",
+      question:
+        "As AI handles more technical execution, which skill becomes MORE valuable, not less?",
       options: [
         { id: "a", text: "Memorizing API documentation" },
         { id: "b", text: "Writing boilerplate code from scratch" },
         { id: "c", text: "Critical judgment to evaluate AI outputs" },
-        { id: "d", text: "Learning every new AI tool that emerges" }
+        { id: "d", text: "Learning every new AI tool that emerges" },
       ],
       correctAnswer: "c",
-      explanation: "Critical judgment becomes more valuable as AI handles more execution. Someone needs to evaluate whether AI outputs are correct, appropriate, and fit for purpose. AI produces plausible-sounding outputs that require human judgment to verify. Memorizing documentation, writing boilerplate, and chasing every new tool all become less important relative to judgment and evaluation skills."
+      explanation:
+        "Critical judgment becomes more valuable as AI handles more execution. Someone needs to evaluate whether AI outputs are correct, appropriate, and fit for purpose. AI produces plausible-sounding outputs that require human judgment to verify. Memorizing documentation, writing boilerplate, and chasing every new tool all become less important relative to judgment and evaluation skills.",
     },
     {
       id: "q3",
       type: "multiple-choice",
-      question: "What is the recommended approach for following AI research without burning out?",
+      question:
+        "What is the recommended approach for following AI research without burning out?",
       options: [
         { id: "a", text: "Read every paper that appears on arXiv daily" },
-        { id: "b", text: "Use curated sources, read selectively, and schedule dedicated learning time" },
-        { id: "c", text: "Avoid research entirely and focus only on practical implementation" },
-        { id: "d", text: "Follow as many AI researchers on social media as possible" }
+        {
+          id: "b",
+          text: "Use curated sources, read selectively, and schedule dedicated learning time",
+        },
+        {
+          id: "c",
+          text: "Avoid research entirely and focus only on practical implementation",
+        },
+        {
+          id: "d",
+          text: "Follow as many AI researchers on social media as possible",
+        },
       ],
       correctAnswer: "b",
-      explanation: "The recommended approach is to use curated sources (newsletters, Papers with Code, quality blogs), read selectively (titles widely, full papers rarely), and schedule dedicated learning time (weekly blocks rather than constant checking). Trying to read everything leads to burnout, while avoiding research entirely means missing important developments."
+      explanation:
+        "The recommended approach is to use curated sources (newsletters, Papers with Code, quality blogs), read selectively (titles widely, full papers rarely), and schedule dedicated learning time (weekly blocks rather than constant checking). Trying to read everything leads to burnout, while avoiding research entirely means missing important developments.",
     },
     {
       id: "q4",
       type: "multiple-choice",
-      question: "What is the primary benefit of contributing to open source AI projects?",
+      question:
+        "What is the primary benefit of contributing to open source AI projects?",
       options: [
         { id: "a", text: "It is required for career advancement" },
         { id: "b", text: "It replaces the need for formal education" },
-        { id: "c", text: "It deepens understanding, builds reputation, and connects you with the community" },
-        { id: "d", text: "It guarantees a job at a major AI company" }
+        {
+          id: "c",
+          text: "It deepens understanding, builds reputation, and connects you with the community",
+        },
+        { id: "d", text: "It guarantees a job at a major AI company" },
       ],
       correctAnswer: "c",
-      explanation: "Contributing to open source deepens your understanding through reading and working with real codebases, builds your professional reputation through public contributions, helps the ecosystem by improving tools you rely on, and connects you with others through collaboration. While beneficial for careers, it does not guarantee jobs or replace all forms of learning."
+      explanation:
+        "Contributing to open source deepens your understanding through reading and working with real codebases, builds your professional reputation through public contributions, helps the ecosystem by improving tools you rely on, and connects you with others through collaboration. While beneficial for careers, it does not guarantee jobs or replace all forms of learning.",
     },
     {
       id: "q5",
       type: "multiple-choice",
-      question: "When building a sustainable learning practice, what should you measure to know if you are learning effectively?",
+      question:
+        "When building a sustainable learning practice, what should you measure to know if you are learning effectively?",
       options: [
         { id: "a", text: "Number of papers read per week" },
         { id: "b", text: "Hours spent consuming content" },
         { id: "c", text: "Number of newsletters subscribed to" },
-        { id: "d", text: "What you can actually build and create" }
+        { id: "d", text: "What you can actually build and create" },
       ],
       correctAnswer: "d",
-      explanation: "Effective learning should be measured by output - what you can build, not what you have read. If you are consuming without creating, rebalance. Building projects, contributing to open source, writing about what you learned, and teaching others are all outputs that indicate real learning. Simply consuming content can create the illusion of learning without developing practical skills."
-    }
+      explanation:
+        "Effective learning should be measured by output - what you can build, not what you have read. If you are consuming without creating, rebalance. Building projects, contributing to open source, writing about what you learned, and teaching others are all outputs that indicate real learning. Simply consuming content can create the illusion of learning without developing practical skills.",
+    },
   ]}
   passingScore={70}
   allowRetry={true}
@@ -368,7 +417,7 @@ Build in public by sharing your journey with both successes and failures as you 
     "Set aside quiet time for reflection without distractions",
     "Have access to your calendar to plan realistic time commitments",
     "Prepare a document or notebook to capture your plan (digital or physical)",
-    "Review your learning from this course and note what resonated most"
+    "Review your learning from this course and note what resonated most",
   ]}
   parts={[
     {
@@ -379,9 +428,10 @@ Build in public by sharing your journey with both successes and failures as you 
         "Rate yourself 1-5 (1=beginner, 5=expert) in: Core CS fundamentals, AI/ML concepts, Prompt engineering, Agent development, Production AI systems, AI safety & ethics",
         "Identify your learning style preferences: do you learn best by reading, doing projects, teaching others, community discussion, videos, or structured courses?",
         "Note your constraints: available time per week, budget for tools/courses, access to hardware/GPUs",
-        "Be brutally honest - this is for you, not for anyone else"
+        "Be brutally honest - this is for you, not for anyone else",
       ],
-      observePrompt: "Where are your biggest gaps? Which areas excite you most? Where does your current work need AI skills?"
+      observePrompt:
+        "Where are your biggest gaps? Which areas excite you most? Where does your current work need AI skills?",
     },
     {
       id: "vision-and-goals",
@@ -391,9 +441,10 @@ Build in public by sharing your journey with both successes and failures as you 
         "Write a 1-year vision: What do you want to be able to DO with AI? What do you want to have BUILT? What do you want to be KNOWN FOR?",
         "Set 3-month goals that move you toward the vision (specific and achievable)",
         "Choose your top 3 learning priorities for the next 3 months",
-        "For each priority, define a success metric (e.g., 'Build 2 RAG projects' or 'Contribute to 1 open source AI tool')"
+        "For each priority, define a success metric (e.g., 'Build 2 RAG projects' or 'Contribute to 1 open source AI tool')",
       ],
-      observePrompt: "Does your 3-month goal feel challenging but achievable? Does it align with your 1-year vision?"
+      observePrompt:
+        "Does your 3-month goal feel challenging but achievable? Does it align with your 1-year vision?",
     },
     {
       id: "project-planning",
@@ -404,9 +455,10 @@ Build in public by sharing your journey with both successes and failures as you 
         "Plan a MEDIUM project (10-20 hours) for this month - more substantial but still contained",
         "Plan an AMBITIOUS project (40+ hours) for the next 3 months - your showcase piece",
         "Set actual deadlines for each project",
-        "For each project, note: What will I learn? What will I build? How will I know I'm done?"
+        "For each project, note: What will I learn? What will I build? How will I know I'm done?",
       ],
-      observePrompt: "Is your small project doable this week? Are you excited about the ambitious project?"
+      observePrompt:
+        "Is your small project doable this week? Are you excited about the ambitious project?",
     },
     {
       id: "community-engagement",
@@ -416,9 +468,10 @@ Build in public by sharing your journey with both successes and failures as you 
         "Identify 2 communities to join (Reddit, Discord, local meetup, etc.)",
         "Create a monthly contribution plan: What will you give back? (answers, blog posts, open source PRs)",
         "Design your weekly routine: Allocate specific days/times for learning (be realistic: 3-5 hrs/week is substantial)",
-        "Choose learning sources: Which newsletters will you follow? Which blogs? Which YouTube channels? (Max 3-5 total)"
+        "Choose learning sources: Which newsletters will you follow? Which blogs? Which YouTube channels? (Max 3-5 total)",
       ],
-      observePrompt: "Is your weekly routine sustainable long-term? Are you giving yourself permission to rest?"
+      observePrompt:
+        "Is your weekly routine sustainable long-term? Are you giving yourself permission to rest?",
     },
     {
       id: "accountability-commitment",
@@ -428,19 +481,41 @@ Build in public by sharing your journey with both successes and failures as you 
         "Set up progress tracking: How will you track what you learn and build? (GitHub commits, learning journal, blog)",
         "Schedule monthly reviews: First Monday of each month, review progress and adjust",
         "Optional: Find an accountability partner or join a study group",
-        "Write your personal commitment statement: WHY are you learning AI? How much time will you invest? What are your focus areas? How will you know you're succeeding?"
+        "Write your personal commitment statement: WHY are you learning AI? How much time will you invest? What are your focus areas? How will you know you're succeeding?",
       ],
-      observePrompt: "Does your commitment feel authentic and sustainable? What will you do when you inevitably fall behind schedule?"
-    }
+      observePrompt:
+        "Does your commitment feel authentic and sustainable? What will you do when you inevitably fall behind schedule?",
+    },
   ]}
   successCriteria={[
-    { id: "honest-assessment", text: "Completed honest self-assessment across all skill areas" },
-    { id: "clear-vision", text: "Defined clear 1-year vision and 3-month goals aligned with your interests" },
-    { id: "concrete-projects", text: "Planned 3 projects (small, medium, ambitious) with specific deadlines" },
-    { id: "community-plan", text: "Identified communities to join and created contribution plan" },
-    { id: "sustainable-routine", text: "Designed weekly learning routine that fits your actual life" },
-    { id: "tracking-system", text: "Set up progress tracking and monthly review schedule" },
-    { id: "personal-commitment", text: "Written personal commitment statement that motivates you" }
+    {
+      id: "honest-assessment",
+      text: "Completed honest self-assessment across all skill areas",
+    },
+    {
+      id: "clear-vision",
+      text: "Defined clear 1-year vision and 3-month goals aligned with your interests",
+    },
+    {
+      id: "concrete-projects",
+      text: "Planned 3 projects (small, medium, ambitious) with specific deadlines",
+    },
+    {
+      id: "community-plan",
+      text: "Identified communities to join and created contribution plan",
+    },
+    {
+      id: "sustainable-routine",
+      text: "Designed weekly learning routine that fits your actual life",
+    },
+    {
+      id: "tracking-system",
+      text: "Set up progress tracking and monthly review schedule",
+    },
+    {
+      id: "personal-commitment",
+      text: "Written personal commitment statement that motivates you",
+    },
   ]}
 />
 

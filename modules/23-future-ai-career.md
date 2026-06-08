@@ -143,7 +143,7 @@ These are uniquely human skills. And they're getting more valuable, not less.
 
 ```mermaid
 graph TB
-    subgraph Now[Today - 2024/2025]
+    subgraph Recent[2024–2025 State]
         N1[Text-first models]
         N2[Experimental agents]
         N3[Manual RAG pipelines]
