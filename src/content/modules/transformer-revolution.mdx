@@ -122,6 +122,10 @@ With learned weight matrices that project to 2D for simplicity, we create Q, K, 
 
 Through this process, the output representation of "cat" now incorporates information from both "cat" and "sat", weighted by their relevance. If the attention weight from "cat" to itself is 0.52 and to "sat" is 0.48, then the output mixes roughly half of each token's value vector.
 
+![Self-attention visualized: A heatmap showing attention weights between tokens in a short sequence. Darker cells indicate stronger relevance between a query token and key tokens.](/images/course/attention-heatmap.jpg)
+
+*This diagram illustrates how self-attention computes dynamic, content-based relevance scores across all pairs of tokens in parallel.*
+
 <Tip title="Why Self-Attention Works">
   Self-attention succeeds because relevance is learned, not fixed. The Q, K, V
   transformations are learned parameters. The model discovers what makes words
@@ -204,6 +208,10 @@ Importantly, this specialization emerges from training. Heads are not designed f
 ### Beyond Attention: The Full Architecture
 
 Self-attention is the star, but a complete transformer block includes several other crucial components. Each serves a specific purpose in making the model trainable and effective.
+
+![The internal structure of a single Transformer block, showing the multi-head attention sub-layer with residual connection and layer normalization, followed by the position-wise feed-forward network with its own residual connection and normalization.](/images/course/transformer-block.jpg)
+
+*A single transformer layer (block) combines attention, feed-forward processing, residuals, and normalization. Dozens or hundreds of these are stacked.*
 
 A single transformer block consists of multi-head self-attention, add and normalize operations with residual connections and layer normalization, a position-wise feed-forward network, and another add and normalize operation.
 

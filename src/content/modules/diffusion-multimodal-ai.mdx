@@ -214,6 +214,15 @@ The technique works by running the denoiser twice at each step. Once with the te
 
 The guidance scale controls how strongly the conditioning affects the output. Higher values push the output more strongly toward matching the prompt, but with trade-offs. Very high guidance can cause oversaturation, weird artifacts, or reduced diversity. The sweet spot depends on the application and artistic intent.
 
+<video controls poster="/images/course/diffusion-denoising.jpg" style="width: 100%; border-radius: 8px; margin: 1rem 0;">
+  <source src="/videos/course/diffusion-denoising-process.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+*Animated view of the diffusion denoising process. Watch as random noise is progressively refined into a coherent image guided by the text prompt.*
+
+![Progressive denoising in a diffusion model (static version of the animation above). From left (pure noise) to right (clear image), the model iteratively removes noise guided by the text prompt.](/images/course/diffusion-denoising.jpg)
+
 ### Capabilities and Limitations
 
 Current text-to-image models excel at many tasks. They produce photorealistic scenes, objects, and textures. They capture artistic styles and allow aesthetic control. They combine concepts in novel ways. With extensions like ControlNet, they can follow specific compositions, poses, or structures.

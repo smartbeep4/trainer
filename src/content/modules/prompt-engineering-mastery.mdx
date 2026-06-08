@@ -185,6 +185,10 @@ Better token predictions result because training data contains more correct answ
 
 The basic CoT structure presents a problem and adds "Let's solve this step by step" or similar phrasing. The model then generates numbered steps that walk through the reasoning before arriving at a final answer.
 
+![Side-by-side comparison of linear Chain-of-Thought (single path of reasoning steps) versus Tree-of-Thoughts (exploratory branching with evaluation of multiple hypotheses) for a complex task.](/images/course/chain-vs-tree-thoughts.jpg)
+
+*Tree-of-Thoughts extends CoT by exploring multiple reasoning paths in parallel and evaluating them, improving performance on hard problems.*
+
 <Info>
   Remarkably, simply adding "Let's think step by step" often triggers reasoning
   without any examples. This zero-shot CoT works because the phrase appears in

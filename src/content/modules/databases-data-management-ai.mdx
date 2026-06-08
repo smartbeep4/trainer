@@ -141,6 +141,10 @@ Retrieval-Augmented Generation (RAG) is the most common pattern for building AI 
 
 When you ask Claude a question about your company's documentation, this is what happens behind the scenes: your question gets embedded into a vector, that vector gets compared against millions of document chunks, the most similar chunks get retrieved, and they're stuffed into the prompt alongside your question. Claude answers based on that retrieved context. That's RAG.
 
+![End-to-end RAG pipeline: documents are chunked and embedded, stored in a vector database, relevant chunks are retrieved via semantic search, the prompt is augmented with that context, and the LLM produces a grounded answer.](/images/course/rag-pipeline.jpg)
+
+*The standard RAG architecture that powers most production systems needing reliable access to private or changing information.*
+
 <Definition term="RAG (Retrieval-Augmented Generation)">
   A pattern that combines information retrieval with text generation. First,
   relevant documents are retrieved using similarity search. Then, these
