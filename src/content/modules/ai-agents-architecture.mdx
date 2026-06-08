@@ -112,14 +112,19 @@ At its core, every agent follows a simple loop: perceive, reason, act. This loop
 
 The loop structure is straightforward. While not done, the agent perceives the environment to gather observations, reasons about observations, goals, and history to form a plan, acts on the plan to produce a result, appends observations, plan, and result to history, and checks completion against the goal and result.
 
-<video controls poster="/images/course/agent-loop.jpg" style="width: 100%; border-radius: 8px; margin: 1rem 0;">
+<video 
+  autoplay 
+  loop 
+  muted 
+  playsinline 
+  style="width: 100%; border-radius: 8px; margin: 1rem 0; cursor: pointer;" 
+  onclick="this.paused ? this.play() : this.pause()"
+>
   <source src="/videos/course/agent-loop-cycle.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
 *Animated cycle of the agent loop showing how perception, reasoning, action, and evaluation repeat until the goal is achieved.*
-
-![The core agent loop (static frame): Perceive the environment, Reason using the LLM, Act via tools, Update history, and Evaluate progress toward the goal. This cycle repeats for complex, multi-step tasks.](/images/course/agent-loop.jpg)
 
 <Definition term="Agent Loop">
   The fundamental cycle of agent operation: perceive the environment, reason
